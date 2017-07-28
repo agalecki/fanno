@@ -10,7 +10,7 @@
    if (is.null(attr(fun, "original_body"))) {
       attr(fun, "original_body") <- body(fun)  # save original body 
       } else {
-      body(fun)  <- attr(fun, "original_body")
+      body(fun, as.environment(where))  <- attr(fun, "original_body")
     }
     return(fun)
 }
