@@ -7,7 +7,11 @@ bfanno_simple <- function(x,  where = ".GlobalEnv", idx = 0){
   fun  <- getx[["objs"]][nx]
   fun  <- fun[[1]]
   if ( !(is.function(fun))) stop("Object: ", x, " in: ", where, " is NOT a function")
-  b_f <- body(fun)
+  if (is.null(attr(fun, "original_body")) {
+     b_f <- body(fun)
+    } else {
+     b_f <- attr(fun, "original_body")
+    }
   if (is.null(b_f) || length(b_f) == 1) return(body(fun)) 
   if (b_f[[1]] == as.name("{") ) b_f[[1]] <- NULL
   msg1 <- substitute(message("-- Function [", idx, ":", x, "] from  [", where, "]"), list(idx = idx, x=x, where = where))
