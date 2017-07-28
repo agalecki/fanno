@@ -1,4 +1,4 @@
- extract_FUN <- function(x, where = ".GlobalEnv") {
+ preprocess_FUN <- function(x, where = ".GlobalEnv") {
    # x is a character string containing function name
    getx   <- getAnywhere(x)
    whrAny <- getx[["where"]]
