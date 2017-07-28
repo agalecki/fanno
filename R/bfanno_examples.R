@@ -1,7 +1,7 @@
 bfanno_simple <- function(x,  where = ".GlobalEnv", idx = 0){
 # x is a character string containing function name
   fun <- fanno::extract_FUN(x, where = where)
-  if (is.null(attr(fun, "original_body")) {
+  if (is.null(attr(fun, "original_body"))) {
      b_f <- body(fun)
     } else {
      b_f <- attr(fun, "original_body")
