@@ -24,7 +24,6 @@ assign_fanno <- function(x, where = ".GlobalEnv", idx = 0, bfanno = "bfanno_msg1
   body(fun)  <- bfanno_body
   attr(fun, "original_fun") <- ofun
   attr(fun, "bfanno") <- bfanno
-  assign(x, fun, as.environment(where))
   whr1 <- stringr::word(where, 1, sep = ":")
   if (whr1 == "namespace") {
      ns <-  stringr::word(where, 2, sep = ":")
