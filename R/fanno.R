@@ -20,7 +20,7 @@ assign_fanno <- function(x, where = ".GlobalEnv", idx = 0, bfanno = "bfanno_msg1
   fattr <- attributes(fun)
   ofun <- fun 
   attributes(ofun) <- NULL
-  bfanno_body <- bfanno_msg1(fun, flbl = "fx_temp", idx = idx) 
+  bfanno_body <- do.call(bfanno, list(fun = fun, flbl = flbl, idx = idx)) 
   body(fun)  <- bfanno_body
   attr(fun, "original_fun") <- ofun
   attr(fun, "bfanno") <- bfanno
