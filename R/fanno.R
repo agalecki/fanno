@@ -7,24 +7,24 @@ assign_fanno <- function(x, where = ".GlobalEnv", idx = 0, bfanno = "bfanno_simp
    len <- length(nx <- grep(where, whrAny))
    if (len == 0)  stop("Function: ", x, " not found in: ", where)
    fun  <- getx[["objs"]][nx]
-   fun  <- fun[[1]] 
+   fun  <- fun[[1]]              # fun may have some attributes
    if (!(is.function(fun))) stop("Object: ", x, " in: ", where, " is NOT a function")
    
+ # In preparation for bfanno
+ # store original function both in fun and in original_fun attribute  
    if (is.null(attr(fun, "original_fun"))) {
-      attributes(fun) <- NULL
-      attr(fun, "original_fun") <- fun  # save original function 
+      attr(fun, "original_fun") <- fun  
    } else {
       fun <- attr(fun, "original_fun") 
    }
- 
-  ofun <- fun
+  fattr <- attributes(fun)
+  ofun <- fun 
   attributes(ofun) <- NULL
-  bfanno_body <- bfanno_simple(ofun, flbl = "fx", idx = idx) 
-  body(ofun)  <- bfanno_body
-  attributes(fun) <- NULL
-  attr(ofun, "original_fun") <- fun
-  assign(x, ofun, as.environment(where))
-   
-  return(ofun)
+  bfanno_body <- bfanno_msg1(fun, flbl = "fx_temp", idx = idx) 
+  body(fun)  <- bfanno_body
+  attr(fun, "original_fun") <- ofun
+  attr(fun, "bfanno") <- bfanno
+  assign(x, fun, as.environment(where))
+  return(fun)
 }
 
