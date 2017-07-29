@@ -1,5 +1,5 @@
  
-assign_fanno <- function(x, where = ".GlobalEnv", idx = 0, bfanno = "bfanno_simple"){
+assign_fanno <- function(x, where = ".GlobalEnv", idx = 0, bfanno = "bfanno_msg1"){
  # x is a character string containing function name
 
    getx   <- getAnywhere(x)
