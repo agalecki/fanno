@@ -10,8 +10,8 @@ library (fanno)
 
 ````
  fx <- function(x) x^2
- bfanno_simple(tt)      # error object not found
- bfanno_simple(fx)    
+ bfanno_msg1(tt)      # error object not found
+ bfanno_msg1(fx)    
  assign_fanno("fx")
  #bfanno_simple('mean',  where = "namespace:base")
  #bfanno_simple('mean')
