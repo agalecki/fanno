@@ -6,8 +6,7 @@ assign_fanno <- function(x, where = ".GlobalEnv", idx = 0, bfanno = "bfanno_msg1
    whrAny <- getx[["where"]]
    len <- length(nx <- grep(where, whrAny))
    if (len == 0)  stop("Function: ", x, " not found in: ", where)
-   fun  <- getx[["objs"]][nx]
-   fun  <- fun[[1]]              # fun may have some attributes
+   fun  <- getx[nx]                      # fun may have some attributes             
    if (!(is.function(fun))) stop("Object: ", x, " in: ", where, " is NOT a function")
    
  # In preparation for bfanno
