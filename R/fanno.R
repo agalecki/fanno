@@ -25,6 +25,20 @@ assign_fanno <- function(x, where = ".GlobalEnv", idx = 0, bfanno = "bfanno_msg1
   attr(fun, "original_fun") <- ofun
   attr(fun, "bfanno") <- bfanno
   assign(x, fun, as.environment(where))
+  whr1 <- stringr::word(where, 1, sep = ":")
+  if (whr1 == "namespace") {
+     ns <-  stringr::word(where, 2, sep = ":")
+     unlockBinding(x,getNamespace(ns))  
+     assign(x, fun, getNamespace(ns))
+  }
+  
+  if (whr1 == "package") {
+     unlockBinding(x, as.environment(where))  
+     assign(x, fun, as.environment(where))
+  }
+
+  if (where == ".GlobalEnv") assign(x, fun, as.environment(where))
+
   return(fun)
 }
 
