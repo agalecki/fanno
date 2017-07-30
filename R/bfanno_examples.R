@@ -14,3 +14,9 @@ bfanno_msg1 <- function(fun){
   bf <- as.call(c(as.name("{"), msg1, b_f))
   return(bf) 
 }
+
+bfanno_reset <- function(fun){
+  if (!is.function(fun)) stop("Arg fun needs to be a function")
+  bfx <- attr(fun, "original_fun") 
+  return(bfx) 
+}
