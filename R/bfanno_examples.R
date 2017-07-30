@@ -15,7 +15,7 @@ bfanno_msg1 <- function(fun){
   return(bf) 
 }
 
-bfanno_reset <- function(fun){
+bfanno_strip <- function(fun){
   if (!is.function(fun)) stop("Arg fun needs to be a function")
   bfx <- attr(fun, "original_fun") 
   return(bfx) 
