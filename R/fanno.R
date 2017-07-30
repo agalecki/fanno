@@ -56,7 +56,7 @@ assign_fanno <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_msg1
   return(fun)
 }
 
-assign_fanno_ns <- function (ns, fnms = NULLtt, bfanno = "bfanno_msg1"){
+assign_fanno_ns <- function (ns, fnms = NULL, bfanno = "bfanno_msg1"){
    if (is.null(ns))   stop ("namespace needs to be specified")
    if (is.null(fnms)) fnms <- ls(asNamespace(ns))
    if (!(length(fnms) > 0)) stop ("select at least one function")  
@@ -67,6 +67,7 @@ assign_fanno_ns <- function (ns, fnms = NULLtt, bfanno = "bfanno_msg1"){
      fxi <- is.function(fun <- get(fnm, envir = asNamespace(ns), inherits = FALSE))
      if (fxi){
         assign_fanno(fnm, where = whr, idx = i, bfanno = bfanno)
+        message ("Function ", fnm, " annotated ...") 
      }
    }
    return(fx)
