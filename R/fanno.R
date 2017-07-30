@@ -21,7 +21,7 @@ assign_fanno <- function(x, where = ".GlobalEnv", bfanno = "bfanno_msg1"){
  whr1 <- stringr::word(where, 1, sep = ":")
  whr2 <- stringr::word(where, 2, sep = ":")
  if (is.na(whr2)) whr2 <- ""
- fupdt <- list(flbl = x, wher1 = whr1, wher2 = whr2, bfanno = bfanno)
+ fupdt <- list(flbl = x, idx = finfo$idx, wher1 = whr1, wher2 = whr2, bfanno = bfanno)
  finfo <- update_finfo(finfo, fupdt)
  # store original function both in fun and in original_fun attribute
  
