@@ -6,7 +6,7 @@ finfo[nmsu] <- update
 return(finfo)
 }
 
-, assign_fanno <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_msg1"){
+assign_fanno <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_msg1"){
  # x is a character string containing function name
    getx   <- NULL
    getx   <- getAnywhere(x)
