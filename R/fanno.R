@@ -30,6 +30,7 @@ assign_fanno <- function(x, where = ".GlobalEnv", bfanno = "bfanno_msg1"){
    } else {
       fun <- attr(fun, "original_fun") 
    }
+  attr(fun, "finfo") <- finfo
   fattr <- attributes(fun)
   ofun <- fun 
   attributes(ofun) <- NULL
@@ -37,7 +38,6 @@ assign_fanno <- function(x, where = ".GlobalEnv", bfanno = "bfanno_msg1"){
   bfanno_body <- do.call(bfanno, list(fun = fun)) 
   body(fun)  <- bfanno_body
   attr(fun, "original_fun") <- ofun
-  attr(fun, "bfanno") <- bfanno
   attr(fun, "finfo")  <- finfo
   
   if (whr1 == "namespace") {
