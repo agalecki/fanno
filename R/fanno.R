@@ -68,7 +68,9 @@ assign_fanno_ns <- function (ns, fnms = NULL, bfanno = "bfanno_msg1"){
      if (fxi){
         assign_fanno(fnm, where = whr, idx = i, bfanno = bfanno)
         message ("Function ", fnm, " annotated ...") 
-     }
+     } else {
+        message ("Object ", fnm, " is not a function.")
+      }
    }
    return(fx)
 }
