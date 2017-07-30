@@ -6,7 +6,7 @@ finfo[nmsu] <- update
 return(finfo)
 }
 
-assign_fanno <- function(x, where = ".GlobalEnv", bfanno = "bfanno_msg1"){
+, assign_fanno <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_msg1"){
  # x is a character string containing function name
    getx   <- NULL
    getx   <- getAnywhere(x)
@@ -21,7 +21,7 @@ assign_fanno <- function(x, where = ".GlobalEnv", bfanno = "bfanno_msg1"){
  whr1 <- stringr::word(where, 1, sep = ":")
  whr2 <- stringr::word(where, 2, sep = ":")
  if (is.na(whr2)) whr2 <- ""
- fupdt <- list(flbl = x, idx = finfo$idx, wher1 = whr1, wher2 = whr2, bfanno = bfanno)
+ fupdt <- list(flbl = x, idx = idx, wher1 = whr1, wher2 = whr2, bfanno = bfanno)
  finfo <- update_finfo(finfo, fupdt)
  # store original function both in fun and in original_fun attribute
  
@@ -55,4 +55,22 @@ assign_fanno <- function(x, where = ".GlobalEnv", bfanno = "bfanno_msg1"){
 
   return(fun)
 }
+
+assign_fanno_ns <- function (ns, fnms = NULLtt, bfanno = "bfanno_msg1"){
+   if (is.null(ns))   stop ("namespace needs to be specified")
+   if (is.null(fnms)) fnms <- ls(asNamespace(ns))
+   if (!(length(fnms) > 0)) stop ("select at least one function")  
+   whr  <-  paste("namespace", ns, sep = ":")
+
+   for (i in seq_along(fnms)) {
+     fnm <- fnms[i]
+     fxi <- is.function(fun <- get(fnm, envir = asNamespace(ns), inherits = FALSE))
+     if (fxi){
+        assign_fanno(fnm, where = whr, idx = i, bfanno = bfanno)
+     }
+   }
+   return(fx)
+}
+
+
 
