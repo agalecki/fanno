@@ -72,7 +72,7 @@ assign_fanno_ns <- function (ns, fnms = NULL, bfanno = "bfanno_msg1"){
         message ("Object ", fnm, " is not a function.")
       }
    }
-   return(fx)
+   return(fnms)
 }
 
 
