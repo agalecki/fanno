@@ -18,7 +18,7 @@ assign_fanno <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_msg1
    if (len == 0)  return(message("Object <", idx, ":", x, "> not found in  <", where , "> ... skipped"))
    fun  <- getx[nx]                      # fun may have some attributes
    if (!is.function(fun)) return(message("Object <", idx, ":", x, "> in <", where, "> is not a function ... skipped"))
-   if (!is_eligibleFun(fun)) return(message("Function <", idx, ":", x, "> in <", where, "> is not of eligible class <", class(fun)[1], "> ... skipped"))
+   if (!isEligibleFun(fun)) return(message("Function <", idx, ":", x, "> in <", where, "> is not of eligible class <", class(fun)[1], "> ... skipped"))
  
  # In preparation for bfanno: update finfo
 
