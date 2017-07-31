@@ -67,7 +67,7 @@ assign_fanno <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_msg1
 
 assign_fanno_ns <- function (ns, fnms = NULL, bfanno = "bfanno_msg1"){
    if (is.null(ns))   stop ("namespace needs to be specified")
-   if (is.null(fnms)) fnms <- ls(asNamespace(ns))
+   if (is.null(fnms)) fnms <- ls(asNamespace(ns), all.names = TRUE)
    len <- length(fnms)
    if (!( len > 0)) stop ("select at least one function")  
    whr  <-  paste("namespace", ns, sep = ":")
@@ -77,6 +77,21 @@ assign_fanno_ns <- function (ns, fnms = NULL, bfanno = "bfanno_msg1"){
    }
    return(message("--- ", len, " objects in <", ns, "> processed. Use <", ns, ":::object_name> to retrieve."))
 }
+
+assign_fanno_pkg <- function (pkg, fnms = NULL, bfanno = "bfanno_msg1"){
+   if (is.null(pkg))  stop ("package name needs to be specified")
+   whr  <-  paste("package", pkg, sep = ":")
+   if (is.null(fnms)) fnms <- ls(as.environment(whr), all.names = TRUE )
+   len <- length(fnms)
+   if (len == 0) stop ("select at least one function")  
+   
+   for (i in seq_along(fnms)) {
+     fnm <- fnms[i]
+     assign_fanno(fnm, where = whr, idx = i, bfanno = bfanno)
+   }
+   return(message("--- ", len, " objects in package <", pkg, "> processed."))
+}
+
 
 
 
