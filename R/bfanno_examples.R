@@ -8,7 +8,7 @@ bfanno_msg1 <- function(fun){
   if (b_f[[1]] == as.name("{") ) b_f[[1]] <- NULL
   
   msg1 <- substitute(message("-- Function [", idx, ":", flbl, "]",
-                             " from [",  wher1, ":", wher2,     "]",
+                             " from [",  where, "]",
                              " annotated using [", bfanno, "]"
                             ), finfo)
   bf <- as.call(c(as.name("{"), msg1, b_f))
@@ -16,7 +16,9 @@ bfanno_msg1 <- function(fun){
 }
 
 bfanno_strip <- function(fun){
+# returns original function body 
   if (!is.function(fun)) stop("Arg fun needs to be a function")
-  bfx <- attr(fun, "original_fun") 
+  finfo <- attr(fun, "finfo")           # Attribute containing finfo list
+  if (is.null(finfo)) bfx <- body(fun) else bfx <- attr(fun, "original_fun") 
   return(bfx) 
 }
