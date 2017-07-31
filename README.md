@@ -16,7 +16,17 @@ library (fanno)
  assign_fanno("fx")
  fx
  
- getAnywhere("word")[["where"]]         # "namespace:stringr"
+ getAnywhere("nlme")[["where"]]         # character(0)
+ library(nlme)   
+ getAnywhere("nlme")[["where"]]         #"package:nlme"   "namespace:nlme"
+ detach(package:nlme)
+ getAnywhere("nlme")[["where"]]         # "namespace:nlme"
+ 
+ library(nlme)
+ assign_fanno("nlme")                   # Object <0:nlme> not found in  <.GlobalEnv> ... skipped
+ assign_fanno_ns("nlme") 
+ 
+ 
  assign_fanno("word", where = "namespace:stringr")
  getAnywhere("word")[1]
  stringr::word("A B C", 2)
