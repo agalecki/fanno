@@ -16,7 +16,10 @@ assign_fanno <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_msg1
    if (!(is.function(fun))) return(message("Object <", idx, ":", x, "> in <", where, "> is not a function ... skipped"))
  
  # In preparation for bfanno: update finfo
+
  finfo <- attr(fun, "finfo")
+ if (finfo$bfanno == bfanno) 
+      return(message("Object <", idx, ":", x, "> in <", where, "> already annotated with <", bfanno, "> ... skipped"))
  whr1 <- stringr::word(where, 1, sep = ":")
  whr2 <- stringr::word(where, 2, sep = ":")
  if (is.na(whr2)) whr2 <- ""
