@@ -1,3 +1,7 @@
+isEligibleFun <- function (fun) {
+  is.function(fun) && class(fun) %in%  c("function")
+}
+
 update_finfo <- function(finfo, update = NULL) {
 # finfo is a named list with components: flbl  
 if (is.null(update))  update <- list(flbl = "ourfname", idx = 0, where = ".GlobalEnv?", bfanno = "bfanno_?")
@@ -13,8 +17,8 @@ assign_fanno <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_msg1
    len <- length(nx <- grep(where, whrAny))
    if (len == 0)  return(message("Object <", idx, ":", x, "> not found in  <", where , "> ... skipped"))
    fun  <- getx[nx]                      # fun may have some attributes
-   is_eligibleFun <- is.function(fun) && class(fun) %in%  c("function")
-   if (!is_eligibleFun) return(message("Object <", idx, ":", x, "> in <", where, "> is not (eligible) function ... skipped"))
+   if (!is.function(fun)) return(message("Object <", idx, ":", x, "> in <", where, "> is not a function ... skipped"))
+   if (!is_eligibleFun(fun)) return(message("Function <", idx, ":", x, "> in <", where, "> is not of eligible class <", class(fun)[1], "> ... skipped"))
  
  # In preparation for bfanno: update finfo
 
