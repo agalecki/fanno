@@ -8,14 +8,13 @@ return(finfo)
 
 assign_fanno <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_msg1"){
  # x is a character string containing function name
-   getx   <- NULL
    getx   <- getAnywhere(x)
    whrAny <- getx[["where"]]
    len <- length(nx <- grep(where, whrAny))
-   if (len == 0)  stop("Function: ", x, " not found in: ", where)
+   if (len == 0)  return(message("Object [", idx, ":", x, "] not found in  [", where , "] ... skipped"))
    fun  <- getx[nx]                      # fun may have some attributes             
-   if (!(is.function(fun))) stop("Object: ", x, " in: ", where, " is NOT a function")
-   
+   if (!(is.function(fun))) return(message("Object [", idx, ":", x, "] in [", where, "] is not a function ... skipped"))
+ 
  # In preparation for bfanno: update finfo
  finfo <- attr(fun, "finfo")
  whr1 <- stringr::word(where, 1, sep = ":")
@@ -42,18 +41,22 @@ assign_fanno <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_msg1
   
   if (whr1 == "namespace") {
      ns <-  stringr::word(where, 2, sep = ":")
-     unlockBinding(x,getNamespace(ns))  
+     unlockBinding(x,getNamespace(ns))      
      assign(x, fun, getNamespace(ns))
+     return(message("Function [", idx, ":", x, "] annotated with [", bfanno, "]  assigned in namespace [", ns, "] ..."))
   }
   
   if (whr1 == "package") {
      unlockBinding(x, as.environment(where))  
      assign(x, fun, as.environment(where))
+     return(message("Function [", idx, ":", x, "] annotated with [", bfanno, "]  assigned in package [", whr2, "] ..."))
   }
 
-  if (where == ".GlobalEnv") assign(x, fun, as.environment(where))
-
-  return(fun)
+  if (where == ".GlobalEnv"){ 
+   assign(x, fun, as.environment(where))
+   return(message("Function [", idx, ":", x, "]  annotated with [", bfanno, "]  assigned in [.GlobalEnv] ..."))
+  }
+  return(message("???"))
 }
 
 assign_fanno_ns <- function (ns, fnms = NULL, bfanno = "bfanno_msg1"){
