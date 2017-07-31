@@ -12,8 +12,9 @@ assign_fanno <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_msg1
    whrAny <- getx[["where"]]
    len <- length(nx <- grep(where, whrAny))
    if (len == 0)  return(message("Object <", idx, ":", x, "> not found in  <", where , "> ... skipped"))
-   fun  <- getx[nx]                      # fun may have some attributes             
-   if (!(is.function(fun))) return(message("Object <", idx, ":", x, "> in <", where, "> is not a function ... skipped"))
+   fun  <- getx[nx]                      # fun may have some attributes
+   is_eligibleFun <- is.function(fun) && class(fun) %in%  c("function")
+   if (!is_eligibleFun) return(message("Object <", idx, ":", x, "> in <", where, "> is not (eligible) function ... skipped"))
  
  # In preparation for bfanno: update finfo
 
