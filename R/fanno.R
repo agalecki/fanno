@@ -1,6 +1,6 @@
 update_finfo <- function(finfo, update = NULL) {
 # finfo is a named list with components: flbl  
-if (is.null(update))  update <- list(flbl = "ourfname", idx = 0, wher1 = ".GlobalEnv?", wher2 = "", bfanno = "bfanno_?")
+if (is.null(update))  update <- list(flbl = "ourfname", idx = 0, where = ".GlobalEnv?", bfanno = "bfanno_?")
 nmsu <- names(update)
 finfo[nmsu] <- update
 return(finfo)
@@ -20,7 +20,7 @@ assign_fanno <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_msg1
  whr1 <- stringr::word(where, 1, sep = ":")
  whr2 <- stringr::word(where, 2, sep = ":")
  if (is.na(whr2)) whr2 <- ""
- fupdt <- list(flbl = x, idx = idx, wher1 = whr1, wher2 = whr2, bfanno = bfanno)
+ fupdt <- list(flbl = x, idx = idx, where = where, bfanno = bfanno)
  finfo <- update_finfo(finfo, fupdt)
  # store original function both in fun and in original_fun attribute
  
@@ -69,7 +69,7 @@ assign_fanno_ns <- function (ns, fnms = NULL, bfanno = "bfanno_msg1"){
      fnm <- fnms[i]
      assign_fanno(fnm, where = whr, idx = i, bfanno = bfanno)
    }
-   return(message("--- ", len, "objects in <", ns, "> processed"))
+   return(message("--- ", len, " objects in <", ns, "> processed. Use <", ns, ":::object_name> to retrieve."))
 }
 
 
