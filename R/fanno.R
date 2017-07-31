@@ -11,9 +11,9 @@ assign_fanno <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_msg1
    getx   <- getAnywhere(x)
    whrAny <- getx[["where"]]
    len <- length(nx <- grep(where, whrAny))
-   if (len == 0)  return(message("Object [", idx, ":", x, "] not found in  [", where , "] ... skipped"))
+   if (len == 0)  return(message("Object <", idx, ":", x, "> not found in  <", where , "> ... skipped"))
    fun  <- getx[nx]                      # fun may have some attributes             
-   if (!(is.function(fun))) return(message("Object [", idx, ":", x, "] in [", where, "] is not a function ... skipped"))
+   if (!(is.function(fun))) return(message("Object <", idx, ":", x, "> in <", where, "> is not a function ... skipped"))
  
  # In preparation for bfanno: update finfo
  finfo <- attr(fun, "finfo")
@@ -43,18 +43,18 @@ assign_fanno <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_msg1
      ns <-  stringr::word(where, 2, sep = ":")
      unlockBinding(x,getNamespace(ns))      
      assign(x, fun, getNamespace(ns))
-     return(message("Function [", idx, ":", x, "] annotated with [", bfanno, "]  assigned in namespace [", ns, "] ..."))
+     return(message("Function <", idx, ":", x, "> annotated with <", bfanno, ">  assigned in namespace <", ns, "> ..."))
   }
   
   if (whr1 == "package") {
      unlockBinding(x, as.environment(where))  
      assign(x, fun, as.environment(where))
-     return(message("Function [", idx, ":", x, "] annotated with [", bfanno, "]  assigned in package [", whr2, "] ..."))
+     return(message("Function <", idx, ":", x, "> annotated with <", bfanno, ">  assigned in package <", whr2, "> ..."))
   }
 
   if (where == ".GlobalEnv"){ 
    assign(x, fun, as.environment(where))
-   return(message("Function [", idx, ":", x, "]  annotated with [", bfanno, "]  assigned in [.GlobalEnv] ..."))
+   return(message("Function <", idx, ":", x, ">  annotated with <", bfanno, ">  assigned in <.GlobalEnv> ..."))
   }
   return(message("???"))
 }
@@ -62,20 +62,14 @@ assign_fanno <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_msg1
 assign_fanno_ns <- function (ns, fnms = NULL, bfanno = "bfanno_msg1"){
    if (is.null(ns))   stop ("namespace needs to be specified")
    if (is.null(fnms)) fnms <- ls(asNamespace(ns))
-   if (!(length(fnms) > 0)) stop ("select at least one function")  
+   len <- length(fnms)
+   if (!( len > 0)) stop ("select at least one function")  
    whr  <-  paste("namespace", ns, sep = ":")
-
    for (i in seq_along(fnms)) {
      fnm <- fnms[i]
-     fxi <- is.function(fun <- get(fnm, envir = asNamespace(ns), inherits = FALSE))
-     if (fxi){
-        assign_fanno(fnm, where = whr, idx = i, bfanno = bfanno)
-        message ("Function ", fnm, " annotated ...") 
-     } else {
-        message ("Object ", fnm, " is not a function.")
-      }
+     assign_fanno(fnm, where = whr, idx = i, bfanno = bfanno)
    }
-   return(fnms)
+   return(message("--- ", len, "objects in <", ns, "> processed"))
 }
 
 
