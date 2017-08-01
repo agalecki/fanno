@@ -26,7 +26,7 @@ assign_1fanno <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_msg
  finfo <- attr(fun, "finfo")
    
  fbf <- finfo$bfanno
- if (verbose) message ("fbf = ", fbf, bfanno)
+ if (verbose) message ("fbf = ", fbf, ":", bfanno)
  if (!is.null(fbf) && fbf == bfanno) 
       return(message("Object <", idx, ":", x, "> in <", where, "> already annotated with <", bfanno, "> ... skipped"))
  
@@ -55,7 +55,8 @@ assign_1fanno <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_msg
   if (whr1 == "namespace") {
      ns <-  suppressMessages(stringr::word(where, 2, sep = ":"))
      if (verbose) message("ns =" , ns) 
-     unlockBinding(x,getNamespace(ns))      
+     unlockBinding(x, getNamespace(ns))  
+     if (verbose) print(fun)
      assign(x, fun, getNamespace(ns))
      return(message("Function <", idx, ":", x, "> annotated with <", bfanno, ">  assigned in namespace <", ns, "> ..."))
   }
