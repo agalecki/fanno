@@ -17,7 +17,7 @@ assign_1fanno <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_msg
    len <- length(nx <- grep(where, whrAny))
    if (len == 0)  return(message("Object <", idx, ":", x, "> not found in  <", where , "> ... skipped"))
    fun  <- getx[nx]                      # fun may have some attributes
-   if (verbose)  message ("assign_1fanno: whrAny =", whrAny, "nx = ", nx) 
+   if (verbose)  message ("assign_1fanno: nx = ", nx) 
    if (!is.function(fun)) return(message("Object <", idx, ":", x, "> in <", where, "> is not a function ... skipped"))
    if (!isFun(fun)) return(message("Function <", idx, ":", x, "> in <", where, "> is not of eligible class <", class(fun)[1], "> ... skipped"))
  
@@ -54,12 +54,14 @@ assign_1fanno <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_msg
   
   if (whr1 == "namespace") {
      ns <-  suppressMessages(stringr::word(where, 2, sep = ":"))
+     if (verbose) message("ns =" , ns) 
      unlockBinding(x,getNamespace(ns))      
      assign(x, fun, getNamespace(ns))
      return(message("Function <", idx, ":", x, "> annotated with <", bfanno, ">  assigned in namespace <", ns, "> ..."))
   }
   
   if (whr1 == "package") {
+     if (verbose) message ("package =", where)
      unlockBinding(x, as.environment(where))  
      assign(x, fun, as.environment(where))
      return(message("Function <", idx, ":", x, "> annotated with <", bfanno, ">  assigned in package <", whr2, "> ..."))
