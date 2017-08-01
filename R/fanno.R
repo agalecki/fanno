@@ -27,8 +27,8 @@ assign_1fanno <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_msg
  if (!is.null(fbf) && fbf == bfanno) 
       return(message("Object <", idx, ":", x, "> in <", where, "> already annotated with <", bfanno, "> ... skipped"))
  
- whr1 <- stringr::word(where, 1, sep = ":")
- whr2 <- stringr::word(where, 2, sep = ":")
+ whr1 <- suppressMessages(stringr::word(where, 1, sep = ":"))
+ whr2 <- suppressMessages(stringr::word(where, 2, sep = ":"))
  if (is.na(whr2)) whr2 <- ""
  fupdt <- list(flbl = x, idx = idx, where = where, bfanno = bfanno)
  finfo <- update_finfo(finfo, fupdt)
@@ -50,7 +50,7 @@ assign_1fanno <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_msg
   attr(fun, "finfo")  <- finfo
   
   if (whr1 == "namespace") {
-     ns <-  stringr::word(where, 2, sep = ":")
+     ns <-  suppressMessages(stringr::word(where, 2, sep = ":"))
      unlockBinding(x,getNamespace(ns))      
      assign(x, fun, getNamespace(ns))
      return(message("Function <", idx, ":", x, "> annotated with <", bfanno, ">  assigned in namespace <", ns, "> ..."))
@@ -71,8 +71,8 @@ assign_1fanno <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_msg
 
 assign_fanno <- function (fnms = NULL, where = ".GlobalEnv", bfanno = "bfanno_msg1"){
   if (is.null(where))   stop ("<where> arguent  needs to be specified.")
-  whr1 <- stringr::word(where,1, sep =":")
-  whr2 <- stringr::word(where,2, sep = ":")
+  whr1 <- suppressMessages(stringr::word(where,1, sep =":"))
+  whr2 <- suppressMessages(stringr::word(where,2, sep = ":"))
    if (is.null(fnms)){ 
         fnms <- if (whr1 == "namespace")  ls(asNamespace(whr2), all.names = TRUE) else ls(as.environment(where), all.names = TRUE)
    }  
