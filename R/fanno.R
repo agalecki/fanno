@@ -10,20 +10,23 @@ finfo[nmsu] <- update
 return(finfo)
 }
 
-assign_1fanno <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_msg1"){
+assign_1fanno <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_msg1", verbose = TRUE){
  # x is a character string containing function name
    getx   <- getAnywhere(x)
    whrAny <- getx[["where"]]
    len <- length(nx <- grep(where, whrAny))
    if (len == 0)  return(message("Object <", idx, ":", x, "> not found in  <", where , "> ... skipped"))
    fun  <- getx[nx]                      # fun may have some attributes
+   if (verbose)  message ("assign_1fanno: whrAny =", whrAny, "nx = ", nx) 
    if (!is.function(fun)) return(message("Object <", idx, ":", x, "> in <", where, "> is not a function ... skipped"))
    if (!isFun(fun)) return(message("Function <", idx, ":", x, "> in <", where, "> is not of eligible class <", class(fun)[1], "> ... skipped"))
  
  # In preparation for bfanno: update finfo
-
+  
  finfo <- attr(fun, "finfo")
+   
  fbf <- finfo$bfanno
+ if (verbose) message ("fbf = ", fbf, bfanno)
  if (!is.null(fbf) && fbf == bfanno) 
       return(message("Object <", idx, ":", x, "> in <", where, "> already annotated with <", bfanno, "> ... skipped"))
  
