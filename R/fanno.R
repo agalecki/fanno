@@ -77,7 +77,7 @@ assign_fanno <- function (fnms = NULL, where = "GlobalEnv", bfanno = "bfanno_msg
         fnms <- if (whr1 == "namespace")  ls(asNamespace(ns), all.names = TRUE) else ls(as.environment(where), all.names = TRUE)
    }  
    len <- length(fnms)
-   if (len < 1)) stop ("select at least one function")  
+   if (len == 0) stop ("select at least one object")  
    for (i in seq_along(fnms)) {
      fnm <- fnms[i]
      assign_1fanno(fnm, where = where, idx = i, bfanno = bfanno)
