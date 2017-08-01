@@ -74,7 +74,7 @@ assign_fanno <- function (fnms = NULL, where = ".GlobalEnv", bfanno = "bfanno_ms
   whr1 <- stringr::word(where,1)
   whr2 <- stringr::word(where,2)
    if (is.null(fnms)){ 
-        fnms <- if (whr1 == "namespace")  ls(asNamespace(ns), all.names = TRUE) else ls(as.environment(where), all.names = TRUE)
+        fnms <- if (whr1 == "namespace")  ls(asNamespace(whr2), all.names = TRUE) else ls(as.environment(where), all.names = TRUE)
    }  
    len <- length(fnms)
    if (len == 0) stop ("select at least one object")  
@@ -82,23 +82,8 @@ assign_fanno <- function (fnms = NULL, where = ".GlobalEnv", bfanno = "bfanno_ms
      fnm <- fnms[i]
      assign_1fanno(fnm, where = where, idx = i, bfanno = bfanno)
    }
-   return(message("--- ", len, " objects in <", where, "> processed."))
+   return(message("--- ", len, " object(s) in <", where, "> processed."))
 }
-
-assign_fanno_pkg <- function (pkg, fnms = NULL, bfanno = "bfanno_msg1"){
-   if (is.null(pkg))  stop ("package name needs to be specified")
-   whr  <-  paste("package", pkg, sep = ":")
-   if (is.null(fnms)) fnms <- ls(as.environment(whr), all.names = TRUE )
-   len <- length(fnms)
-   if (len == 0) stop ("select at least one function")  
-   
-   for (i in seq_along(fnms)) {
-     fnm <- fnms[i]
-     assign_fanno(fnm, where = whr, idx = i, bfanno = bfanno)
-   }
-   return(message("--- ", len, " object(s) in package <", pkg, "> processed."))
-}
-
 
 
 
