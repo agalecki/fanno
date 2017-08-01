@@ -69,7 +69,7 @@ assign_1fanno <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_msg
   return(message("???"))
 }
 
-assign_fanno <- function (fnms = NULL, where = "GlobalEnv", bfanno = "bfanno_msg1"){
+assign_fanno <- function (fnms = NULL, where = ".GlobalEnv", bfanno = "bfanno_msg1"){
   if (is.null(where))   stop ("<where> arguent  needs to be specified.")
   whr1 <- stringr::word(where,1)
   whr2 <- stringr::word(where,2)
@@ -96,7 +96,7 @@ assign_fanno_pkg <- function (pkg, fnms = NULL, bfanno = "bfanno_msg1"){
      fnm <- fnms[i]
      assign_fanno(fnm, where = whr, idx = i, bfanno = bfanno)
    }
-   return(message("--- ", len, " objects in package <", pkg, "> processed."))
+   return(message("--- ", len, " object(s) in package <", pkg, "> processed."))
 }
 
 
