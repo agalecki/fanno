@@ -71,8 +71,8 @@ assign_1fanno <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_msg
 
 assign_fanno <- function (fnms = NULL, where = ".GlobalEnv", bfanno = "bfanno_msg1"){
   if (is.null(where))   stop ("<where> arguent  needs to be specified.")
-  whr1 <- stringr::word(where,1)
-  whr2 <- stringr::word(where,2)
+  whr1 <- stringr::word(where,1, sep =":")
+  whr2 <- stringr::word(where,2, sep = ":")
    if (is.null(fnms)){ 
         fnms <- if (whr1 == "namespace")  ls(asNamespace(whr2), all.names = TRUE) else ls(as.environment(where), all.names = TRUE)
    }  
