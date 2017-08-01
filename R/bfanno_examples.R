@@ -1,5 +1,5 @@
 bfanno_msg1 <- function(fun){
-  if (!isEligibleFun(fun)) stop("Arg fun needs to be an eligible function")
+  if (!isFun(fun)) stop("Arg fun of ineligible class",  class(fun)[1])
   bfx <- attr(fun, "original_fun")
   if (is.null(bfx))  b_f <- body(fun) else b_f <- body(bfx) 
   if (is.null(b_f) || length(b_f) == 1) return(body(fun)) 
@@ -16,7 +16,7 @@ bfanno_msg1 <- function(fun){
 
 bfanno_strip <- function(fun){
 # returns original function body 
-  if (!isEligibleFun(fun)) stop("Arg fun needs to be an eligible function")
+  if (!isFun(fun)) stop("Arg fun of ineligible class",  class(fun)[1])
   finfo <- attr(fun, "finfo")           # Attribute containing finfo list 
   bfx <- if (is.null(finfo)) body(fun) else attr(fun, "original_fun") 
   return(bfx) 
