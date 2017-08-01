@@ -1,4 +1,4 @@
-isEligibleFun <- function (fun) {
+isFun <- function (fun) {
   is.function(fun) && class(fun) %in%  c("function")
 }
 
@@ -10,7 +10,7 @@ finfo[nmsu] <- update
 return(finfo)
 }
 
-assign_fanno <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_msg1"){
+assign_1fanno <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_msg1"){
  # x is a character string containing function name
    getx   <- getAnywhere(x)
    whrAny <- getx[["where"]]
@@ -18,7 +18,7 @@ assign_fanno <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_msg1
    if (len == 0)  return(message("Object <", idx, ":", x, "> not found in  <", where , "> ... skipped"))
    fun  <- getx[nx]                      # fun may have some attributes
    if (!is.function(fun)) return(message("Object <", idx, ":", x, "> in <", where, "> is not a function ... skipped"))
-   if (!isEligibleFun(fun)) return(message("Function <", idx, ":", x, "> in <", where, "> is not of eligible class <", class(fun)[1], "> ... skipped"))
+   if (!isFun(fun)) return(message("Function <", idx, ":", x, "> in <", where, "> is not of eligible class <", class(fun)[1], "> ... skipped"))
  
  # In preparation for bfanno: update finfo
 
@@ -69,17 +69,20 @@ assign_fanno <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_msg1
   return(message("???"))
 }
 
-assign_fanno_ns <- function (ns, fnms = NULL, bfanno = "bfanno_msg1"){
-   if (is.null(ns))   stop ("namespace needs to be specified")
-   if (is.null(fnms)) fnms <- ls(asNamespace(ns), all.names = TRUE)
+assign_fanno <- function (fnms = NULL, where = "GlobalEnv", bfanno = "bfanno_msg1"){
+  if (is.null(where))   stop ("<where> arguent  needs to be specified.")
+  whr1 <- stringr::word(where,1)
+  whr2 <- stringr::word(where,2)
+   if (is.null(fnms)){ 
+        fnms <- if (whr1 == "namespace")  ls(asNamespace(ns), all.names = TRUE) else ls(as.environment(where), all.names = TRUE)
+   }  
    len <- length(fnms)
-   if (!( len > 0)) stop ("select at least one function")  
-   whr  <-  paste("namespace", ns, sep = ":")
+   if (len < 1)) stop ("select at least one function")  
    for (i in seq_along(fnms)) {
      fnm <- fnms[i]
-     assign_fanno(fnm, where = whr, idx = i, bfanno = bfanno)
+     assign_1fanno(fnm, where = where, idx = i, bfanno = bfanno)
    }
-   return(message("--- ", len, " objects in <", ns, "> processed. Use <", ns, ":::object_name> to retrieve."))
+   return(message("--- ", len, " objects in <", where, "> processed."))
 }
 
 assign_fanno_pkg <- function (pkg, fnms = NULL, bfanno = "bfanno_msg1"){
