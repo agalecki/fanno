@@ -5,7 +5,7 @@ bfanno_msg1 <- function(fun){
   if (is.null(b_f) || length(b_f) == 1) return(body(fun)) 
   if (b_f[[1]] == as.name("{") ) b_f[[1]] <- NULL
   finfo <- attr(fun, "finfo")           # Attribute containing finfo list 
-  finfo <- update_finfo (finfo, finfo) 
+  finfo <- pad_finfo (finfo) 
   msg1  <- substitute(message("-- Function [", idx, ":", flbl, "]",
                              " from [",  where, "]",
                              " annotated using [", bfanno, "]"
