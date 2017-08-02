@@ -43,7 +43,8 @@ fannotatex <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_msg1")
    if (!isFun(fun)) return(message("Function <", idx, ":", x, "> in <", where, "> is not of eligible class <", class(fun)[1], "> ... skipped"))
    finfo <- list(flbl = x, idx = idx, where = where, bfanno = bfanno) 
    attr(fun, "finfo") <- finfo
-   return(fannotate (fun))
+   ff <- fannotate (fun)
+   return(ff)
  }
 
  assign_fanno <- function (fnms = NULL, where = ".GlobalEnv", bfanno = "bfanno_msg1"){
