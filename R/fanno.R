@@ -46,7 +46,32 @@ fannotatex <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_msg1")
    return(fannotate (fun))
  }
 
+ assign_fanno <- function (fnms = NULL, where = ".GlobalEnv", bfanno = "bfanno_msg1"){
+  if (is.null(where))   stop ("<where> argument  needs to be specified.")
+  whr1 <- suppressMessages(stringr::word(where,1, sep =":"))
+  whr2 <- suppressMessages(stringr::word(where,2, sep = ":"))
+   if (is.null(fnms)){ 
+        fnms <- if (whr1 == "namespace")  ls(asNamespace(whr2), all.names = TRUE) else ls(as.environment(where), all.names = TRUE)
+   }  
+   len <- length(fnms)
+   if (len == 0) stop ("select at least one object!")  
+   for (i in seq_along(fnms)) {
+     fnm <- fnms[i]
+     ff <- fannotatex(fnm, where = where, idx = i, bfanno = bfanno) 
+
+     if (whr1 == "namespace") {
+     ns <-  whr2 
+     unlockBinding(fnm, getNamespace(ns))  
+     assign(fnm, ff, getNamespace(ns))
+     return(message("Function <", idx, ":", fnm, "> annotated with <", bfanno, ">  assigned in namespace <", ns, "> ..."))
+     }
   
+   }
+   return(message("--- ", len, " object(s) in <", where, "> processed."))
+}
+
+
+
 
 assign_1fanno_skip <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_msg1", verbose = TRUE){
  # x is a character string containing function name
@@ -113,7 +138,7 @@ assign_1fanno_skip <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfann
   return(message("???"))
 }
 
-assign_fanno <- function (fnms = NULL, where = ".GlobalEnv", bfanno = "bfanno_msg1"){
+assign_fanno_skip <- function (fnms = NULL, where = ".GlobalEnv", bfanno = "bfanno_msg1"){
   if (is.null(where))   stop ("<where> arguent  needs to be specified.")
   whr1 <- suppressMessages(stringr::word(where,1, sep =":"))
   whr2 <- suppressMessages(stringr::word(where,2, sep = ":"))
