@@ -2,13 +2,15 @@ isFun <- function (fun) {
   is.function(fun) && class(fun) %in%  c("function")
 }
 
-update_finfo <- function(finfo, update = NULL) {
-# finfo is a named list with components: flbl  
-if (is.null(update))  update <- list(flbl = "ourfname", idx = 0, where = ".GlobalEnv?", bfanno = "bfanno_?")
-nmsu <- names(update)
-finfo[nmsu] <- update
-return(finfo)
+pad_finfo <- function(finfo, padfinfo = list ( flbl = "test_flbl", where = ".GlobalEnv", idx = 0, bfanno = "bfanno_msg1")) {
+ nms <- names(finfo)
+ res <- padfinfo
+ res[nms] <- finfo
+return(res)
 }
+
+# pad_finfo(list())
+# pad_finfo(list(flbl ="new_lbl"))
 
 assign_1fanno <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_msg1", verbose = TRUE){
  # x is a character string containing function name
@@ -21,7 +23,7 @@ assign_1fanno <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_msg
    if (!is.function(fun)) return(message("Object <", idx, ":", x, "> in <", where, "> is not a function ... skipped"))
    if (!isFun(fun)) return(message("Function <", idx, ":", x, "> in <", where, "> is not of eligible class <", class(fun)[1], "> ... skipped"))
  
- # In preparation for bfanno: update finfo
+ # In preparation for bfanno: pad finfo
   
  finfo <- attr(fun, "finfo")
    
@@ -34,7 +36,7 @@ assign_1fanno <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_msg
  whr2 <- suppressMessages(stringr::word(where, 2, sep = ":"))
  if (is.na(whr2)) whr2 <- ""
  fupdt <- list(flbl = x, idx = idx, where = where, bfanno = bfanno)
- finfo <- update_finfo(finfo, fupdt)
+ finfo <- pad_finfo(finfo)
  # store original function both in fun and in original_fun attribute
  
    if (is.null(attr(fun, "original_fun"))) {
