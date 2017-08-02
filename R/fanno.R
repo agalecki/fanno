@@ -64,7 +64,7 @@ fannotatex <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_msg1")
      ns <-  whr2 
      unlockBinding(fnm, getNamespace(ns))  
      assign(fnm, ff, getNamespace(ns))
-     return(message("Function <", idx, ":", fnm, "> annotated with <", bfanno, ">  assigned in namespace <", ns, "> ..."))
+     return(message("Function <", i, ":", fnm, "> annotated with <", bfanno, ">  assigned in namespace <", ns, "> ..."))
      }
   
    }
