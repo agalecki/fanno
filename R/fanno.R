@@ -12,7 +12,43 @@ return(res)
 # pad_finfo(list())
 # pad_finfo(list(flbl ="new_lbl"))
 
-assign_1fanno <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_msg1", verbose = TRUE){
+fannotate <- function(fun){
+# fun is a function ( possibly with attributes:   )
+ origin_fun <- attr(fun, "original_fun")
+ finfo      <- attr(fun, "finfo")
+ finfo      <- pad_finfo(finfo) 
+ bfanno     <- finfo$bfanno
+
+ ff <- fun
+ attributes(fun)  <- NULL
+ ofun <- if (is.null(origin_fun)) fun else origin_fun 
+ attributes(ofun)  <- NULL
+ if (bfanno == "bfanno_strip" )  return(ofun)
+ bfanno_body  <- do.call(bfanno, list(fun = ff)) 
+ attributes(ff) <- NULL
+ body(ff) <-  bfanno_body
+ attr(ff, "original_fun") <- ofun 
+ attr(ff, "finfo")   <- finfo 
+ return(ff)
+}
+
+fannotatex <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_msg1"){
+ # x is a character string containing function name
+   getx   <- getAnywhere(x)
+   whrAny <- getx[["where"]]
+   len <- length(nx <- grep(where, whrAny))
+   if (len == 0)  return(message("Object <", idx, ":", x, "> not found in  <", where , "> ... skipped"))
+   fun  <- getx[nx]                      # fun may have some attributes 
+   if (!is.function(fun)) return(message("Object <", idx, ":", x, "> in <", where, "> is not a function ... skipped"))
+   if (!isFun(fun)) return(message("Function <", idx, ":", x, "> in <", where, "> is not of eligible class <", class(fun)[1], "> ... skipped"))
+   finfo <- list(flbl = x, idx = idx, where = where, bfanno = bfanno) 
+   attr(fun, "finfo") <- finfo
+   return(fannotate (fun))
+ }
+
+  
+
+assign_1fanno_skip <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_msg1", verbose = TRUE){
  # x is a character string containing function name
    getx   <- getAnywhere(x)
    whrAny <- getx[["where"]]
