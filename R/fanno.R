@@ -59,8 +59,8 @@ fannotatex <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_msg1")
    for (i in seq_along(fnms)) {
      fnm <- fnms[i]
      ff <- fannotatex(fnm, where = where, idx = i, bfanno = bfanno) 
-
-     if (whr1 == "namespace") {
+    
+     if (whr1 == "namespace" && isFun(ff)) {
      ns <-  whr2 
      unlockBinding(fnm, getNamespace(ns))  
      assign(fnm, ff, getNamespace(ns))
