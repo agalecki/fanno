@@ -4,9 +4,9 @@ isFun <- function (fun) {
 
 pad_finfo <- function(finfo, padfinfo = list ( flbl = "test_flbl", where = ".GlobalEnv", idx = 0, bfanno = "bfanno_default",
                              preamble = function(finfo){
-                                expr <- message("-- Function <", finfo$idx, ":", finfo$flbl, ">",
-                                               " from [",  finfo$where, "]",
-                                               " annotated using [", finfo$bfanno, "]")
+                                expr <- substitute(message("-- Function <", idx, ":", flbl, ">",
+                                               " from [",  where, "]",
+                                               " annotated using [", bfanno, "]"), finfo)
                                 return(as.expression(expr))
 })  # padinfo list ends here
 ) {
