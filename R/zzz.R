@@ -10,7 +10,7 @@
                                          " from [",  where, "]",
                                          " annotated using [", bfanno, "]"), finfo)
                            return(as.expression(expr))
-                     })
+                     }))
   toset <- !(names(op.fanno) %in% names(op))
   if(any(toset)) options(op.fanno[toset])
   invisible()
