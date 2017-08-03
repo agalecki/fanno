@@ -6,7 +6,7 @@ bfanno_default <- function(fun){
   if (b_f[[1]] == as.name("{") ) b_f[[1]] <- NULL
   finfo <- attr(fun, "finfo")           # Attribute containing finfo list 
   finfo <- pad_finfo (finfo) 
-  preamble <- finfo$preamble(finfo)
+  preamble <- if (is.null(finfo$preamble(finfo))) NULL else finfo$preamble(finfo) 
   bf <- as.call(c(as.name("{"), preamble, b_f))
   return(bf) 
 }
