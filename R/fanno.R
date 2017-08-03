@@ -39,7 +39,7 @@ fannotate <- function(fun){
  return(ff)
 }
 
-fannotatex <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_msg1"){
+fannotatex <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_default"){
  # x is a character string containing function name
    getx   <- getAnywhere(x)
    whrAny <- getx[["where"]]
@@ -54,7 +54,7 @@ fannotatex <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_msg1")
    return(ff)
  }
 
- assign_fanno <- function (fnms = NULL, where = ".GlobalEnv", bfanno = "bfanno_msg1", all.names = FALSE){
+ assign_fanno <- function (fnms = NULL, where = ".GlobalEnv", bfanno = "bfanno_default", all.names = FALSE){
   if (is.null(where))   stop ("<where> argument  needs to be specified.")
   whr1 <- suppressMessages(stringr::word(where,1, sep =":"))
   whr2 <- suppressMessages(stringr::word(where,2, sep = ":"))
