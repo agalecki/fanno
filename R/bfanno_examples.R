@@ -1,3 +1,19 @@
+bfanno_default <- function(fun){
+  if (!isFun(fun)) stop("Arg fun of ineligible class",  class(fun)[1])
+  bfx <- attr(fun, "original_fun")
+  if (is.null(bfx))  b_f <- body(fun) else b_f <- body(bfx) 
+  if (is.null(b_f) || length(b_f) == 1) return(body(fun)) 
+  if (b_f[[1]] == as.name("{") ) b_f[[1]] <- NULL
+  finfo <- attr(fun, "finfo")           # Attribute containing finfo list 
+  finfo <- pad_finfo (finfo) 
+  preamble <- finfo$preamble(finfo)
+  bf <- as.call(c(as.name("{"), preamble, b_f))
+  return(bf) 
+}
+
+
+
+
 bfanno_msg1 <- function(fun){
   if (!isFun(fun)) stop("Arg fun of ineligible class",  class(fun)[1])
   bfx <- attr(fun, "original_fun")
