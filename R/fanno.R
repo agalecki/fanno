@@ -3,7 +3,7 @@ isFun <- function (fun) {
 }
 
 
-pad_finfo <- function(finfo, padfinfo = options$fanno.finfo) { 
+pad_finfo <- function(finfo, padfinfo = options()$fanno.finfo) { 
  nms <- names(finfo)
  res <- padfinfo
  res[nms] <- finfo
