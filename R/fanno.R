@@ -2,7 +2,14 @@ isFun <- function (fun) {
   is.function(fun) && class(fun) %in%  c("function")
 }
 
-pad_finfo <- function(finfo, padfinfo = list ( flbl = "test_flbl", where = ".GlobalEnv", idx = 0, bfanno = "bfanno_msg1")) {
+pad_finfo <- function(finfo, padfinfo = list ( flbl = "test_flbl", where = ".GlobalEnv", idx = 0, bfanno = "bfanno_default",
+                             preamble = function(finfo){
+                                expr <- message("-- Function <", finfo$idx, ":", flbl, ">",
+                                               " from [",  finfo$where, "]",
+                                               " annotated using [", finfo$bfanno, "]")
+                                return(as.expression(e))
+})  # padinfo list ends here
+) {
  nms <- names(finfo)
  res <- padfinfo
  res[nms] <- finfo
