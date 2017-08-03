@@ -68,13 +68,13 @@ fannotatex <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_msg1")
      }
      
   if (whr1 == "package" && isFun(ff)) {
-     unlockBinding(x, as.environment(where))  
-     assign(x, fun, as.environment(where))
+     unlockBinding(fnm, as.environment(where))  
+     assign(fnm, ff, as.environment(where))
      message("Function <", i, ":", fnm, "> annotated with <", bfanno, ">  assigned in package <", whr2, "> ...")
      }
      
-  if (where == ".GlobalEnv" && isFun(ff)) { 
-     assign(x, fun, as.environment(where))
+  if (where %in% (".GlobalEnv") && isFun(ff)) { 
+     assign(fnm, fun, as.environment(where))
      message("Function <", i, ":", fnm, "> annotated with <", bfanno, ">  assigned in <", where, "> ...")
      } 
    }  # for i
