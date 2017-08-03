@@ -2,14 +2,18 @@ isFun <- function (fun) {
   is.function(fun) && class(fun) %in%  c("function")
 }
 
-pad_finfo <- function(finfo, padfinfo = list ( flbl = "test_flbl", where = ".GlobalEnv", idx = 0, bfanno = "bfanno_default",
-                             preamble = function(finfo){
-                                expr <- substitute(message("-- Function <", idx, ":", flbl, ">",
-                                               " from [",  where, "]",
-                                               " annotated using [", bfanno, "]"), finfo)
-                                return(as.expression(expr))
-})  # padinfo list ends here
-) {
+preamble_template <-  function(finfo){
+   expr <- substitute(message("-- Function <", idx, ":", flbl, ">",
+                      " from [",  where, "]",
+                      " annotated using [", bfanno, "]"), finfo)
+                     return(as.expression(expr))
+}
+
+
+.finfo_pad_template <<- list ( flbl = "test_flbl", where = ".GlobalEnv", idx = 0, bfanno = "bfanno_default",
+                             preamble = preamble_template) 
+
+pad_finfo <- function(finfo, padfinfo = .finfo_pad_template) { 
  nms <- names(finfo)
  res <- padfinfo
  res[nms] <- finfo
