@@ -47,12 +47,12 @@ fannotatex <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_msg1")
    return(ff)
  }
 
- assign_fanno <- function (fnms = NULL, where = ".GlobalEnv", bfanno = "bfanno_msg1"){
+ assign_fanno <- function (fnms = NULL, where = ".GlobalEnv", bfanno = "bfanno_msg1", all.names = FALSE){
   if (is.null(where))   stop ("<where> argument  needs to be specified.")
   whr1 <- suppressMessages(stringr::word(where,1, sep =":"))
   whr2 <- suppressMessages(stringr::word(where,2, sep = ":"))
    if (is.null(fnms)){ 
-        fnms <- if (whr1 == "namespace")  ls(asNamespace(whr2), all.names = TRUE) else ls(as.environment(where), all.names = TRUE)
+        fnms <- if (whr1 == "namespace")  ls(asNamespace(whr2), all.names = all.names) else ls(as.environment(where), all.names = all.names)
    }  
    len <- length(fnms)
    if (len == 0) stop ("select at least one object!")  
