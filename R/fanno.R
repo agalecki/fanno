@@ -30,6 +30,7 @@ fannotate <- function(fun){
  body(ff) <-  bfanno_body
  attr(ff, "original_fun") <- ofun 
  attr(ff, "finfo")   <- finfo 
+ attr(ff, "preamble") <- NULL   # Not needed 
  return(ff)
 }
 
