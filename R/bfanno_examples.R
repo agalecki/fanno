@@ -10,6 +10,7 @@ epreamble_default <-  function(finfo){
 
 ebody_default <- function(b_f, finfo){
 # Note b_f is not a call
+ if (mode(b_f) == "call") return (as.expression(b_f)) 
  expr <- expression()
  for (i in seq_along(b_f)){
   bi <- b_f[i]
