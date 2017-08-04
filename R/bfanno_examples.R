@@ -9,7 +9,7 @@ epreamble_default <-  function(finfo){
           }
 
 ebody_default <- function(b_f, finfo){
- if (b_f[[1]] == as.name("{") ) b_f[[1]] <- NULL
+# Note b_f is not a call
  expr <- expression()
  for (i in seq_along(b_f)){
   bi <- b_f[i]
@@ -25,7 +25,7 @@ bfanno_default <- function(fun){
   bfx <- attr(fun, "original_fun")
   b_f <- if (is.null(bfx))  body(fun) else  body(bfx) 
   if (is.null(b_f) || length(b_f) == 1) return(body(fun)) 
-  # if (b_f[[1]] == as.name("{") ) b_f[[1]] <- NULL
+  if (b_f[[1]] == as.name("{") ) b_f[[1]] <- NULL
   finfo <- attr(fun, "finfo")             # Attribute containing finfo list 
   finfo <- pad_finfo (finfo) 
   epreamble <- epreamble_default(finfo)     #
