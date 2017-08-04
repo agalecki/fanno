@@ -28,9 +28,9 @@ bfanno_default <- function(fun){
   # if (b_f[[1]] == as.name("{") ) b_f[[1]] <- NULL
   finfo <- attr(fun, "finfo")             # Attribute containing finfo list 
   finfo <- pad_finfo (finfo) 
-  preamble <- epreamble_default(finfo)     #
-  bodyf    <- ebody_default(b_f, finfo)         
-  bf <- as.call(c(as.name("{"), preamble, b_f))
+  epreamble <- epreamble_default(finfo)     #
+  eb_f    <- ebody_default(b_f, finfo)         
+  bf      <- as.call(c(as.name("{"), epreamble, eb_f))
   return(bf) 
 }
 
