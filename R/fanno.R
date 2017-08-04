@@ -48,8 +48,9 @@ fannotatex <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_defaul
    return(ff)
  }
 
- assign_fanno <- function (fnms = NULL, where = ".GlobalEnv", bfanno = "bfanno_default", all.names = FALSE){
-  if (is.null(where))   stop ("<where> argument  needs to be specified.")
+ fanno <- function (fnms = NULL, where = ".GlobalEnv", bfanno = "bfanno_default", all.names = FALSE){
+   # assigns annotated function in namespace:*, package:* specified in where argument ( by default in .GlobalEnv) 
+   if (is.null(where))   stop ("<where> argument  needs to be specified.")
   whr1 <- suppressMessages(stringr::word(where,1, sep =":"))
   whr2 <- suppressMessages(stringr::word(where,2, sep = ":"))
    if (is.null(fnms)){ 
