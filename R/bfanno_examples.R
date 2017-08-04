@@ -1,6 +1,6 @@
-preamble_default <-  function(finfo){
+epreamble_default <-  function(finfo){
            expr <- expression()
-           msg1 <- substitute(message("-- Function <", idx, ":", flbl, ">",
+           msg1 <- substitute(message("- Function <", idx, ":", flbl, ">",
                               " from [",  where, "]",
                               " annotated using [", bfanno, "]"), finfo)
            traceR <- NULL                   
@@ -8,17 +8,28 @@ preamble_default <-  function(finfo){
            return(expr)
           }
 
-
+ebody_default <- function(b_f, finfo){
+ if (b_f[[1]] == as.name("{") ) b_f[[1]] <- NULL
+ expr <- expression()
+ for (i in seq_along(b_f)){
+  bi <- b_f[i]
+  bic <- as.character(bi)
+  ei <- substitute(message("   - l.", i, ":", bic), list(i = i, bic = bic)) 
+  expr <- c(expr, ei, bi)
+ }
+ return(expr)
+}
 
 bfanno_default <- function(fun){
   if (!isFun(fun)) stop("Arg fun of ineligible class",  class(fun)[1])
   bfx <- attr(fun, "original_fun")
-  if (is.null(bfx))  b_f <- body(fun) else b_f <- body(bfx) 
+  b_f <- if (is.null(bfx))  body(fun) else  body(bfx) 
   if (is.null(b_f) || length(b_f) == 1) return(body(fun)) 
-  if (b_f[[1]] == as.name("{") ) b_f[[1]] <- NULL
+  # if (b_f[[1]] == as.name("{") ) b_f[[1]] <- NULL
   finfo <- attr(fun, "finfo")             # Attribute containing finfo list 
   finfo <- pad_finfo (finfo) 
-  preamble <- preamble_default(finfo)     # 
+  preamble <- epreamble_default(finfo)     #
+  bodyf    <- ebody_default(b_f, finfo)         
   bf <- as.call(c(as.name("{"), preamble, b_f))
   return(bf) 
 }
@@ -26,26 +37,3 @@ bfanno_default <- function(fun){
 
 
 
-bfanno_msg1 <- function(fun){
-  if (!isFun(fun)) stop("Arg fun of ineligible class",  class(fun)[1])
-  bfx <- attr(fun, "original_fun")
-  if (is.null(bfx))  b_f <- body(fun) else b_f <- body(bfx) 
-  if (is.null(b_f) || length(b_f) == 1) return(body(fun)) 
-  if (b_f[[1]] == as.name("{") ) b_f[[1]] <- NULL
-  finfo <- attr(fun, "finfo")           # Attribute containing finfo list 
-  finfo <- pad_finfo (finfo) 
-  msg1  <- substitute(message("-- Function [", idx, ":", flbl, "]",
-                             " from [",  where, "]",
-                             " annotated using [", bfanno, "]"
-                            ), finfo)
-  bf <- as.call(c(as.name("{"), msg1, b_f))
-  return(bf) 
-}
-
-bfanno_strip <- function(fun){
-# returns original function body (Note: This function is not needed)
-  if (!isFun(fun)) stop("Arg fun of ineligible class",  class(fun)[1])
-  finfo <- attr(fun, "finfo")           # Attribute containing finfo list 
-  bfx <- if (is.null(finfo)) body(fun) else attr(fun, "original_fun") 
-  return(bfx) 
-}
