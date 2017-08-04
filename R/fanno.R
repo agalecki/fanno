@@ -29,7 +29,6 @@ fannotate <- function(fun){
  attributes(ff) <- NULL
  body(ff) <-  bfanno_body
  attr(ff, "original_fun") <- ofun
- finfo$preamble <- NULL
  attr(ff, "finfo")   <- finfo 
  return(ff)
 }
