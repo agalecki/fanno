@@ -11,11 +11,12 @@ epreamble_default <-  function(finfo){
 ebody_default <- function(b_f, finfo){
 # Note b_f is not a call
  if (mode(b_f) == "call") return (as.expression(b_f)) 
+ flbl <- paste(finfo$idx, finfo$flbl, sep=":")
  expr <- expression()
  for (i in seq_along(b_f)){
   bi <- b_f[i]
   bic <- as.character(bi)
-  ei <- substitute(message("   - l.", i, ":", bic), list(i = i, bic = bic)) 
+  ei <- substitute(message("   -  <", flbl, "> ln.", i, ":", bic), list(flbl = flbl, i = i, bic = bic)) 
   expr <- c(expr, ei, bi)
  }
  return(expr)
