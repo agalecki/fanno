@@ -59,7 +59,7 @@ bfanno_default <- function(fun){
    for (i in seq_along(ebf)){
      bi <- ebf[i]
      bic <- as.character(bi)
-     ei <- substitute(message("   -  <", flblx, "> ln.", i, ":", bic), list(flbl = flbx, i = i, bic = bic)) 
+     ei <- substitute(message("   -  <", flbl, "> ln.", i, ":", bic), list(flbl = flblx, i = i, bic = bic)) 
      bexpr <- c(bexpr, ei, bi)
  }
         
