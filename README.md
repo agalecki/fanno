@@ -26,11 +26,11 @@ bfanno_default(fx)
 ```
 ```
 ls(asNamespace("stringr"))
-fanno(where = "namesapce:stringr")
+fanno(where = "namespace:stringr")
 
 library(stringr)
 ls(as.environment("package:stringr"))
-
+fanno(where = "package:stringr")
 ```
 
 
