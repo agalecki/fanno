@@ -1,12 +1,36 @@
 # fanno
 For internal use
 
+## Installation
 ```
 rm(list = ls())
 library("devtools")
 install_github("agalecki/fanno")
 library (fanno)
 ````
+## Testing functions
+
+Create fx function in .GlobalEnv for testing
+
+```
+#(fx <- stringr:::type)
+#(fx <- stringr:::type.boundary)
+(fx <- stringr:::word)
+```
+
+```
+environment(fx)     
+environment(fx) <- .GlobalEnv
+bfanno_init(fx)
+bfanno_default(fx)
+```
+```
+ls(asNamespace("stringr"))
+fanno(where = "stringr")
+
+
+```
+
 
 ````
  fx <- function(x) x^2
