@@ -28,9 +28,9 @@ bfanno_init <- function(fun){
   # Pre processing (typically no changes needed)
   bfx <- attr(fun, "original_fun")
   b_f <- if (is.null(bfx))  body(fun) else  body(bfx) 
-  if (is.null(b_f) || length(b_f) == 1) return(body(fun)) 
+  # if (is.null(b_f) || length(b_f) == 1) return(body(fun)) 
   if (b_f[[1]] == as.name("{") ) b_f[[1]] <- NULL
-  if (is.call(b_f)) b_f <- as.expression(b_f)           
+  b_f <- as.expression(b_f)           
   finfo <- attr(fun, "finfo")               # Attribute containing finfo list 
   finfo <- pad_finfo (finfo)                # pad finfo
   res <- list(finfo = finfo, ebf = b_f)       
