@@ -25,10 +25,15 @@ bfanno_default <- function(fun){
    msg1 <- substitute(message("- Function <", idx, ":", flbl, ">",
                               " from [",  where, "]",
                               " annotated using [", bfanno, "]"), finfo)
-   traceR <- NULL                   
-   prex <- c(prex, msg1, traceR) 
+
+   tr1  <- substitute( .functionLabel <- flbl, finfo)
+   tr2  <- expression (.traceR <- attr(options()$traceR, "fun"))
+   tr3  <- expression (.traceR <- if (is.null(.traceR)) function(...) {} else .traceR)
+   tr4  <- expression (.traceR(0.00, "`{`", first = TRUE, auto = TRUE))
+   trx  <- c(tr1,tr2, tr3, tr4)                  
+   prex <- c(prex, msg1, trx) 
            
-   # expand body expression using info in ebf and finfo
+   # expand body expression using ebf and finfo
    
    flblx <- paste(finfo$idx, finfo$flbl, sep=":")
    bexpr <- expression()
@@ -37,7 +42,10 @@ bfanno_default <- function(fun){
      bi <- ebf[i]
      bic <- as.character(bi)
      ei <- substitute(message("   -  <", flbl, "> ln.", i, ":", bic), list(flbl = flblx, i = i, bic = bic)) 
-     bexpr <- c(bexpr, ei, bi)
+     ix <- finfo$idx + i/100
+     ti <- substitute(.traceR(ix, bic, auto =TRUE), list(ix =ix, bic=bic))  
+     if (i == length(ebf)) ti <- NULL 
+     bexpr <- c(bexpr, ei, bi, ti)
  }
         
   bf      <- as.call(c(as.name("{"), prex, bexpr))
