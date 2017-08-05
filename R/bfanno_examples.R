@@ -29,15 +29,12 @@ bfanno_default <- function(fun){
    tr1  <- substitute( .functionLabel <- flbl, finfo)
    tr2  <- expression (.traceR <- attr(options()$traceR, "fun"))
    tr3  <- expression (.traceR <- if (is.null(.traceR)) function(...) {} else .traceR)
-   tr4  <- expression (.traceR(0.00, "`{`", first = TRUE, auto = TRUE))
+   tr4  <- substitute(.traceR(paste(idx, 00, sep = '.'), "`{`", first = TRUE, auto = TRUE), finfo)
    trx  <- c(tr1,tr2, tr3, tr4)                  
    prex <- c(prex, msg1, trx) 
-           
-   # expand body expression using ebf and finfo
-   
+  # expand body expression using ebf and finfo  
    flblx <- paste(finfo$idx, finfo$flbl, sep=":")
    bexpr <- expression()
- 
    for (i in seq_along(ebf)){
      bi <- ebf[i]
      bic <- as.character(bi)
@@ -46,8 +43,7 @@ bfanno_default <- function(fun){
      ti <- substitute(.traceR(ix, bic, auto =TRUE), list(ix =ix, bic=bic))  
      if (i == length(ebf)) ti <- NULL 
      bexpr <- c(bexpr, ei, bi, ti)
- }
-        
+ }        
   bf      <- as.call(c(as.name("{"), prex, bexpr))
   return(bf) 
 }
