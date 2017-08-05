@@ -29,7 +29,7 @@ bfanno_default <- function(fun){
    tr1  <- substitute( .functionLabel <- flbl, finfo)
    tr2  <- expression (.traceR <- attr(options()$traceR, "fun"))
    tr3  <- expression (.traceR <- if (is.null(.traceR)) function(...) {} else .traceR)
-   tx   <- paste(idx, "00", sep = '.')  
+   tx   <- paste(finfo$idx, "00", sep = '.')  
    tr4  <- substitute(.traceR(tx , "`{`", first = TRUE, auto = TRUE), list(tx = tx))
    trx  <- c(tr1,tr2, tr3, tr4)                  
    prex <- c(prex, msg1, trx) 
