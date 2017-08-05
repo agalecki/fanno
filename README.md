@@ -23,6 +23,8 @@ environment(fx)
 environment(fx) <- .GlobalEnv
 bfanno_init(fx)
 bfanno_default(fx)
+fannotate(fx)
+fannotatex("fx")
 ```
 ```
 ls(asNamespace("stringr"))
