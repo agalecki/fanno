@@ -76,7 +76,7 @@ fannotatex <- function(x, idx = 0, where = ".GlobalEnv", bfanno = "bfanno_defaul
      }
      
   if (where %in% (".GlobalEnv") && isFun(ff)) { 
-     assign(fnm, fun, as.environment(where))
+     assign(fnm, ff, as.environment(where))
      message("Function <", i, ":", fnm, "> annotated with <", bfanno, ">  assigned in <", where, "> ...")
      } 
    }  # for i
