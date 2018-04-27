@@ -12,7 +12,7 @@ install_github("agalecki/fanno")
 options("fanno.finfo")   # NULL at the beginning of R session
 getOpt
 library (fanno)
-options()$fanno.finfo    # List: $finfo($flbl = "test_flbl", $where = "GlobalEnv", $idx = 0 , $bfanno = "bfanno_default") 
+options()$fanno.finfo    # c(flbl = "test_flbl", where = "GlobalEnv", $bfanno = "bfanno_default") 
 detach(package:fanno)
 ````
 ## Functions for testing
