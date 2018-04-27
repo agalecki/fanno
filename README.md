@@ -10,18 +10,19 @@ library (fanno)
 ````
 ## Testing functions
 
-Create fx function in .GlobalEnv for testing
+Create function fx .GlobalEnv for testing
 
 ```
 #(fx <- stringr:::type)
 #(fx <- stringr:::type.boundary)
-(fx <- stringr:::word)
+(fx <- stringr:::word)             
 ```
 
 ```
-environment(fx)     
+environment(fx)                 # environment: namespace:stringr>
 environment(fx) <- .GlobalEnv
-bfanno_init(fx)
+str(fx)                         # function (string, start = 1L, end = start, sep = fixed(" ")) 
+bfanno_init(fx)                 # Creates a list: $finfo($flbl, $where, $idx, $bfanno), $ebf (expression)  
 bfanno_default(fx)
 fannotate(fx)
 fannotatex("fx")
