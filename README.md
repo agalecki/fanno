@@ -6,24 +6,34 @@ For internal use
 rm(list = ls())
 library("devtools")
 install_github("agalecki/fanno")
+```
+## Attach/detach library 
+```
+options("fanno.finfo")   # NULL at the beginning of R session
+getOpt
 library (fanno)
+options()$fanno.finfo    # List: $finfo($flbl = "test_flbl", $where = "GlobalEnv", $idx = 0 , $bfanno = "bfanno_default") 
+detach(package:fanno)
 ````
-## Testing functions
+## Functions for testing
 
-Create function fx .GlobalEnv for testing
-
-```
-#(fx <- stringr:::type)
-#(fx <- stringr:::type.boundary)
-(fx <- stringr:::word)             
-```
+Create function fx in .GlobalEnv for testing
 
 ```
-environment(fx)                 # environment: namespace:stringr>
+# (fx <- stringr:::type)
+# (fx <- stringr:::type.boundary)
+# (fx <- stringr:::word)              # environment: namespace:stringr>
+fx <- function(x) x^2
+environment(fx)                
 environment(fx) <- .GlobalEnv
-str(fx)                         # function (string, start = 1L, end = start, sep = fixed(" ")) 
-bfanno_init(fx)                 # Creates a list: $finfo($flbl, $where, $idx, $bfanno), $ebf (expression)  
-bfanno_default(fx)
+str(fx)                               # function(`name`, `args`)
+formals(fx)                           # list with formal arguments and values
+formalArgs(fx)                        # names of formal arguments
+```
+
+```
+bfanno_init(fx)                       # creates a ist with two elements: options()$fanno and $ebf (expression)  
+bfanno_default(fx)                    
 fannotate(fx)
 fannotatex("fx")
 ```
