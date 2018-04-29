@@ -10,7 +10,6 @@ install_github("agalecki/fanno")
 ## Attach/detach library 
 ```
 options("fanno.finfo")   # NULL at the beginning of R session
-getOpt
 library (fanno)
 options()$fanno.finfo    # c(flbl = "test_flbl", where = "GlobalEnv", $bfanno = "bfanno_default") 
 detach(package:fanno)
@@ -34,7 +33,7 @@ formalArgs(fx)                        # names of formal arguments
 ```
 bfanno_init(fx)                       # creates a ist with two elements: options()$fanno and $ebf (expression)  
 bfanno_default(fx)                    
-fannotate(fx)
+fannotate(fx)           # generates annotated function with attributes
 fannotatex("fx")
 ```
 ```
