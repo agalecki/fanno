@@ -14,6 +14,16 @@ library (fanno)
 options()$fanno.finfo    # c(flbl = "test_flbl", where = "GlobalEnv", $bfanno = "bfanno_default") 
 detach(package:fanno)
 ````
+## Testing funinfoCreate function
+```
+tt1 <- fanno:::funinfoCreate("fx")
+tt2 <- fanno:::funinfoCreate("ttx")
+
+tt3 <- fanno:::funinfoCreate("word", where = "namespace:stringr")
+tt4 <- fanno:::funinfoCreate("word", where = "package:stringr")
+zzz <- fanno:::funinfoCreate("zword", where = "package:stringr")
+```
+
 ## Functions for testing
 
 Create function fx in .GlobalEnv for testing
