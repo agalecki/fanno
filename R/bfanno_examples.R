@@ -1,3 +1,15 @@
+ebf_simple <- function(fnm, where = ".GlobalEnv") {
+ funinfo  <-  funinfoCreate(fnm, where = where)
+ ebf  <- funinfo$ebf
+ prex <- expression()
+ msg1 <- expression(message("---Hello---"))
+ msg2 <- substitute(message("Function", fnm, " executed"), list(fnm = fnm)) 
+ prex <- c(prex,msg1, msg2, ebf)
+ return (prex)
+}
+
+
+
 bfanno_init <- function(fun){
    if (!isFun(fun)) stop("Arg fun of ineligible class",  class(fun)[1])
   
