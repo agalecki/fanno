@@ -14,24 +14,12 @@ library (fanno)
 options()$fanno.finfo    # c(flbl = "test_flbl", where = "GlobalEnv", $bfanno = "bfanno_default") 
 detach(package:fanno)
 ````
-## Testing funinfoCreate function
-```
-tt1 <- fanno:::funinfoCreate("fx")
-tt2 <- fanno:::funinfoCreate("ttx")
 
-tt3 <- fanno:::funinfoCreate("word", where = "namespace:stringr")
-tt4 <- fanno:::funinfoCreate("word", where = "package:stringr")
-zzz <- fanno:::funinfoCreate("zword", where = "package:stringr")
-```
+## Select Function for testing
 
-## Functions for testing
-
-Create function fx in .GlobalEnv for testing
+* Create function fx in .GlobalEnv for testing
 
 ```
-# (fx <- stringr:::type)
-# (fx <- stringr:::type.boundary)
-# (fx <- stringr:::word)              # environment: namespace:stringr>
 fx <- function(x) x^2
 environment(fx)                
 environment(fx) <- .GlobalEnv
@@ -40,8 +28,22 @@ formals(fx)                           # list with formal arguments and values
 formalArgs(fx)                        # names of formal arguments
 ```
 
+
+
+
+## Test funinfoCreate function
 ```
-bfanno_init(fx)                       # creates a ist with two elements: options()$fanno and $ebf (expression)  
+finfo1 <- fanno:::funinfoCreate("fx")
+finfo2 <- fanno:::funinfoCreate("ttx")
+
+library(stringr)
+finfo3 <- fanno:::funinfoCreate("word", where = "namespace:stringr")
+finfo4 <- fanno:::funinfoCreate("word", where = "package:stringr")
+zzz <- fanno:::funinfoCreate("zword", where = "package:stringr")
+```
+
+```
+bfanno_init(fx)         # creates a ist with two elements: options()$fanno and $ebf (expression)  
 bfanno_default(fx)                    
 fannotate(fx)           # generates annotated function with attributes
 fannotatex("fx")
