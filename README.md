@@ -45,6 +45,14 @@ finfo4 <- funinfoCreate("word", where = "package:stringr")
 zzz    <- funinfoCreate("zword", where = "package:stringr")
 ```
 
+fanno("fx")
+fanno("word", where = "namespace:stringr")
+fanno("word", where = "namespace:stringr", ebfanno = "ebfanno_traceR")
+
+
+
+
+# Older version
 ```
 bfanno_init(fx)         # creates a ist with two elements: options()$fanno and $ebf (expression)  
 bfanno_default(fx)                    
@@ -53,7 +61,7 @@ fannotatex("fx")
 ```
 ```
 ls(asNamespace("stringr"))
-fanno(where = "namespace:stringr")
+fanno_bftest(where = "namespace:stringr")
 
 library(stringr)
 ls(as.environment("package:stringr"))
