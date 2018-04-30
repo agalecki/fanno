@@ -31,15 +31,18 @@ formalArgs(fx)                        # names of formal arguments
 
 
 
-## Test funinfoCreate function
+## Test `funinfoCreate` function
+
+
 ```
-finfo1 <- fanno:::funinfoCreate("fx")
-finfo2 <- fanno:::funinfoCreate("ttx")
+library(fanno)
+finfo1 <- funinfoCreate("fx")
+finfo2 <- funinfoCreate("ttx")
 
 library(stringr)
-finfo3 <- fanno:::funinfoCreate("word", where = "namespace:stringr")
-finfo4 <- fanno:::funinfoCreate("word", where = "package:stringr")
-zzz <- fanno:::funinfoCreate("zword", where = "package:stringr")
+finfo3 <- funinfoCreate("word", where = "namespace:stringr")
+finfo4 <- funinfoCreate("word", where = "package:stringr")
+zzz    <- funinfoCreate("zword", where = "package:stringr")
 ```
 
 ```
