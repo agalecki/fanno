@@ -2,7 +2,7 @@ ebfanno_simple <- function(fnm, where = ".GlobalEnv") {
  ebf  <-  funinfoCreate(fnm, where = where)$ebf
  ebfanno <- expression()
  msg1 <- expression(message("Created on", Sys.time()))
- msg2 <- substitute(message("Function", fnm, " executed"), list(fnm = fnm)) 
+ msg2 <- substitute(message("Function ", fnm, " in ", where ," executed."), list(fnm = fnm, where = where)) 
  ebfanno <- c(ebfanno, msg1, msg2, ebf)
  return (ebfanno)
 }
