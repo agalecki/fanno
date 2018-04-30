@@ -2,4 +2,3 @@
 exportPattern("^[^\\.]")
 import(SOAR)
 export(traceR.on, traceR.off)
-export(funinfoCreate)
