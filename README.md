@@ -45,10 +45,11 @@ finfo4 <- funinfoCreate("word", where = "package:stringr")
 zzz    <- funinfoCreate("zword", where = "package:stringr")
 ```
 
+```
 fanno("fx")
 fanno("word", where = "namespace:stringr")
 fanno("word", where = "namespace:stringr", ebfanno = "ebfanno_traceR")
-
+```
 
 
 
