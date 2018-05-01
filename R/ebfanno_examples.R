@@ -1,5 +1,5 @@
-ebfanno_simple <- function(fnm, where = ".GlobalEnv") {
- ebf  <-  funinfoCreate(fnm, where = where)$ebf
+ebfanno_simple <- function(fnm, where = ".GlobalEnv", aux = list()) {
+ ebf  <-  funinfoCreate(fnm, where = where)$orig_ebf
  ebfanno <- expression()
  msg1 <- expression(message("Created on", Sys.time()))
  msg2 <- substitute(message("Function ", fnm, " in ", where ," executed."), list(fnm = fnm, where = where)) 
@@ -7,9 +7,9 @@ ebfanno_simple <- function(fnm, where = ".GlobalEnv") {
  return (ebfanno)
 }
 
-ebfanno_traceR <- function(fnm, where = ".GlobalEnv", idx = 0) {
- ebf  <-  funinfoCreate(fnm, where = where)$ebf
-
+ebfanno_traceR <- function(fnm, where = ".GlobalEnv", aux = list(idx = 0)) {
+ ebf  <-  funinfoCreate(fnm, where = where)$orig_ebf
+ idx  <- aux[["idx"]]
  # Prepare preamble expression 
    e <- expression()
    msg1 <- message("- Function <", idx, ":", fnm, ">",
