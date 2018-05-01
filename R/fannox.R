@@ -1,14 +1,18 @@
 fanno <- function(fnm, where = ".GlobalEnv", aux = list(), ebfanno= "ebfanno_simple"){
- # returns annotated function using ebfanno function
-
+ # returns annotated function by invoking ebfanno function
+ if (!is.character(fnm)) stop ("fnm needs to be  character")
  funinfo <-  funinfoCreate(fnm, where = where)
- fun <- funinfo$fun
+ fun <- funinfo$fun 
  ebf <- funinfo$orig_ebf
  origin_fun <- attr(fun, "original_fun")
+ attrsfun <-attributes(fun)
+ attrfnms <- names(attrsfun)
+ 
+ # attrsfun[c("fnm", "where", "ebfanno")] <- NULL
  ff <- fun
  attributes(fun)  <- NULL
  ofun <- if (is.null(origin_fun)) fun else origin_fun 
- attributes(ofun)  <- NULL
+ aofun <- if (is.null(origin_fun)) attributes(fun)  else  attributes(origin_fun)
  if (ebfanno == "ebfanno_strip" ) return(ofun)
  argsl <- list(fnm = fnm, where = where, aux = aux)
  ebff <- do.call(ebfanno, argsl)
