@@ -1,3 +1,7 @@
+isFun <- function (fun) {
+  is.function(fun) && class(fun) %in%  c("function")  ## ??
+}
+
 fanno_assign <- function (fnms = NULL, where = ".GlobalEnv", ebfanno = "ebfanno_simple", all.names = FALSE){
 
 # assigns annotated function in namespace:*, package:* specified in where argument ( by default in .GlobalEnv) 
