@@ -15,17 +15,19 @@ funinfoCreate <- function(fnm, where = ".GlobalEnv"){
  
  # Where position
  whrnms <- which(getFun[["where"]] == where)
- is.found <-   if (length(whrnms) == 0) FALSE else TRUE  
+ is.found <-   if (length(whrnms) == 0) FALSE else TRUE
+ if (!(where %in% wherex)) is.found <- FALSE
  is.function <- TRUE
  
  # Extract object
+ funinfo <- c(funinfo, found = is.found)
  if (is.found) {
   lst1 <- getFun[["objs"]]
   fun <- getFun[["objs"]][[whrnms]]
   if (!is.function(fun)) is.function <- FALSE
 if (!(c("function") %in% class(fun))) is.function <- FALSE
   if (!is.function) fun <- NULL
-  funinfo <- c(funinfo, found = is.found)
+  
  } 
  
  # return expression containing body of an original function
