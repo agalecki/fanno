@@ -49,12 +49,12 @@ funinfoCreate <- function(fnm, where = ".GlobalEnv"){
   return(funinfo)
 }
 
-fanno <- function(fnm, where = ".GlobalEnv", ebfanno= "ebfanno_simple", ...){
+fanno <- function(fnm, where = ".GlobalEnv", ebfanno= "ebfanno_simple"){
  # returns annotated function 
 
  funinfo <-  funinfoCreate(fnm, where = where)
  fun <- funinfo$fun
- ebf <- funinfo$ebf
+ ebf <- funinfo$orig_ebf
  origin_fun <- attr(fun, "original_fun")
  ff <- fun
  attributes(fun)  <- NULL
@@ -63,7 +63,7 @@ fanno <- function(fnm, where = ".GlobalEnv", ebfanno= "ebfanno_simple", ...){
  if (ebfanno == "ebfanno_strip" ) return(ofun)
  
  argsl <- list(fnm = fnm, where= where)
- argsl <- c(argsl, list(...)) 
+ 
  ebff <- do.call(ebfanno, argsl) # !!! Additional args ...
  bff  <- as.call(c(as.name("{"), ebff))
  body(ff) <- bff 
