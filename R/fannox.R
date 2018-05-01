@@ -1,0 +1,24 @@
+fanno <- function(fnm, where = ".GlobalEnv", aux = list(), ebfanno= "ebfanno_simple"){
+ # returns annotated function using ebfanno function
+
+ funinfo <-  funinfoCreate(fnm, where = where)
+ fun <- funinfo$fun
+ ebf <- funinfo$orig_ebf
+ origin_fun <- attr(fun, "original_fun")
+ ff <- fun
+ attributes(fun)  <- NULL
+ ofun <- if (is.null(origin_fun)) fun else origin_fun 
+ attributes(ofun)  <- NULL
+ if (ebfanno == "ebfanno_strip" ) return(ofun)
+ argsl <- list(fnm = fnm, where = where, aux = aux)
+ ebff <- do.call(ebfanno, argsl)
+ bff  <- as.call(c(as.name("{"), ebff))
+ body(ff) <- bff 
+ 
+ ## attributes
+ attr(ff, "fnm") <- fnm
+ attr(ff, "original_fun")  <- ofun
+ attr(ff, "where1")    <- where
+ attr(ff, "ebfanno")     <- ebfanno
+ return(ff)
+}
