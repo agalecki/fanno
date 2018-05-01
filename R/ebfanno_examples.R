@@ -12,10 +12,11 @@ ebfanno_traceR <- function(fnm, where = ".GlobalEnv", aux = list(idx = 0)) {
  idx  <- aux[["idx"]]
  # Prepare preamble expression 
    e <- expression()
-   msg1 <- substitute(message("- Function <", idx, ":", fnm, ">",
-                    " from [",  where,
-                    "] annotated using [ebfanno_traceR]",
-                    list = (fnm=fnm, where=where, idx = idx))
+   msg1 <- substitute(message(
+         "- Function <", idx, ":", fnm, ">",
+         " from [",  where,
+         "] annotated using [ebfanno_traceR]"),
+         list(fnm=fnm, where=where, idx = idx))
    tr1  <- expression( .functionLabel <- fnm)
    tr2  <- expression (.traceR <- attr(options()$traceR, "fun"))
    tr3  <- expression (.traceR <- if (is.null(.traceR)) function(...) {} else .traceR)
@@ -37,5 +38,6 @@ ebfanno_traceR <- function(fnm, where = ".GlobalEnv", aux = list(idx = 0)) {
      bexpr <- c(bexpr, ei, bi, ti)
  }                       
    ebfanno <- c(prex, bexpr)              
+                      
    return(ebfanno)
 }
