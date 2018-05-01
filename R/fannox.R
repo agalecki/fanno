@@ -17,8 +17,8 @@ fanno <- function(fnm, where = ".GlobalEnv", aux = list(), ebfanno= "ebfanno_sim
  
  ## attributes
  attr(ff, "fnm") <- fnm
+ attr(ff, "where")    <- where
  attr(ff, "original_fun")  <- ofun
- attr(ff, "where1")    <- where
  attr(ff, "ebfanno")     <- ebfanno
  return(ff)
 }
