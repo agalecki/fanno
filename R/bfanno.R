@@ -1,7 +1,3 @@
-isFun <- function (fun) {
-  is.function(fun) && class(fun) %in%  c("function")
-}
-
 
 pad_finfo <- function(finfo, padfinfo = options()$fanno.finfo) { 
  nms <- names(finfo)
