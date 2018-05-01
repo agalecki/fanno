@@ -44,6 +44,11 @@ finfo3 <- funinfoCreate("word", where = "namespace:stringr")
 finfo4 <- funinfoCreate("word", where = "package:stringr")
 zzz    <- funinfoCreate("zword", where = "package:stringr")
 ```
+## Test examples of `ebf_fanno` functions
+```
+ebf_simple <- ebfanno_simple("fx")
+ebf_traceR <- ebfanno_traceR("fx")
+```
 
 ```
 fanno("fx")
