@@ -36,8 +36,12 @@ formalArgs(fx)                        # names of formal arguments
 
 ```
 library(fanno)
-finfo0 <- funinfoCreate(fanno)
-finfo1 <- funinfoCreate("fx")
+finfo0 <- funinfoCreate(fanno)  # Error: funinfo:fnm argument needs to be a character
+finfo1 <- funinfoCreate("fx")    # list(fnm = "fx", where =".GlobalEnv", is.found =TRUE, is.function = TRUE
+                                 # fun = ..., orig _ebf = ..., attrnms = "srcref"), class = funinfo
+str(finfo1$fun)                 # Note: attribute scrcref preserved
+finfo1$orig_fun
+
 finfo2 <- funinfoCreate("ttx")
 
 library(stringr)
