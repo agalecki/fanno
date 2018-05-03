@@ -6,7 +6,7 @@ funinfoCreate <- function(fnm, where = ".GlobalEnv"){
 # funinfoCreate("word", where = "namespace:stringr")
 # funinfoCreate("word", where = "package:stringr")
  if (!is.character(fnm)) stop("funinfoCreate:fnm argument needs to be a character")
- if (!is.character(where) or !length(where) == 1 ) stop("invalid where argument in funinfoCreate()")
+ if (!is.character(where) || !length(where) == 1 ) stop("invalid where argument in funinfoCreate()")
  getFun <- getAnywhere(fnm)
  wherex    <- getFun[["where"]]  # vector with one or more elements
  whr1 <- suppressMessages(stringr:::word(where, 1, sep =":"))
