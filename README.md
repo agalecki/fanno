@@ -36,6 +36,7 @@ formalArgs(fx)                        # names of formal arguments
 
 ```
 library(fanno)
+finfo0 <- funinfoCreate(fanno)
 finfo1 <- funinfoCreate("fx")
 finfo2 <- funinfoCreate("ttx")
 
