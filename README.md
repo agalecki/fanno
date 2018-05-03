@@ -15,7 +15,7 @@ options()$fanno.finfo    # c(flbl = "test_flbl", where = "GlobalEnv", $bfanno = 
 detach(package:fanno)
 ````
 
-## Select Function for testing
+## Create function for testing
 
 * Create function fx in .GlobalEnv for testing
 
@@ -33,15 +33,12 @@ formalArgs(fx)                        # names of formal arguments
 
 ## Test `funinfoCreate` function
 
+### Create finfo objects
 
 ```
 library(fanno)
 finfo0 <- funinfoCreate(fanno)  # Error: funinfo:fnm argument needs to be a character
-finfo1 <- funinfoCreate("fx")    # list(fnm = "fx", where =".GlobalEnv", is.found =TRUE, is.function = TRUE
-                                 # fun = ..., orig _ebf = ..., attrnms = "srcref"), class = funinfo
-str(finfo1$fun)                 # Note: attribute scrcref preserved
-finfo1$orig_fun
-
+finfo1 <- funinfoCreate("fx")   # List  of class: funinfo
 finfo2 <- funinfoCreate("ttx")
 
 library(stringr)
@@ -49,11 +46,31 @@ finfo3 <- funinfoCreate("word", where = "namespace:stringr")
 finfo4 <- funinfoCreate("word", where = "package:stringr")
 zzz    <- funinfoCreate("zword", where = "package:stringr")
 ```
+### Check the contents of selected finfo object
+
+```
+finfo <- finfo3                 # assign selected finfo object
+names(finfo)
+finfo[c("fnm","where", "is.found", "is.function","fattrnms")]  
+names(attributes(finfo$fun))                 # Note: attribute scrcref preserved in finfo1
+```
+
 ## Test examples of `ebf_fanno` functions
+
+`ebf_fanno` function takes a function and returns expression representing function body 
+
 ```
 ebf_simple <- ebfanno_simple("fx")
 ebf_traceR <- ebfanno_traceR("fx")
 ```
+
+```
+ebf <- ebf_simple
+length(ebf) 
+mode(ebf)
+```
+
+## Testing fanno function
 
 ```
 fanno("fx")
