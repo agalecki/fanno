@@ -1,4 +1,5 @@
 funinfoCreate <- function(fnm, where = ".GlobalEnv"){
+### creates object of class funinfo
 # Examples: fnm is function name (charcater string)
 # funinfoCreate("fx")
 # funinfoCreate("word", where = "namespace:stringr")
@@ -13,9 +14,9 @@ funinfoCreate <- function(fnm, where = ".GlobalEnv"){
  whrnms <- which(getFun[["where"]] == where)
  is.found <-   if (length(whrnms) == 0) FALSE else TRUE
  if (!(where %in% wherex)) is.found <- FALSE
- is.function <- is.found
  
- # Extract object and  set is.function to FALSE (if appropriate) 
+ # Extract object and creates is.function 
+ is.function <- is.found
  fun <- NULL
  if (is.found) {
   lst1 <- getFun[["objs"]]
@@ -25,7 +26,7 @@ funinfoCreate <- function(fnm, where = ".GlobalEnv"){
   if (!is.function) fun <- NULL
  } 
  
- # return expression containing body of an _original_ function
+ # Return expression containing body of an _original_ function
   ebf <- NULL
   attrnms <- NULL
    if (is.found && is.function) {
