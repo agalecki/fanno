@@ -3,7 +3,7 @@ funinfoCreate <- function(fnm, where = ".GlobalEnv"){
 # funinfoCreate("fx")
 # funinfoCreate("word", where = "namespace:stringr")
 # funinfoCreate("word", where = "package:stringr")
- if (!is.character(fnm)) return()
+ if (!is.character(fnm)) stop("fnm argument needs to be a character)
  getFun <- getAnywhere(fnm)
  wherex    <- getFun[["where"]]
  whr1 <- suppressMessages(stringr:::word(where, 1, sep =":"))
