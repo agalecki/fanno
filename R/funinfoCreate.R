@@ -1,12 +1,14 @@
 funinfoCreate <- function(fnm, where = ".GlobalEnv"){
-### creates object of class funinfo
-# Examples: fnm is function name (charcater string)
+### creates an object of class funinfo:
+# list(fnm=  , where =, is.found =, is.function, fun =, orig_ebf, fattrnms =)  
+# Examples: fnm is function name (character string)
 # funinfoCreate("fx")
 # funinfoCreate("word", where = "namespace:stringr")
 # funinfoCreate("word", where = "package:stringr")
- if (!is.character(fnm)) stop("funinfo:fnm argument needs to be a character")
+ if (!is.character(fnm)) stop("funinfoCreate:fnm argument needs to be a character")
+ if (!is.character(where) or !length(where) == 1 ) stop("invalid where argument in funinfoCreate()")
  getFun <- getAnywhere(fnm)
- wherex    <- getFun[["where"]]
+ wherex    <- getFun[["where"]]  # vector with one or more elements
  whr1 <- suppressMessages(stringr:::word(where, 1, sep =":"))
  whr2 <- suppressMessages(stringr:::word(where, 2, sep =":"))
  
@@ -44,7 +46,7 @@ funinfoCreate <- function(fnm, where = ".GlobalEnv"){
      is.function = is.function,
      fun = fun,
      orig_ebf = ebf,
-     attrnms = attrnms 
+     fattrnms = attrnms 
   )
    if (!is.function) funinfo[c("fun","orig_ebf","attrnms")] <- NULL
    class(funinfo) <- "funinfo"
