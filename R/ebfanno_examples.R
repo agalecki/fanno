@@ -1,10 +1,43 @@
-ebfanno_simple <- function(fnm, where = ".GlobalEnv", aux = list()) {
- ebf  <-  funinfoCreate(fnm, where = where)$orig_ebf
- ebfanno <- expression()
+oebf_extract <- function(fun){
+# Extracts expression representing body of an original function 
+if (!(is.function(fun) &&  ("function" %in% class(fun)))) stop ("Argument is not a function")
+ofun <- if (is.null(attr(fun, "orig_fun"))) fun else attr(fun, "orig_fun") 
+obf <- body(ofun)
+oebf <- if (is.null(obf)) NULL else as.expression(obf)
+return(oebf)
+}
+
+ofun_extract <- function(fun){
+# Extract original function from fun  
+ if (!(is.function(fun) &&  ("function" %in% class(fun)))) stop ("Argument is not a function")
+ ofun <- if (is.null(attr(fun, "orig_fun"))) fun else attr(fun, "orig_fun") 
+return(ofun)
+}
+
+afunCreate <- function(flist){
+ fun <- flist$fun
+ ebfun <- flist
+ ofun  <- ofun_extract(fun)
+ obfun <- body(ofun)
+ return(fun)
+}
+
+fanno_simple <- function(fun, aux = list(fnm = as.character(substitute(fun)), where = "?")) {
+ ofun  <- ofun_extract(fun)
+ obfun <- body(ofun)
+ oebfun <- as.expression(obfun)
+ fnm   <- aux$fnm
+ where <- aux$where 
+ 
+ ## Annotate oebfun expression 
+ e    <- expression()
  msg1 <- expression(message("Created on", Sys.time()))
  msg2 <- substitute(message("Function ", fnm, " in ", where ," executed."), list(fnm = fnm, where = where)) 
- ebfanno <- c(ebfanno, msg1, msg2, ebf)
- return (ebfanno)
+ ebfun <- c(e, msg1, msg2, oebfun)
+ 
+ # Construct annotated function
+ afun <- afunCreate (list(fun = fun, ebfun = ebfun, aux = aux))
+ return (afun)
 }
 
 ebfanno_traceR <- function(fnm, where = ".GlobalEnv", aux = list(idx = 0)) {
