@@ -20,7 +20,7 @@ afunCreate <- function(flist){
  
  # Construct annotated function 
 
-afun <- if(is.null(abf)) ofun else ofun
+afun <- if(is.null(abf)) ofun else fun
 if (!is.null(abf)) body(afun) <- abf  
 attributes(afun) <- attributes(ofun) 
 if(!is.null(abf)) {
