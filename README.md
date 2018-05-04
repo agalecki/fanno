@@ -28,8 +28,12 @@ formals(fx)                           # list with formal arguments and values
 formalArgs(fx)                        # names of formal arguments
 ```
 
+ ```
+ tt <- fanno_simple(fx)
+ fanno_simple(tt)
 
-
+ fanno_traceR(tt)
+```
 
 ## Test `funinfoCreate` function
 
