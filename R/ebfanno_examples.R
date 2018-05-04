@@ -20,11 +20,10 @@ afunCreate <- function(flist){
  
  # Construct annotated function 
 
-afun <- if(is.null(abf)) ofun else fun
+afun <- if(is.null(abf)) ofun else ofun
 if (!is.null(abf)) body(afun) <- abf  
 attributes(afun) <- attributes(ofun) 
 if(!is.null(abf)) {
-  attr(afun, "fun")   <- afun
   attr(afun, "fnm")   <- aux$fnm
   attr(afun, "where") <- aux$where
   attr(afun, "idx")   <- aux$idx
