@@ -1,11 +1,3 @@
-oebf_extract <- function(fun){
-# Extracts expression representing body of an original function 
-if (!(is.function(fun) &&  ("function" %in% class(fun)))) stop ("Argument is not a function")
-ofun <- if (is.null(attr(fun, "orig_fun"))) fun else attr(fun, "orig_fun") 
-obf <- body(ofun)
-oebf <- if (is.null(obf)) NULL else as.expression(obf)
-return(oebf)
-}
 
 ofun_extract <- function(fun){
 # Extract original function from fun  
@@ -15,11 +7,31 @@ return(ofun)
 }
 
 afunCreate <- function(flist){
- fun <- flist$fun
- ebfun <- flist
- ofun  <- ofun_extract(fun)
- obfun <- body(ofun)
- return(fun)
+
+ # Create anotated function 
+ fun <- flist$fun      # Function (possibly annotated)
+ ebfun <- flist$ebfun  # expression for annotated body  
+ aux  <- flist$aux
+ ofun  <- ofun_extract(fun) # Function (not annotated)
+ obfun <- body(ofun)   # body of (not annotated) function
+ 
+ # Construct body of annotated function
+ abf <- if (is.null(obfun)) NULL else as.call(c(as.name("{"), ebfun))
+ 
+ # Construct annotated function 
+
+afun <- if(is.null(abf)) ofun else fun
+if (!is.null(abf)) body(afun) <- abf  
+attributes(afun) <- attributes(ofun) 
+if(!is.null(abf)) {
+  attr(afun, "fun")   <- afun
+  attr(afun, "fnm")   <- aux$fnm
+  attr(afun, "where") <- aux$where
+  attr(afun, "idx")   <- aux$idx
+  attr(afun, "orig_fun") <- ofun
+
+ }
+ return(afun)
 }
 
 fanno_simple <- function(fun, aux = list(fnm = as.character(substitute(fun)), where = "?")) {
@@ -40,9 +52,14 @@ fanno_simple <- function(fun, aux = list(fnm = as.character(substitute(fun)), wh
  return (afun)
 }
 
-ebfanno_traceR <- function(fnm, where = ".GlobalEnv", aux = list(idx = 0)) {
- ebf  <-  funinfoCreate(fnm, where = where)$orig_ebf
- idx  <- aux[["idx"]]
+fanno_traceR <- function(fun, aux = list(fnm = as.character(substitute(fun)), where = "placeholder", idx = 0)) {
+ ofun  <- ofun_extract(fun)
+ obfun <- body(ofun)
+ ebf   <- as.expression(obfun)
+ fnm   <- aux$fnm
+ where <- aux$where 
+ idx   <- aux$idx
+ 
  # Prepare preamble expression 
    e <- expression()
    msg1 <- substitute(message(
@@ -70,7 +87,9 @@ ebfanno_traceR <- function(fnm, where = ".GlobalEnv", aux = list(idx = 0)) {
      if (i == length(ebf)) ti <- NULL 
      bexpr <- c(bexpr, ei, bi, ti)
  }                       
-   ebfanno <- c(prex, bexpr)              
-                      
-   return(ebfanno)
+   ebfun <- c(prex, bexpr)              
+ 
+ # Construct annotated function
+ afun <- afunCreate (list(fun = fun, ebfun = ebfun, aux = aux))
+ return (afun)                
 }
