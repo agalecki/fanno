@@ -19,23 +19,37 @@ detach(package:fanno)
 ### Simple
 
 ```
-e0 <- expression(x+y)
-e1 <- expression()
-e <- e1
-length(e)
+e0 <- expression()
+e1 <- expression(x+y)
+e2 <- expression(x+y, a+b)
 ```
 
-
-
-### Expression from Body function
+### Expression from body function
 
 ```
 bf1 <- body(mean)         # UseMethod("mean") len = 2
 bf2 <- body(is.function)  # NULL
 bf3 <- body(`{`)          # NULL
 b_f <- bf2                # ---select---
-e_f <- if (is.null(b_f)) NULL else as.expression(b_f)
+e_f <- if (is.null(b_f)) expression() else as.expression(b_f)
 ```
+### Annotate expressions
+
+```
+e <- e_f                    # --- select e0,e1, e2, e_f
+ea1  <- eanno_simple(e)
+ea2 <- eanno_simple(ea1)
+identical(ea1, ea2)      # TRUE
+
+ea1  <- eanno_traceR(e)
+ea2 <- eanno_traceR(ea1)
+identical(ea1, ea2)      # TRUE
+
+```
+
+### Examine objects containing expressions
+```
+einfo(e
 
 
 
