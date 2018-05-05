@@ -14,8 +14,8 @@ return(einfo)
 orig_expr_extract <- function(expr){
 # Extract original expression from expr  
  if (!(is.expression(expr) )) stop ("Argument is not an expression")
- oexpr <- if (is.null(attr(expr, "orig_expr"))) expr else attr(expr, "orig_expr")
- if (is.null(expr)) oexpr <- NULL 
+ oexpr <- if (length(attr(expr, "orig_expr"))) attr(expr, "orig_expr") else expr
+ #if (is.null(expr)) oexpr <- expression() 
 return(oexpr)
 }
 
@@ -28,7 +28,7 @@ oe <- orig_expr_extract(expr)   # Extract original expression
  msg2 <- substitute(message("Function ", fnm, " in ", where ," executed."), aux) 
  eanno <- c(e, msg1, msg2, oe)
  attr(eanno, "orig_expr") <- oe
- if (!length(oe)) eanno <- NULL
+ if (!length(oe)) eanno <- expression()
  return(eanno)
 }
 
@@ -63,7 +63,7 @@ eanno_traceR <- function(expr, aux = list(fnm = "?expr?", where = "?where?", idx
  }                       
    eanno <- c(prex, bexpr)  
    attr(eanno, "orig_expr") <- oe 
-   if (!length(oe)) eanno <- NULL
+   if (!length(oe)) eanno <- expression()
  return (eanno)                
 }
 
