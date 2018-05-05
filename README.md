@@ -14,6 +14,30 @@ library (fanno)
 options()$fanno.finfo    # c(flbl = "test_flbl", where = "GlobalEnv", $bfanno = "bfanno_default") 
 detach(package:fanno)
 ````
+## Create expressions for testing
+
+### Simple
+
+```
+e0 <- expression(x+y)
+e1 <- expression()
+e <- e1
+length(e)
+```
+
+
+
+### Expression from Body function
+
+```
+bf1 <- body(mean)         # UseMethod("mean") len = 2
+bf2 <- body(is.function)  # NULL
+bf3 <- body(`{`)          # NULL
+b_f <- bf2                # ---select---
+e_f <- if (is.null(b_f)) NULL else as.expression(b_f)
+```
+
+
 
 ## Create function for testing
 
