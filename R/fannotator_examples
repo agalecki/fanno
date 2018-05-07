@@ -1,0 +1,9 @@
+fannotator_simple <- function(expr, aux = list(nm = "?init_nm?", where = ".GlobalEnv")){
+ ## Annotate  expression 
+ e    <- expression()
+ msg1 <- expression(message("Created on", Sys.time()))
+ msg2 <- substitute(message("Function/call/expr ", nm, " in ", where ," executed/evaluated."), aux) 
+ eanno <- c(e, msg1, msg2, expr)
+ return(eanno)
+}
+
