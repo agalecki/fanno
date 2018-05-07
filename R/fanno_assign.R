@@ -54,4 +54,4 @@ fanno_assign <- function (nms = NULL, fannotator = "fannotator_simple", all.name
    return(message("--- ", len, " object(s) in <", where, "> processed."))
    
 }
- fanno_assign("fx")
+# fanno_assign("fx")
