@@ -3,13 +3,15 @@ isFun <- function (fun) {
 }
 
 fanno_assign <- function (nms = NULL, fannotator = "fannotator_simple", all.names = FALSE,
-                          aux = list (nm = "?assign?", where = ".GlobalEnv"){
+                          aux = list (nm = "?fanno_assign?", where = ".GlobalEnv", idx =0)){
 
 # assigns annotated function in namespace:*, package:* specified in where argument ( by default in .GlobalEnv) 
-  if (!length(where))   stop ("<where> argument  needs to be specified.")
-  whr1 <- suppressMessages(stringr::word(where,1, sep =":"))
-  whr2 <- suppressMessages(stringr::word(where,2, sep = ":"))
+  wher <- aux$where
+  if (!length(wher))   stop ("<where> argument  needs to be specified.")
+  whr1 <- suppressMessages(stringr::word(wher,1, sep =":"))
+  whr2 <- suppressMessages(stringr::word(wher,2, sep = ":"))
   ##?? ebfanno_finfo <- funinfoCreate(ebfanno, where = "namespace:fanno")
+
 
   if (is.null(nms)){ 
         nms <- if (whr1 == "namespace")  ls(asNamespace(whr2), all.names = all.names) else ls(as.environment(where), all.names = all.names)
@@ -19,11 +21,17 @@ fanno_assign <- function (nms = NULL, fannotator = "fannotator_simple", all.name
    if (len == 0) stop ("select at least one object!")  
    
    for (i in seq_along(nms)) {
-     fnm <- nms[i]
-   
-   ###  ff <- fannotatex(fnm, where = where, idx = i, bfanno = bfanno) 
-     argsl <- list(fnm = fnm, where = where, idx = i, ebfanno= ebfanno)
-     ff <- do.call(fannotator,argsl)
+     fnm <- nms[i] 
+
+     ###  ff <- fannotatex(fnm, where = where, idx = i, bfanno = bfanno) 
+     aux0 <- formals(get(fannotator))$aux
+     
+     aux$idx <- i
+     if (length(names(aux))) aux0[names(aux)] <- aux
+     
+     ## args <- list(expr = fnm, aux = aux0)
+     ### argsl <- list(fnm = fnm, where = where, idx = i, ebfanno= ebfanno)
+     ff <- do.call(fannotator, aux0)
        
      if (whr1 == "namespace" && isFun(ff)) {
      ns <-  whr2 
@@ -46,3 +54,4 @@ fanno_assign <- function (nms = NULL, fannotator = "fannotator_simple", all.name
    return(message("--- ", len, " object(s) in <", where, "> processed."))
    
 }
+ fanno_assign("fx")
