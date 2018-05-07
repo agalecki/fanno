@@ -1,4 +1,4 @@
-fanno <- function(fnm, where = ".GlobalEnv", efanno= "efanno_simple", aux = list()){
+fanno_try2 <- function(fnm, where = ".GlobalEnv", efanno= "efanno_simple", aux = list()){
 if (!is.character(fnm)) stop("Argument fnm in fanno() needs to be a character")
  if (!is.character(where) || !length(where) == 1 ) stop("invalid where argument in fanno()")
  getFun <- getAnywhere(fnm)
