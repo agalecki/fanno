@@ -2,7 +2,17 @@ isFun <- function (fun) {
   is.function(fun) && class(fun) %in%  c("function")  ## ??
 }
 
-fanno_assign <- function (nms = NULL,  where = ".GlobalEnvzzz", fannotator = "fannotator_simple", all.names = FALSE, verbose = TRUE,
+fanno_extractx <- function(x, where = ".GlobalEnv"){
+ # x is a character string containing function name
+   getx   <- getAnywhere(x)
+   whrAny <- getx[["where"]]
+   len <- length(nx <- grep(where, whrAny))
+   if (len == 0)  return(message("Object <:", x, "> not found in  <", where , "> ... skipped"))
+   fun  <- getx[nx]                    
+   return(fun)
+ }
+
+fanno_assign <- function (nms = NULL,  where = ".GlobalEnv", fannotator = "fannotator_simple", all.names = FALSE, verbose = TRUE,
                           aux = list(nm = "?fanno_assign?",  idx = 0)){
 
 # assigns annotated function in namespace:*, package:* specified in where argument ( by default in .GlobalEnv) 
@@ -37,7 +47,8 @@ fanno_assign <- function (nms = NULL,  where = ".GlobalEnvzzz", fannotator = "fa
         
      ## args <- list(expr = fnm, aux = aux0)
      ### argsl <- list(fnm = fnm, where = where, idx = i, ebfanno= ebfanno)
-     ff <- do.call(fanno, aux0)
+     fun <- fanno_extractx(fnm, where = where)
+     ff <- do.call(fanno, list(x = fun, aux= aux0))
        
      if (whr1 == "namespace" && isFun(ff)) {
      ns <-  whr2 
