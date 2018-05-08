@@ -2,16 +2,15 @@ isFun <- function (fun) {
   is.function(fun) && class(fun) %in%  c("function")  ## ??
 }
 
-fanno_assign <- function (nms = NULL, fannotator = "fannotator_simple", all.names = FALSE,
-                          aux = list (nm = "?fanno_assign?", where = ".GlobalEnv", idx =0)){
+fanno_assign <- function (nms = NULL,  where = ".GlobalEnvzzz", fannotator = "fannotator_simple", all.names = FALSE, verbose = TRUE,
+                          aux = list(nm = "?fanno_assign?",  idx = 0)){
 
 # assigns annotated function in namespace:*, package:* specified in where argument ( by default in .GlobalEnv) 
-  wher <- aux$where
-  if (!length(wher))   stop ("<where> argument  needs to be specified.")
-  whr1 <- suppressMessages(stringr::word(wher,1, sep =":"))
-  whr2 <- suppressMessages(stringr::word(wher,2, sep = ":"))
+ 
+  if (length(where) != 1)   stop ("<where> argument  needs to be specified.")
+  whr1 <- suppressMessages(stringr::word(where,1, sep =":"))
+  whr2 <- suppressMessages(stringr::word(where,2, sep = ":"))
   ##?? ebfanno_finfo <- funinfoCreate(ebfanno, where = "namespace:fanno")
-
 
   if (is.null(nms)){ 
         nms <- if (whr1 == "namespace")  ls(asNamespace(whr2), all.names = all.names) else ls(as.environment(where), all.names = all.names)
@@ -20,18 +19,25 @@ fanno_assign <- function (nms = NULL, fannotator = "fannotator_simple", all.name
    len <- length(nms)
    if (len == 0) stop ("select at least one object!")  
    
-   for (i in seq_along(nms)) {
-     fnm <- nms[i] 
+    ###  ff <- fannotatex(fnm, where = where, idx = i, bfanno = bfanno) 
+     fannotator_fun <- get(fannotator) 
+     frmls_fannotator <- formals(fannotator_fun)
+     aux0 <- eval(frmls_fannotator$aux)  # default arguments of fannotator function
+  
+  # over-write aux0 elements with values of aux argument 
+     if (length(names(aux))) aux0[names(aux)] <- aux # $idx in aux is optional
+     aux0[["where"]] <- where
 
-     ###  ff <- fannotatex(fnm, where = where, idx = i, bfanno = bfanno) 
-     aux0 <- formals(get(fannotator))$aux
-     
-     aux$idx <- i
-     if (length(names(aux))) aux0[names(aux)] <- aux
-     
+    
+  for (i in seq_along(nms)) {
+     fnm <- nms[i] 
+     aux0$nm <- fnm
+     if ("idx" %in% names(aux0))  aux0[["idx"]] <-i
+     ### if (length(names(aux))) aux0[names(aux)] <- aux
+        
      ## args <- list(expr = fnm, aux = aux0)
      ### argsl <- list(fnm = fnm, where = where, idx = i, ebfanno= ebfanno)
-     ff <- do.call(fannotator, aux0)
+     ff <- do.call(fanno, aux0)
        
      if (whr1 == "namespace" && isFun(ff)) {
      ns <-  whr2 
@@ -52,6 +58,5 @@ fanno_assign <- function (nms = NULL, fannotator = "fannotator_simple", all.name
      } 
    }  # for i
    return(message("--- ", len, " object(s) in <", where, "> processed."))
-   
 }
 # fanno_assign("fx")
