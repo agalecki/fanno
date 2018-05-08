@@ -14,9 +14,9 @@ library (fanno)
 options()$fanno.finfo    # c(flbl = "test_flbl", where = "GlobalEnv", $bfanno = "bfanno_default") 
 detach(package:fanno)
 ````
-## Create expressions for testing
+## Create expression/call/functions for testing
 
-### Simple
+### Expressions
 
 ```
 e0 <- expression()
@@ -24,31 +24,39 @@ e1 <- expression(x+y)
 e2 <- expression(x+y, a+b)
 ```
 
-### Expression from body function
+### Calls
 
 ```
 bf1 <- body(mean)         # UseMethod("mean") len = 2
 bf2 <- body(is.function)  # NULL
 bf3 <- body(`{`)          # NULL
-b_f <- bf2                # ---select---
-e_f <- if (is.null(b_f)) expression() else as.expression(b_f)
 ```
-### Annotate expressions
+### Functions
 
 ```
-e <- e_f                    # --- select e0,e1, e2, e_f
-ea1  <- eanno_simple(e)
-ea2 <- eanno_simple(ea1)
-identical(ea1, ea2)      # TRUE
+f0 <- function(x){}
+f1 <- mean
+f2 <- is.function
 
-ea1  <- eanno_traceR(e)
-ea2 <- eanno_traceR(ea1)
-identical(ea1, ea2)      # TRUE
+```
+
+### Annotate expression/body/function
+
+```
+o <- f1                   # --- select e0, e1, e2, bf1, bf2, bf3, f0,f1,f2
+o1 <- fanno(o)                     
+o2  <- fanno(o1)
+identical(o1, o2)      # TRUE
+
+o3  <- fanno(o1, fannotator = "fannotator_traceR")
+o4 <- fanno(o3, fannotator = "fannotator_traceR")
+identical(o3, o4)      # TRUE
 
 ```
 
 ### Examine objects containing expressions
 ```
+fanno_assign("o")
 einfo(e
 
 
