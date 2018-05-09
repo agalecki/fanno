@@ -16,12 +16,15 @@ detach(package:fanno)
 ````
 ## Create expression/call/functions for testing
 
-### Expressions
+### Simple expressions
 
 ```
 e0 <- expression()
 e1 <- expression(x+y)
 e2 <- expression(x+y, a+b)
+e <- e2
+el <- expr_transform(e)
+lapply(as.list(el), function(x) cat(as.character(x), sep ="\n"))
 ```
 
 ### Calls
@@ -54,11 +57,15 @@ identical(o3, o4)      # TRUE
 
 ```
 
-### Examine objects containing expressions
-```
-fanno_assign("o")
-einfo(e
+### Examine annotated objects
 
+```
+finfo(o)
+e <- 
+cat(as.character(e), sep="\n")
+fanno_assign("o")
+
+```
 
 
 ## Create function for testing
