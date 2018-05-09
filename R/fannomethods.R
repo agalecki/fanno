@@ -1,7 +1,7 @@
 
 
 fanno <- function (x, ...) {
-   UseMethod("fanno", x)
+   if (inherits(x, c("expression", "call","function"))) UseMethod("fanno", x) else x
 }
 
 fanno.expression <- function(x, fannotator = "fannotator_simple", aux = list(nm ="?expr?")){
