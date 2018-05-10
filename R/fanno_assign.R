@@ -1,7 +1,3 @@
-isFun <- function (fun) {
-  is.function(fun) && class(fun) %in%  c("function")  ## ??
-}
-
 fanno_extractx <- function(x, where = ".GlobalEnv"){
  # x is a character string containing function name
    getx   <- getAnywhere(x)
@@ -13,7 +9,7 @@ fanno_extractx <- function(x, where = ".GlobalEnv"){
    return(fun)
  }
 
-fanno_assign <- function (nms = NULL,  where = ".GlobalEnv", fannotator = "fannotator_simple", all.names = FALSE, verbose = TRUE,
+fanno_assign <- function (nms = NULL,  where = ".GlobalEnv", fannotator = options()fannotator, all.names = FALSE, verbose = TRUE,
                           aux = list(nm = "?fanno_assign?",  idx = 0)){
 
 # assigns annotated function in namespace:*, package:* specified in where argument ( by default in .GlobalEnv) 
