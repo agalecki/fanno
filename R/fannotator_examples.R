@@ -64,18 +64,19 @@ fannotator_simple <- function(expr, aux = list(flbl = "flbl:fannotator_simple"))
                        
 fannotator_traceR <- function(expr, aux = list(flbl = "flbl:fannotator_traceR", idx = 99)) {
   ## Prepare preamble expression 
+ 
    epre <- epreamble_traceR(aux = aux)
    ex <- expr_transform(expr = expr)   # list 
    msg1 <- ex$msg1
    trcR1 <- ex$trcR1 
-   e <- expression()
+   e <- expression(epre)
    for (i in seq_along(expr)){
       e <- c(e, msg1[i])  # msg with expression line number and expression 
       e <- c(e, expr[i])  # Original
       trcR1x <- if (i == length(expr)) expression() else trcR1[i]
       e <- c(e, trcR1x) 
    }
-   eanno <- c(epre, e)  
+   eanno <- e  
  return (eanno)                
 }
  
