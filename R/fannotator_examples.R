@@ -24,8 +24,7 @@ epreamble_traceR <- function(aux = list(flbl = "flbl:epreamble_traceR", idx = 98
    return(epre)
 }
 
-expr_transform <- function(expr, aux = list(flbl = "flbl:expr_transform", idx = 98),
-                          verbose = 0){
+expr_transform <- function(expr, aux = list(flbl = "flbl:expr_transform", idx = 98)){
    # function is called by 
    # expr is  an expression vector 
    # Creates a list with different 1-1 mappings of expr vector
@@ -41,13 +40,13 @@ expr_transform <- function(expr, aux = list(flbl = "flbl:expr_transform", idx = 
      ### msg1
      ei <- substitute(message("   -  <", flbl, "> ln.", i, ":", bic), list(flbl = aux$flbl, i = i, bic = bic)) 
      msg1 <- c(msg1, ei)
-     if (verbose > 1) message("msg1_i= ", i,  ":", as.character(ei))
+     # if (verbose > 1) message("msg1_i= ", i,  ":", as.character(ei))
 
     ### trcR1
      ix <- aux$idx + i/100
      ti <- substitute(.traceR(ix, bic, auto =TRUE), list(ix =ix, bic=bic))  
      trcR1 <- c(trcR1, ti) 
-     if (verbose > 1) message("trcR1_i= ", i, ":", as.character(ti))
+     # if (verbose > 1) message("trcR1_i= ", i, ":", as.character(ti))
      ### if (i == length(expr)) ti <- NULL  # Last expression not 
     #  bexpr <- c(bexpr, ei, bi, ti)
   }
