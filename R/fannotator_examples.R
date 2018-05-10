@@ -24,7 +24,8 @@ epreamble_traceR <- function(aux = list(flbl = "flbl:epreamble_traceR", idx = 98
    return(epre)
 }
 
-expr_transform <- function(expr, aux = list(flbl = "flbl:expr_transform", idx = 98)){
+expr_transform <- function(expr, aux = list(flbl = "flbl:expr_transform", idx = 98),
+                          verbose = 0){
    # function is called by 
    # expr is  an expression vector 
    # Creates a list with different 1-1 mappings of expr vector
@@ -37,16 +38,20 @@ expr_transform <- function(expr, aux = list(flbl = "flbl:expr_transform", idx = 
      bi <- expr[i]
      bic <- as.character(bi)
      
-     ### 
+     ### msg1
      ei <- substitute(message("   -  <", flbl, "> ln.", i, ":", bic), list(flbl = aux$flbl, i = i, bic = bic)) 
      msg1 <- c(msg1, ei)
-      
+     if (verbose > 1) message("msg1_i= ", i,  ":", as.character(ei))
+
+    ### trcR1
      ix <- aux$idx + i/100
      ti <- substitute(.traceR(ix, bic, auto =TRUE), list(ix =ix, bic=bic))  
      trcR1 <- c(trcR1, ti) 
+     if (verbose > 1) message("trcR1_i= ", i, ":", as.character(ti))
      ### if (i == length(expr)) ti <- NULL  # Last expression not 
     #  bexpr <- c(bexpr, ei, bi, ti)
   }
+  
   return (list(msg1 = msg1, trcR1 =trcR1)) 
 }
 
@@ -59,7 +64,7 @@ fannotator_simple <- function(expr, aux = list(flbl = "flbl:fannotator_simple"))
 }
 
                        
-fannotator_traceR <- function(expr, aux = list(flbl = "flbl", idx = 99), verbose=0) {
+fannotator_traceR <- function(expr, aux = list(flbl = "flbl", idx = 99)) {
   ## Prepare preamble expression 
    epre <- epreamble_traceR(aux = aux)
    ex <- expr_transform(expr = expr)   # list 
@@ -68,12 +73,9 @@ fannotator_traceR <- function(expr, aux = list(flbl = "flbl", idx = 99), verbose
    if (verbose > 0) message("Names:", names(ex)) 
    e <- expression()
    for (i in seq_along(expr)){
-      if (verbose > 1) message("msg1_i= ", i,  ":", as.character(msg1[i]))
       e <- c(e, msg1[i])  # msg with expression line number and expression 
-      if (verbose > 1) message("expr_i= ", i, ":", as.character(expr[i]))
       e <- c(e, expr[i])  # Original
       trcR1x <- if (i == length(expr)) expression() else trcR1[i]
-      if (verbose > 1) message("trcR1x_i= ", i, ":", as.character(trcR1x))
       e <- c(e, trcR1x) 
    }
    eanno <- c(epre, e)  
