@@ -9,7 +9,7 @@ fanno_extractx <- function(x, where = ".GlobalEnv"){
    return(fun)
  }
 
-fanno_assign <- function (nms = NULL,  where = ".GlobalEnv", fannotator = options()fannotator, all.names = FALSE, verbose = TRUE,
+fanno_assign <- function (nms = NULL,  where = ".GlobalEnv", fannotator = options()$fannotator, all.names = FALSE, verbose = TRUE,
                           aux = list(nm = "?fanno_assign?",  idx = 0)){
 
 # assigns annotated function in namespace:*, package:* specified in where argument ( by default in .GlobalEnv) 
