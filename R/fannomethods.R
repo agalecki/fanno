@@ -45,7 +45,7 @@ fannotated <-!is.null(attr(x, "fannotator"))
 if (fannotated && fannotator == "fannotator_revert") return(attr(x,"original"))
 ofun <- if (fannotated) attr(x,"original") else x
 obf <- body(ofun)
-oexpr <- as.expression(obf) # original expression
+oexpr <- as.expression(as.list(obf)) # original expression
 aux0 <- formals(get(fannotator))$aux
 if (length(names(aux))) aux0[names(aux)] <- aux
 args <- list(expr = oexpr, aux = aux0)
