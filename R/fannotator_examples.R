@@ -77,7 +77,7 @@ fannotator_traceR <- function(expr, aux = list(flbl = "flbl:fannotator_traceR", 
       trcR1x <- if (i == length(expr)) expression() else trcR1[i]
       e <- c(e, trcR1x) 
    }
-   eanno <- c(eanno, epre, expr)  
+   eanno <- c(eanno, epre, e)  
  return (eanno)                
 }
  
