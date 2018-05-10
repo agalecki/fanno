@@ -4,11 +4,11 @@ fanno <- function (x, ...) {
    if (inherits(x, c("expression", "call","function"))) UseMethod("fanno", x) else x
 }
 
-fanno.expression <- function(x, fannotator = "fannotator_simple", aux = list(nm ="?expr?")){
+fanno.expression <- function(x, fannotator = options()$fannotator, aux = list(nm ="?expr?")){
 # annotates object x of class expression
 # update aux0
 fannotated <-!is.null(attr(x, "fannotator"))
-if (fannotated && fannotator == "fannotator_revert") return(attr(x,"original"))
+if (fannotated && fannotator == "fanno_revert") return(attr(x,"original"))
 oexpr <- if (fannotated) attr(x,"original") else x
 aux0 <- formals(get(fannotator))$aux
 if (length(names(aux))) aux0[names(aux)] <- aux
@@ -19,7 +19,7 @@ attr(exprx, "fannotator") <- fannotator
 return(exprx)
 }
 
-fanno.call <- function(x, fannotator = "fannotator_simple", aux = list(nm = "?call?")){
+fanno.call <- function(x, fannotator =  options()$fannotator, aux = list(nm = "?call?")){
 # annotates object x of class call 
 fannotated <-!is.null(attr(x, "fannotator"))
 if (fannotated && fannotator == "fannotator_revert") return(attr(x,"original"))
@@ -39,7 +39,7 @@ attr(callx, "fannotator") <- fannotator
 return(callx)
 }
 
-fanno.function <- function(x, fannotator = "fannotator_simple", aux = list(nm="?fun?")){
+fanno.function <- function(x, fannotator =  options()$fannotator, aux = list(nm="?fun?")){
 # annotates object x of class call 
 fannotated <-!is.null(attr(x, "fannotator"))
 if (fannotated && fannotator == "fannotator_revert") return(attr(x,"original"))
