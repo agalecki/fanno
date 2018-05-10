@@ -24,7 +24,7 @@ epreamble_traceR <- function(aux = list(flbl = "flbl:epreamble_traceR", idx = 98
    return(epre)
 }
 
-expr_transform <- function(expr, aux = list(flbl = "flbl:expr_transform", idx = 98, verbose =0)){
+expr_transform <- function(expr, aux = list(flbl = "flbl:expr_transform", idx = 98), verbose =0){
    # function is called by 
    # expr is  an expression vector 
    # Creates a list with different 1-1 mappings of expr vector
