@@ -39,7 +39,7 @@ fanno_assign <- function (nms = NULL,  where = ".GlobalEnv", fannotator = option
     
   for (i in seq_along(nms)) {
      fnm <- nms[i] 
-     aux0$flbl <- fnm    # !!!??
+     aux0$flbl <- "!!!??"   # !!!?? fnm??
      if ("idx" %in% names(aux0))  aux0[["idx"]] <-i
      ### if (length(names(aux))) aux0[names(aux)] <- aux
         
