@@ -27,7 +27,7 @@ fanno_assign <- function (nms = NULL,  where = ".GlobalEnv", fannotator = option
    if (len == 0) stop ("select at least one object!")  
    
     ###  ff <- fannotatex(fnm, where = where, idx = i, bfanno = bfanno) 
-     fannotator_fun <- get(fannotator) 
+     fannotator_fun <- if (fannotator == "fanno_revert") NULL else get(fannotator) 
      frmls_fannotator <- formals(fannotator_fun)
      frmls0 <- frmls_fannotator$aux  
      aux0 <- eval(frmls0)  # default arguments of fannotator function
@@ -39,7 +39,7 @@ fanno_assign <- function (nms = NULL,  where = ".GlobalEnv", fannotator = option
     
   for (i in seq_along(nms)) {
      fnm <- nms[i] 
-     aux0$flbl <- fnm
+     aux0$flbl <- fnm    # !!!??
      if ("idx" %in% names(aux0))  aux0[["idx"]] <-i
      ### if (length(names(aux))) aux0[names(aux)] <- aux
         
@@ -49,7 +49,8 @@ fanno_assign <- function (nms = NULL,  where = ".GlobalEnv", fannotator = option
      process_fun <- if (inherits(fun, what = c("function", "call", "expression"))) TRUE else FALSE 
      
      ff <- if (process_fun)  do.call(fanno, list(x = fun, aux= aux0)) else  NULL
-     
+     if (fannotator == "fanno_revert" && process_fun) ff <- attr(ff, "original")
+      
      if (!process_fun) {
      message ("?<", i, ":", fnm, " in ", where, " of mode ", mode(fun), " skipped!!!")
      } 
