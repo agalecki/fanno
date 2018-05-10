@@ -6,7 +6,8 @@ fanno_extractx <- function(x, where = ".GlobalEnv"){
  # x is a character string containing function name
    getx   <- getAnywhere(x)
    whrAny <- getx[["where"]]
-   len <- length(nx <- grep(where, whrAny))
+   nx <-  match(where, whrAny)
+   len <- length(nx)
    if (len == 0)  return(message("Object <:", x, "> not found in  <", where , "> ... skipped"))
    fun  <- getx[nx]                    
    return(fun)
