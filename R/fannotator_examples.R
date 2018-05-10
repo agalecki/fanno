@@ -42,7 +42,7 @@ expr_transform <- function(expr, aux = list(flbl = "flbl:expr_transform", idx = 
      msg1 <- c(msg1, ei)
      if (verbose > 1) message("msg1_i= ", i,  ":", as.character(ei))
 
-    ### trcR1
+     ### trcR1
      ix <- aux$idx + i/100
      ti <- substitute(.traceR(ix, bic, auto =TRUE), list(ix =ix, bic=bic))  
      trcR1 <- c(trcR1, ti) 
@@ -56,27 +56,28 @@ expr_transform <- function(expr, aux = list(flbl = "flbl:expr_transform", idx = 
 
 fannotator_simple <- function(expr, aux = list(flbl = "flbl:fannotator_simple")){
  ## Annotate  expression 
+ eanno <- expression()
  epre <- epreamble_simple(aux = aux)
- eanno <- c(epre, expr)
+ eanno <- c(eanno, epre, expr)
  return(eanno)
 }
 
                        
 fannotator_traceR <- function(expr, aux = list(flbl = "flbl:fannotator_traceR", idx = 99)) {
   ## Prepare preamble expression 
- 
+   eanno <- expression()
    epre <- epreamble_traceR(aux = aux)
    ex <- expr_transform(expr = expr)   # list 
    msg1 <- ex$msg1
    trcR1 <- ex$trcR1 
-   e <- expression(epre)
+   e <- expression()
    for (i in seq_along(expr)){
       e <- c(e, msg1[i])  # msg with expression line number and expression 
       e <- c(e, expr[i])  # Original
       trcR1x <- if (i == length(expr)) expression() else trcR1[i]
       e <- c(e, trcR1x) 
    }
-   eanno <- e  
+   eanno <- c(eanno, epre, expr)  
  return (eanno)                
 }
  
