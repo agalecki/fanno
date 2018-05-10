@@ -32,7 +32,8 @@ fanno_assign <- function (nms = NULL,  where = ".GlobalEnv", fannotator = "fanno
     ###  ff <- fannotatex(fnm, where = where, idx = i, bfanno = bfanno) 
      fannotator_fun <- get(fannotator) 
      frmls_fannotator <- formals(fannotator_fun)
-     aux0 <- eval(frmls_fannotator$aux)  # default arguments of fannotator function
+     frmls0 <- frmls_fannotator$aux  
+     aux0 <- eval(frmls0)  # default arguments of fannotator function
   
   # over-write aux0 elements with values of aux argument 
      if (length(names(aux))) aux0[names(aux)] <- aux # $idx in aux is optional
@@ -48,25 +49,32 @@ fanno_assign <- function (nms = NULL,  where = ".GlobalEnv", fannotator = "fanno
      ## args <- list(expr = fnm, aux = aux0)
      ### argsl <- list(fnm = fnm, where = where, idx = i, ebfanno= ebfanno)
      fun <- fanno_extractx(fnm, where = where)
-     ff <- do.call(fanno, list(x = fun, aux= aux0))
+     process_fun <- if (inherits(fun, what = c("function", "call", "expression"))) TRUE else FALSE 
+     
+     ff <- if (process_fun)  do.call(fanno, list(x = fun, aux= aux0)) else  NULL
+     
+     if (!process_fun) {
+     message ("?<", i, ":", fnm, " in ", where, " of mode ", mode(fun), " skipped!!!")
+     } 
        
-     if (whr1 == "namespace" && isFun(ff)) {
+     if (whr1 == "namespace" && process_fun) {
      ns <-  whr2 
      unlockBinding(fnm, getNamespace(ns))  
      assign(fnm, ff, getNamespace(ns))
-     message("Function <", i, ":", fnm, "> annotated with <", fannotator, ">  assigned in namespace <", ns, "> ...")
+     message("<", i, ":", fnm, "> object of mode _",  mode(fun), "_ assigned in namespace <", ns, "> [", fannotator, "]   ...")
      }
      
-  if (whr1 == "package" && isFun(ff)) {
+   if (whr1 == "package" && process_fun) {
      unlockBinding(fnm, as.environment(where))  
      assign(fnm, ff, as.environment(where))
-     message("Function <", i, ":", fnm, "> annotated with <", fannotator, ">  assigned in package <", whr2, "> ...")
+     message("Object <", i, ":", fnm, "> annotated with <", fannotator, ">  assigned in package <", whr2, "> ...")
      }
      
-  if (where %in% (".GlobalEnv") && isFun(ff)) { 
+  if (where %in% (".GlobalEnv") && process_fun) { 
      assign(fnm, ff, as.environment(where))
      message("Function <", i, ":", fnm, "> annotated with <", fannotator, ">  assigned in <", where, "> ...")
      } 
+   
    }  # for i
    return(message("--- ", len, " object(s) in <", where, "> processed."))
 }
