@@ -48,9 +48,8 @@ fanno_assign <- function (nms = NULL,  where = ".GlobalEnv", fannotator = option
      fun <- fanno_extractx(fnm, where = where)
      process_fun <- if (inherits(fun, what = c("function", "call", "expression"))) TRUE else FALSE 
      
-     ff <- if (process_fun)  do.call(fanno, list(x = fun, aux= aux0)) else  NULL
+     ff <- if (process_fun)  do.call("fanno.function", list(x = fun, aux= aux0)) else  NULL
   
-      
      if (!process_fun) {
      message ("?<", i, ":", fnm, " in ", where, " of mode ", mode(fun), " skipped!!!")
      } 
