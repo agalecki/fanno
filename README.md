@@ -9,9 +9,10 @@ install_github("agalecki/fanno")
 ```
 ## Attach/detach library 
 ```
-options("fanno.finfo")   # NULL at the beginning of R session
+options("fannotator")   # NULL at the beginning of R session
 library (fanno)
-options()$fanno.finfo    # c(flbl = "test_flbl", where = "GlobalEnv", $bfanno = "bfanno_default") 
+options()$fannotator    # Check 
+options(fannotator = "fannotator_traceR")
 detach(package:fanno)
 ````
 ## Create expression/call/functions for testing
@@ -22,7 +23,7 @@ detach(package:fanno)
 e0 <- expression()
 e1 <- expression(x+y)
 e2 <- expression(x+y, a+b)
-e <- e2
+e <- e2                    # <- select
 el <- expr_transform(e)
 lapply(as.list(el), function(x) cat(as.character(x), sep ="\n"))
 ```
@@ -51,8 +52,9 @@ o1 <- fanno(o)
 o2  <- fanno(o1)
 identical(o1, o2)      # TRUE
 
-o3  <- fanno(o1, fannotator = "fannotator_traceR")
-o4 <- fanno(o3, fannotator = "fannotator_traceR")
+options(fannotator) <- "fannotator_traceR"
+o3  <- fanno(o1)
+o4 <- fanno(o3)
 identical(o3, o4)      # TRUE
 
 ```
@@ -60,12 +62,22 @@ identical(o3, o4)      # TRUE
 ### Examine annotated objects
 
 ```
-finfo(o)
-e <- 
+finfo(o)     # 
+
 cat(as.character(e), sep="\n")
 fanno_assign("o")
 
 ```
+## fanno_assign
+```
+library(stringr)
+ls(asNamespace("stringr"))
+fanno_assign(where = "namespace:stringr")
+stringr:::word
+fanno_assign(where = "namespace:stringr", fannotator = "fanno_revert")
+
+```
+
 
 
 ## Create function for testing
