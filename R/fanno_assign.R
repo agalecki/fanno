@@ -27,7 +27,7 @@ fanno_assign <- function (nms = NULL,  where = ".GlobalEnv", fannotator = option
    if (len == 0) stop ("select at least one object!")  
    
     ###  ff <- fannotatex(fnm, where = where, idx = i, bfanno = bfanno) 
-     get(fannotator) 
+     fannotator_fun <- get(fannotator) 
      frmls_fannotator <- formals(fannotator_fun)
      frmls0 <- frmls_fannotator$aux  
      aux0 <- eval(frmls0)  # default arguments of fannotator function
