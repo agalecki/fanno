@@ -56,9 +56,13 @@ expr_transform <- function(expr, aux = list(flbl = "flbl:expr_transform", idx = 
 
 fannotator_simple <- function(expr, aux = list(flbl = "flbl:fannotator_simple")){
  ## Annotate  expression 
- eanno <- expression()
- epre <- epreamble_simple(aux = aux)
- eanno <- c(eanno, epre, expr)
+ e <- expression()
+ # epre <- epreamble_simple(aux = aux)
+ msg1 <- expression(message("--> Executed on:", Sys.time()))
+ msg2 <- substitute(message(flbl), aux) 
+ epre <- c(e, msg1, msg2)
+ e <- expression()
+ eanno <- c(e, epre, expr)
  return(eanno)
 }
 
