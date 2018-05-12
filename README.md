@@ -50,9 +50,11 @@ f3 <- stringr:::word
 ```
 options(fannotator ="fannotator_simple")
 o <- f1                   # --- select e0, e1, e2, bf1, bf2, bf3, f0,f1,f2
-o1 <- fanno(o)                     
-o2  <- fanno(o1)
-identical(o1, o2)      # TRUE
+oa1 <- fanno(o)                     
+oa2  <- fanno(oa1)
+identical(oa1, oa2)      # TRUE
+orv <- fanno(oa1, fannotator ="fannotator_revert")
+identical(orv, o)        # TRUE
 
 options(fannotator ="fannotator_traceR")
 o3  <- fanno(o1)
