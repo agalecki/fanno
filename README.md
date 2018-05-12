@@ -41,18 +41,20 @@ bf3 <- body(`{`)          # NULL
 f0 <- function(x){}
 f1 <- mean
 f2 <- is.function
+f3 <- stringr:::word
 
 ```
 
 ### Annotate expression/body/function
 
 ```
+options(fannotator ="fannotator_simple")
 o <- f1                   # --- select e0, e1, e2, bf1, bf2, bf3, f0,f1,f2
 o1 <- fanno(o)                     
 o2  <- fanno(o1)
 identical(o1, o2)      # TRUE
 
-options(fannotator) <- "fannotator_traceR"
+options(fannotator ="fannotator_traceR")
 o3  <- fanno(o1)
 o4 <- fanno(o3)
 identical(o3, o4)      # TRUE
@@ -70,6 +72,10 @@ fanno_assign("o")
 ```
 ## fanno_assign
 ```
+tt <- stringr:::word
+fanno_assign ("tt")
+
+
 library(stringr)
 ls(asNamespace("stringr"))
 fanno_assign(where = "namespace:stringr")
