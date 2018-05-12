@@ -62,7 +62,6 @@ fannotator_simple <- function(expr, aux = list(flbl = "flbl:fannotator_simple"))
  e <- c(e, msg1, msg2)
  return(e)
 }
-
                        
 fannotator_traceR <- function(expr, aux = list(flbl = "flbl:fannotator_traceR", idx = 99)) {
   ## Prepare preamble expression 
@@ -86,5 +85,6 @@ fannotator_revert <- function(expr, aux = list(flbl = "flbl:fannotator_revert"))
  fannotated <-!is.null(attr(expr, "fannotator"))
  exprx <- if (fannotated) attr(expr,"original") else expr
 return(exprx)
+}
  
  
