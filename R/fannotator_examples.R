@@ -59,7 +59,7 @@ fannotator_simple <- function(expr, aux = list(flbl = "flbl:fannotator_simple"))
  e <- expression()
  msg1 <- expression(message("--> Executed on:", Sys.time()))
  msg2 <- substitute(message(flbl), aux) 
- e <- c(e, msg1, msg2)
+ e <- c(e, msg1, msg2, expr)
  return(e)
 }
                        
