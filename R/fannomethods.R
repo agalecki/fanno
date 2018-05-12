@@ -54,9 +54,9 @@ args <- list(expr = oexpr, aux = aux0)
 exprx  <- do.call(fannotator, args)
 funx <- x
 if (!is.null(obf)) body(funx) <- as.call(c(as.name("{"), exprx))
-if (fannotator != "fannotator_revert") {
+
 attr(funx, "original") <- ofun
 attr(funx, "fannotator") <- fannotator 
-}
+if (fannotator == "fannotator_revert") funx <- ofun
 return(funx)
 }
