@@ -46,7 +46,7 @@ fannotated <-!is.null(attr(x, "fannotator"))
 ofun <- if (fannotated) attr(x,"original") else x
 obf <- body(ofun)
 obfl <- as.list(obf)
-if (lobf[[1]] == as.name("{")) lobf[[1]] <- NULL
+if (obfl[[1]] == as.name("{")) obfl[[1]] <- NULL
 oexpr <- as.expression(obfl) # original expression
 aux0 <- formals(get(fannotator))$aux
 if (length(names(aux))) aux0[names(aux)] <- aux
