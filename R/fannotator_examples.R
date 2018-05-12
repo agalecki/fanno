@@ -1,13 +1,6 @@
 
 
-epreamble_simple <- function(aux = list(flbl = "flbl from epreamble_simple")){
- ## Creates expression preamble
- e    <- expression()
- msg1 <- expression(message("--> Executed on:", Sys.time()))
- msg2 <- substitute(message(flbl), aux) 
- epre <- c(e, msg1, msg2)
- return(epre)
-}
+
 
 epreamble_traceR <- function(aux = list(flbl = "flbl:epreamble_traceR", idx = 98)){
   e    <- expression()
@@ -53,7 +46,6 @@ expr_transform <- function(expr, aux = list(flbl = "flbl:expr_transform", idx = 
   return (list(msg1 = msg1, trcR1 =trcR1)) 
 }
 
-
 fannotator_simple <- function(expr, aux = list(flbl = "flbl:fannotator_simple")){
  ## Annotate  expression 
  e <- expression()
@@ -65,11 +57,24 @@ fannotator_simple <- function(expr, aux = list(flbl = "flbl:fannotator_simple"))
                        
 fannotator_traceR <- function(expr, aux = list(flbl = "flbl:fannotator_traceR", idx = 99)) {
   ## Prepare preamble expression 
-   eanno <- expression()
-   epre <- epreamble_traceR(aux = aux)
+   e    <- expression()
+   msg1 <- substitute(message(
+         "--> Function <", idx, ":", flbl, ">"
+        ), aux)
+   tr1  <- expression( .functionLabel <- flbl)
+   tr2  <- expression (.traceR <- attr(options()$traceR, "fun"))
+   tr3  <- expression (.traceR <- if (is.null(.traceR)) function(...) {} else .traceR)
+   tx   <- paste(aux$idx, "00", sep = '.')       # auxiliary 
+   tr4  <- substitute(.traceR(tx , "`{`", first = TRUE, auto = TRUE), list(tx = tx))
+   trx  <- c(tr1,tr2, tr3, tr4)                  
+   epre <- c(e, msg1, trx)
+
+   #--- Extract vectors of expressions 
    ex <- expr_transform(expr = expr)   # list 
-   msg1 <- ex$msg1
-   trcR1 <- ex$trcR1 
+   msg1 <- ex$msg1                     # vector of expressions
+   trcR1 <- ex$trcR1
+   
+   #--- Body                    
    e <- expression()
    for (i in seq_along(expr)){
       e <- c(e, msg1[i])  # msg with expression line number and expression 
@@ -77,7 +82,7 @@ fannotator_traceR <- function(expr, aux = list(flbl = "flbl:fannotator_traceR", 
       trcR1x <- if (i == length(expr)) expression() else trcR1[i]
       e <- c(e, trcR1x) 
    }
-   eanno <- c(eanno, epre, e)  
+   eanno <- c(epre, e)  
  return (eanno)                
 }
 
