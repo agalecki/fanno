@@ -57,13 +57,10 @@ expr_transform <- function(expr, aux = list(flbl = "flbl:expr_transform", idx = 
 fannotator_simple <- function(expr, aux = list(flbl = "flbl:fannotator_simple")){
  ## Annotate  expression 
  e <- expression()
- # epre <- epreamble_simple(aux = aux)
  msg1 <- expression(message("--> Executed on:", Sys.time()))
  msg2 <- substitute(message(flbl), aux) 
- epre <- c(e, msg1, msg2)
- e <- expression()
- eanno <- c(e, epre, expr)
- return(eanno)
+ e <- c(e, msg1, msg2)
+ return(e)
 }
 
                        
@@ -84,4 +81,10 @@ fannotator_traceR <- function(expr, aux = list(flbl = "flbl:fannotator_traceR", 
    eanno <- c(eanno, epre, e)  
  return (eanno)                
 }
+
+fannotator_revert <- function(expr, aux = list(flbl = "flbl:fannotator_revert")){
+ fannotated <-!is.null(attr(expr, "fannotator"))
+ exprx <- if (fannotated) attr(expr,"original") else expr
+return(exprx)
+ 
  
