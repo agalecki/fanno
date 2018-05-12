@@ -51,8 +51,9 @@ fannotator_simple <- function(expr, aux = list(flbl = "flbl:fannotator_simple"))
  e <- expression()
  msg1 <- expression(message("--> Executed on:", Sys.time()))
  msg2 <- substitute(message(flbl), aux) 
- e <- c(e, msg1, msg2, expr)
- return(e)
+ ex <- c(e, msg1, msg2, expr)
+ cl <-  as.call(c(as.name("{"), ex))
+ return(cl)
 }
                        
 fannotator_traceR <- function(expr, aux = list(flbl = "flbl:fannotator_traceR", idx = 99)) {
@@ -82,8 +83,9 @@ fannotator_traceR <- function(expr, aux = list(flbl = "flbl:fannotator_traceR", 
       trcR1x <- if (i == length(expr)) expression() else trcR1[i]
       e <- c(e, trcR1x) 
    }
-   eanno <- c(epre, e)  
- return (eanno)                
+   ex <- c(epre, e)  
+   cl <-  as.call(c(as.name("{"), ex))                   
+ return (cl)                
 }
 
 fannotator_revert <- function(expr, aux = list(flbl = "flbl:fannotator_revert")){
