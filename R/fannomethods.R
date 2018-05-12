@@ -45,7 +45,7 @@ fannotated <-!is.null(attr(x, "fannotator"))
 if (fannotated && fannotator == "fannotator_revert") return(attr(x,"original"))
 ofun <- if (fannotated) attr(x,"original") else x
 obf <- body(ofun)
-lobf <- as.list(obf)
+obfl <- as.list(obf)
 if (lobf[[1]] == as.name("{")) {
     lobf[[1]] <- NULL
     }  
