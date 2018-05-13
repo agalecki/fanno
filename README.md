@@ -15,35 +15,88 @@ options()$fannotator    # Check
 options(fannotator = "fannotator_traceR")
 detach(package:fanno)
 ````
-## Create expression/call/functions for testing
+## Create call/functions for testing
 
 ### Simple expressions
 
 ```
-e0 <- expression()
-e1 <- expression(x+y)
 e2 <- expression(x+y, a+b)
 e <- e2                    # <- select
 el <- expr_transform(e)
 lapply(as.list(el), function(x) cat(as.character(x), sep ="\n"))
 ```
+check_call <- function(cl){
+if (is.null(cl)) return (0)
 
-### Calls
+}
 
-```
-bf1 <- body(mean)         # UseMethod("mean") len = 2
-bf2 <- body(is.function)  # NULL
-bf3 <- body(`{`)          # NULL
-```
+
+coerce_call_to_expressionList  <- function(cl){
+## 
+if (!length(cl)) return (cl)
+
+if (is.name(cl)) return (list(as.expression(cl)))
+if (as.character(cl[1]) != "{") return(list(as.expression(cl)))
+
+cList <- as.list(cl)
+if (as.character(cl[1])  == "{" ) cList[[1]] <- NULL
+
+eList <- vector(length(cList), mode= "list")
+for (i in seq_along(cList)){
+  eList[[i]] <- as.expression(cList[[i]])
+}
+return (eList)
+}
+
+coerce_expressionList_to_call <- function(eList){
+curle_brackect_symbol <- as.symbol("{")
+cl <- as.symbol("{")
+e <- expression()
+for (i in seq_along(eList)){
+  ei <- eList[[i]]
+  e <- c(e, ei)
+}
+cl <- as.call(c(as.name("{"), e))
+return(cl)
+}
+
+
 ### Functions
 
 ```
-f0 <- function(x){}
-f1 <- mean
-f2 <- is.function
-f3 <- stringr:::word
+f0 <- function(x){}  # length
+f1 <- function() pi  # Mode() == "name" 
+f1a <- function(){pi}
+f2  <- mean
+f3 <- function(x) x*2
+f4 <- stringr:::word
+```
+```
+cl <- body(f3)
+is.call(cl)
+is.symbol(cl)
+mode(cl)
+length (cl)
+length(cl) == length(as.list(cl))
+
+
+cList <- coerce_call_to_expressionList (cl)
+cList
+mode(cList)
+cl
+```
+### Calls
+
+
+
+
 
 ```
+cl <- bf2                  # Select object of mode call
+length(cl)
+mode(cl)
+```
+
 
 ### Annotate expression/body/function
 
