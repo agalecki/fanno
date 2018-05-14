@@ -1,22 +1,5 @@
 
 
-
-
-epreamble_traceR <- function(aux = list(flbl = "flbl:epreamble_traceR", idx = 98)){
-  e    <- expression()
-  msg1 <- substitute(message(
-         "--> Function <", idx, ":", flbl, ">"
-        ), aux)
-   tr1  <- expression( .functionLabel <- flbl)
-   tr2  <- expression (.traceR <- attr(options()$traceR, "fun"))
-   tr3  <- expression (.traceR <- if (is.null(.traceR)) function(...) {} else .traceR)
-   tx   <- paste(aux$idx, "00", sep = '.')       # auxiliary 
-   tr4  <- substitute(.traceR(tx , "`{`", first = TRUE, auto = TRUE), list(tx = tx))
-   trx  <- c(tr1,tr2, tr3, tr4)                  
-   epre <- c(e, msg1, trx)
-   return(epre)
-}
-
 expr_transform <- function(expr, aux = list(flbl = "flbl:expr_transform", idx = 98), verbose =0){
    # function is called by 
    # expr is  vector of _one_ line expressions 
