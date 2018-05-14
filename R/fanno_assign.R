@@ -46,7 +46,7 @@ fanno_assign <- function (nms = NULL,  where = ".GlobalEnv", fannotator = option
      ## args <- list(expr = fnm, aux = aux0)
      ### argsl <- list(fnm = fnm, where = where, idx = i, ebfanno= ebfanno)
      fun <- fanno_extractx(fnm, where = where)
-     process_fun <- if (inherits(fun, what = c("function", "call", "expression"))) TRUE else FALSE 
+     process_fun <- if (inherits(fun, what = c("function", "call"))) TRUE else FALSE 
      
      ff <- if (process_fun)  do.call("fanno.function", list(x = fun, aux= aux0)) else  NULL
   
