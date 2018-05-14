@@ -4,36 +4,24 @@ fanno <- function (x, ...) {
    UseMethod("fanno", x)
 }
 
-fanno.expression <- function(x, fannotator = options()$fannotator, aux = list(flbl ="?-fanno.expression-?")){
-# annotates object x of class expression
-# update aux0
-fannotated <-!is.null(attr(x, "fannotator"))
-if (fannotated && fannotator == "fanno_revert") return(attr(x,"original"))
-oexpr <- if (fannotated) attr(x,"original") else x
-aux0 <- formals(get(fannotator))$aux
-if (length(names(aux))) aux0[names(aux)] <- aux
-args <- list(expr = oexpr, aux = aux0)
-exprx  <- do.call(fannotator, args)
-attr(exprx, "original") <- oexpr
-attr(exprx, "fannotator") <- fannotator 
-return(exprx)
-}
 
 fanno.call <- function(x, fannotator =  options()$fannotator, aux = list(nm = "?-fanno.call-?")){
 # annotates object x of class call 
 fannotated <-!is.null(attr(x, "fannotator"))
 if (fannotated && fannotator == "fannotator_revert") return(attr(x,"original"))
 obf <- if (fannotated) attr(x,"original") else x
-oexpr_list <- as.list(obf)
-oexpr <- as.expression(oexpr_list)
-if (x[[1]] == as.name("{")) {
-    x[[1]] <- NULL
-    }
+obcl <- coerce_bf_to_bcall(obf)
+oexprvL <- coerce_bcall_to_exprvList(obcl)
+  
 aux0 <- formals(get(fannotator))$aux
 if (length(names(aux))) aux0[names(aux)] <- aux
-args <- list(expr = oexpr, aux = aux0)
+args <- list(expr = oexprvL, aux = aux0)
 exprx  <- do.call(fannotator, args)
+
+callx   <- coerce_expressionvList_to_bcall(exprx)
+attributes(callx) <- attributes(obcl)
 callx <- as.call(as.list(exprx))
+attributes(callx) <- attributes(x)
 attr(callx, "original") <- obf
 attr(callx, "fannotator") <- fannotator 
 return(callx)
