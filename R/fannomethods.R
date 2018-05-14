@@ -24,6 +24,7 @@ callx <- as.call(as.list(exprx))
 attributes(callx) <- attributes(x)
 attr(callx, "original") <- obf
 attr(callx, "fannotator") <- fannotator 
+if (fannotator == "fannotator_revert") callx <- obf
 return(callx)
 }
 
