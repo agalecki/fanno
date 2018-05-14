@@ -56,7 +56,6 @@ fannotator_simple <- function(expr, aux = list(flbl = "flbl:fannotator_simple"))
   for (i in seq_along(expr)){
    ex <-c(ex, expr[i]) 
   }
- cl <-  as.call(c(as.name("{"), ex))
  return(ex)
 }
                        
@@ -87,13 +86,13 @@ fannotator_traceR <- function(expr, aux = list(flbl = "flbl:fannotator_traceR", 
       trcR1x <- if (i == length(expr)) expression() else trcR1[i]
       e <- c(e, trcR1x) 
    }
-   ex <- c(epre, e)  
-   cl <-  as.call(c(as.name("{"), ex))                   
- return (cl)                
+   ex <- c(epre, e)                     
+ return (ex)                
 }
 
 fannotator_revert <- function(expr, aux = list(flbl = "flbl:fannotator_revert")){
- fannotated <-!is.null(attr(expr, "fannotator"))
+  # reverts to original object 
+  fannotated <-!is.null(attr(expr, "fannotator"))
  exprx <- if (fannotated) attr(expr,"original") else expr
 return(exprx)
 }
