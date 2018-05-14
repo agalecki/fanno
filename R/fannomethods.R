@@ -68,7 +68,7 @@ bclx   <- coerce_expressionvList_to_bcall(oexprvL.new)
 attributes(bclx) <- attributes(obcl)
 funx <- fun
 if (!is.null(obf)) body(funx) <- bclx
-
+attributes(funx) <- attributes(fun)
 attr(funx, "original") <- ofun
 attr(funx, "fannotator") <- fannotator 
 if (fannotator == "fannotator_revert") funx <- ofun
