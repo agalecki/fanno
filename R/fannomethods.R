@@ -35,12 +35,12 @@ return(callx)
  #attributes(bclx) <- attributes(bcl)          
 
 
-fanno.function <- function(fun, fannotator =  options()$fannotator, aux = list(flbl="?-fannno.function-?")){
-# annotates object fun of class function 
-fannotated <-!is.null(attr(fun, "fannotator"))
+fanno.function <- function(x, fannotator =  options()$fannotator, aux = list(flbl="?-fannno.function-?")){
+# annotates object x of class function 
+fannotated <-!is.null(attr(x, "fannotator"))
    
 # Extract original function
-ofun <- if (fannotated) attr(fun,"original") else fun
+ofun <- if (fannotated) attr(x,"original") else x
    
 # Extract vector of one line expressions representing body of ofun
 obf <- body(ofun)
@@ -55,9 +55,9 @@ args <- list(expr = oexprvL, aux = aux0)
 oexprvL.new  <- do.call(fannotator, args) 
 bclx   <- coerce_expressionvList_to_bcall(oexprvL.new)
 attributes(bclx) <- attributes(obcl)
-funx <- fun
+funx <- x
 if (!is.null(obf)) body(funx) <- bclx
-attributes(funx) <- attributes(fun)
+attributes(funx) <- attributes(x)
 attr(funx, "original") <- ofun
 attr(funx, "fannotator") <- fannotator 
 if (fannotator == "fannotator_revert") funx <- ofun
