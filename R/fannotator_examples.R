@@ -19,13 +19,15 @@ epreamble_traceR <- function(aux = list(flbl = "flbl:epreamble_traceR", idx = 98
 
 expr_transform <- function(expr, aux = list(flbl = "flbl:expr_transform", idx = 98), verbose =0){
    # function is called by 
-   # expr is  an expression vector 
-   # Creates a list with different 1-1 mappings of expr vector
+   # expr is  vector of _one_ line expressions 
+   # Creates a list with different  of expr vector
    idx   <- aux$idx
    flblx <- if (is.null(idx)) NULL else paste(idx, aux$flbl, sep=":")  # Auxiliary
    
    msg1 <- trcR1 <- expression()  
+   ec <- as.character(expr)  # Character containing expression
    
+  
    for (i in seq_along(expr)){
      bi <- expr[i]
      bic <- as.character(bi)
@@ -74,7 +76,7 @@ fannotator_traceR <- function(expr, aux = list(flbl = "flbl:fannotator_traceR", 
    epre <- c(e, msg1, trx)
 
    #--- Extract vectors of expressions 
-   ex <- expr_transform(expr = expr)   # list 
+   ex <- expr_transform(expr = expr, aux = aux)   # list 
    msg1 <- ex$msg1                     # vector of expressions
    trcR1 <- ex$trcR1
    
