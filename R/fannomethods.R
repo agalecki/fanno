@@ -36,7 +36,7 @@ return(callx)
  #attributes(bclx) <- attributes(bcl)          
 
 
-fanno.function <- function(x, fannotator =  character, aux = list(flbl="?-fannno.function-?")){
+fanno.function <- function(x, fannotator =  character(0), aux = list(flbl="?-fannno.function-?")){
 # annotates object x of class function 
 if (!length(fannotator)) fannotator =  options()$fannotator
 fannotated <-!is.null(attr(x, "fannotator"))
