@@ -49,22 +49,12 @@ exList <- res1[["exprL"]]
 res2 <- coerse_check2(f)
 ex  <- res2[["exprvL"]]
 ex.simple <- fannotator_simple(ex)
-ex.traceR
-as.call(c(as.name("{"), ex.out))
+as.call(c(as.name("{"), ex.simple))
+
+ex.traceR <- fannotator_traceR(ex)
+as.call(c(as.name("{"), ex.traceR))
 
 
-
-is.call(bcl)
-is.symbol(bcl)
-mode(bcl)
-length (bcl)
-length(bcl) == length(as.list(bcl))
-
-
-cList <- coerce_call_to_expressionList (cl)
-cList
-mode(cList)
-cl
 ```
 ### Calls
 
@@ -91,7 +81,7 @@ orv <- fanno(oa1, fannotator ="fannotator_revert")
 identical(orv, o)        # TRUE
 
 options(fannotator ="fannotator_traceR")
-o3  <- fanno(o1)
+o3  <- fanno(oa1)
 o4 <- fanno(o3)
 identical(o3, o4)      # TRUE
 
@@ -112,11 +102,12 @@ tt <- stringr:::word
 fanno_assign ("tt")
 
 
+
 library(stringr)
 ls(asNamespace("stringr"))
 fanno_assign(where = "namespace:stringr")
 stringr:::word
-fanno_assign(where = "namespace:stringr", fannotator = "fanno_revert")
+fanno_assign(where = "namespace:stringr", fannotator = "fannotator_revert")
 
 ```
 
