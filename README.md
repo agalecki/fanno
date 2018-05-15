@@ -44,6 +44,12 @@ f5 <- is.function
 ```
 ```
 f <- f4 
+bf <- body(f)                              # bf
+bcl <- coerce_bf_to_bcall(bf)                # Creates (left) bracketed call
+exprvL <- coerce_bcall_to_exprvList(bcl)       # list with expressions
+ex <- fannotator_simple2(exprvL)
+as.call(c(as.name("{"), ex)
+
 res1 <- coerse_check1(f)
 exList <- res1[["exprL"]]
 res2 <- coerse_check2(f)
