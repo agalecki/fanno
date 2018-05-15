@@ -31,7 +31,7 @@ expr_transform <- function(expr, aux = list(flbl = "flbl:expr_transform", idx = 
   return (list(msg1 = msg1, trcR1 =trcR1)) 
 }
 
-fannotator_simple <- function(expr, aux = list(flbl = "flbl:fannotator_simple")){
+fannotator_simple2 <- function(expr, aux = list(flbl = "flbl:fannotator_simple")){
  ## Annotate  expression 
  e <- expression()
  msg1 <- substitute(message("#", flbl,"\n"), aux) 
@@ -47,7 +47,19 @@ fannotator_simple <- function(expr, aux = list(flbl = "flbl:fannotator_simple"))
   }
  return(ex)
 }
-                       
+
+
+fannotator_simple <- function(expr, aux = list(flbl = "flbl:fannotator_simple")){
+ ## Annotate  expression 
+ e <- expression()
+ msg1 <- substitute(message("#", flbl,"\n"), aux) 
+ 
+ msg2 <- expression(message("--> Executed on:", Sys.time()))
+ 
+ ex <- c(e, msg1, msg2)
+return(ex)
+}
+                    
 fannotator_traceR <- function(expr, aux = list(flbl = "flbl:fannotator_traceR", idx = 99)) {
   ## Prepare preamble expression 
    e    <- expression()
