@@ -5,8 +5,9 @@ fanno <- function (x, ...) {
 }
 
 
-fanno.call <- function(x, fannotator =  options()$fannotator, aux = list(nm = "?-fanno.call-?")){
+fanno.call <- function(x, fannotator =  character(0), aux = list(nm = "?-fanno.call-?")){
 # annotates object x of class call 
+if (!length(fannotator)) fannotator =  options()$fannotator
 fannotated <-!is.null(attr(x, "fannotator"))
 if (fannotated && fannotator == "fannotator_revert") return(attr(x,"original"))
 obf <- if (fannotated) attr(x,"original") else x
@@ -35,8 +36,9 @@ return(callx)
  #attributes(bclx) <- attributes(bcl)          
 
 
-fanno.function <- function(x, fannotator =  options()$fannotator, aux = list(flbl="?-fannno.function-?")){
+fanno.function <- function(x, fannotator =  character, aux = list(flbl="?-fannno.function-?")){
 # annotates object x of class function 
+if (!length(fannotator)) fannotator =  options()$fannotator
 fannotated <-!is.null(attr(x, "fannotator"))
    
 # Extract original function
