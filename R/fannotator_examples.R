@@ -42,7 +42,7 @@ fannotator_simple2 <- function(expr, aux = list(flbl = "flbl:fannotator_simple")
   for (i in seq_along(expr)){
    ei <- expr[i]
    ci <- as.character(ei)
-   ##msgi <- substitute(message("* ", i, ".",  ci), list(aux = aux , i = i, ci =ci))
+   msgi <- substitute(message("* ", i, ".",  ci), list(aux = aux , i = i, ci =ci))
    ex <-c(ex,  ei) 
   }
  return(ex)
