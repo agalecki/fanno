@@ -42,8 +42,8 @@ fannotator_simple <- function(expr, aux = list(flbl = "flbl:fannotator_simple"))
   for (i in seq_along(expr)){
    ei <- expr[i]
    ci <- as.character(ei)
-   msgi <- message("* ", i,  ci)
-   ex <-c(ex, msgi, ei) 
+   ##msgi <- substitute(message("* ", i, ".",  ci), list(aux = aux , i = i, ci =ci))
+   ex <-c(ex,  ei) 
   }
  return(ex)
 }
@@ -82,7 +82,8 @@ fannotator_traceR <- function(expr, aux = list(flbl = "flbl:fannotator_traceR", 
 fannotator_revert <- function(expr, aux = list(flbl = "flbl:fannotator_revert")){
   # reverts to original object 
   fannotated <-!is.null(attr(expr, "fannotator"))
- exprx <- if (fannotated) attr(expr,"original") else expr
+  exprx <- if (fannotated) attr(expr,"original") else expr
+  atttr(exprx, "fannotator") <- NULL
 return(exprx)
 }
  
