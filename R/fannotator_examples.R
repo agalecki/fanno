@@ -32,22 +32,25 @@ expr_transform <- function(expr, aux = list(flbl = "flbl:expr_transform", idx = 
 }
 
 fannotator_simple2 <- function(expr, aux = list(flbl = "flbl:fannotator_simple2")){
- ## Annotate  expression
+   
+   ## Annotate  expression
    e <- expression()
-   msg1 <- substitute(message("##", flbl,"\n"), aux) 
-   ex <- expression()
+   msg <- substitute(message("##", flbl,"\n"), aux) 
+   
+   ex  <- expression()
    
    # Going through expressions one by one
    for (i in seq_along(expr)){
-    ei <- expr[i]
+    ei  <- expr[i]
     eic <- as.character(ei)
-    ci1 <- paste("* ln:", i, ":", flbl)
-   msgi1 <- substitute(message(ci), list(ci = ci1))
-   ci2 <- paste(" ``` \n", eic, "\n ```")
-   msgi2 <- substitute(message(ci), list(ci = ci2))
-   ex <-c(ex, msgi2,  ei) 
+    ti <- aux$flbl
+    ## msgi1 <- substitute(message("* ln:", i, ":", ti, "\n"), list(i=i, ti =ti))
+             
+    # ci2 <- paste(" ``` \n", eic, "\n ```")
+    #msgi2 <- substitute(message(" ``` \n", eic, "\n ```"), list(eic = eic))
+    ex <-c(ex, msgi12,   ei) 
   }
- return(c(e, msgi1, msgi2, ex))
+ return(c(e, msg, ex))
 }
 
 
