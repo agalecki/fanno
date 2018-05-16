@@ -36,8 +36,9 @@ class(env[["all_passed"]])           #  all_passed is function
 env_pkg <- as.environment("package:testthat")
 nms <- ls(env_pkg)                 # 133 items
 idx <- 1:length(nms)
-(classx <- lapply(lsenv, 
-                FUN = function(x) class(env[[x]]))) 
+classx <- lapply(lsenv, 
+                FUN = function(x) class(env[[x]]))
+names(classx) <- nms
 env_pkg$is_null             # in package
 class(env_pkg$CheckReporter)    # R6ClassGenerator
 ```
@@ -114,31 +115,86 @@ identical(o3, o4)      # TRUE
 
 ```
 
-### Examine annotated objects
+
+# Examples with package annotations
+
+## Package stringr 
+
+Initiate session
 
 ```
-finfo(o)     # 
-
-cat(as.character(e), sep="\n")
-fanno_assign("o")
-
-```
-## fanno_assign
-```
-tt <- stringr:::word
-fanno_assign ("tt")
-
-
-
 library(stringr)
+sentences <- c("Jane saw a cat", "Jane sat down")
 ls(asNamespace("stringr"))
-fanno_assign(where = "namespace:stringr")
-stringr:::word
-fanno_assign(where = "namespace:stringr", fannotator = "fannotator_revert")
+options(fannotator = "fannotator_simple2")
+options()$fannotator
+```
 
+### Light annotation 
+
+Function word in `stringr` package/namespace annotated only  
+
+```
+fanno_assign("word", where = "namespace:stringr")
+stringr:::word
+fanno_assign("word", where = "package:stringr")
+capture.output (word(sentences, 1), type = "message", file ="tmp1.md")
 ```
 
 
+###  Full annotation
+
+```
+fanno_assign(where = "namespace:stringr")  # all functions in ns annotated
+stringr:::word
+fanno_assign(where = "package:stringr")    
+capture.output (word(sentences, 1), type = "message", file ="tmp2.md")
+```
+
+### Revert annotation (needs work)
+
+```
+options(fannotator = "fannotator_revert")
+options()$fannotator
+
+fanno_assign( where = "namespace:stringr")
+fanno_assign( where = "package:stringr")
+stringr:::word
+```
+
+## Package `nlme`
+
+Initiate session
+
+```
+library(nlme)
+options(fannotator = "fannotator_simple2")
+options()$fannotator
+```
+```
+fanno_assign(where = "namespace:nlme")  # all functions in ns annotated
+stringr:::word
+fanno_assign(where = "package:nlme")    
+capture.output (
+     fm1 <- nlme(height ~ SSasymp(age, Asym, R0, lrc),
+            data = Loblolly,
+            fixed = Asym + R0 + lrc ~ 1,
+            random = Asym ~ 1,
+            start = c(Asym = 103, R0 = -8.5, lrc = -3.3)), 
+            type = "message", file ="nlme.md")
+           
+```
+
+### Package lme4
+
+```
+library(lme4)
+fanno_assign(where = "namespace:lme4")  # all functions in ns annotated
+fanno_assign(where = "package:lme4")    
+capture.output ( fm1 <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy),
+                 type = "message", file ="lme4.md")
+
+```
 
 ## Create function for testing
 
