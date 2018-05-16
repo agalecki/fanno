@@ -15,15 +15,31 @@ options()$fannotator    # Check
 options(fannotator = "fannotator_traceR")
 detach(package:fanno)
 ```
-## Create call/functions for testing
+## contents of  testthat namespace/package
 
-### Simple expressions
+* namespace
 
 ```
-e2 <- expression(x+y, a+b)
-e <- e2                    # <- select
-el <- expr_transform(e)
-lapply(as.list(el), function(x) cat(as.character(x), sep ="\n"))
+library(testthat)
+ls(asNamespace("testthat"))   # 269 items
+
+testthat:::all_passed         # ::: is used for not exported in ns 
+```
+
+* package 
+
+```
+ls(as.environment("package:testthat")) # 133 items
+classx <-lapply(as.list(ls(as.environment("package:testthat"))), 
+                FUN = function(x) class(get(x)))
+
+is_null                 # in package
+context
+```
+
+
+## Create call/functions for testing
+
 
 
 
