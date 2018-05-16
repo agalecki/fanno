@@ -15,36 +15,41 @@ options()$fannotator    # Check
 options(fannotator = "fannotator_traceR")
 detach(package:fanno)
 ```
-## contents of  testthat namespace/package
+## Explore contents of testthat namespace
 
-* namespace
 
 ```
 library(testthat)
-ls(asNamespace("testthat"))   # 269 items
+ns <- asNamespace("testthat")   # 269 items
+env <- as.environment(ns)
+nms <- ls(env)
+(classx <-sapply(nms, 
+                FUN = function(x) class(env[[x]]))) 
 
-testthat:::all_passed         # ::: is used for not exported in ns 
+class(testthat:::all_passed)         # ::: is used for not exported objects in ns 
+class(env[["all_passed"]])           #  all_passed is function
 ```
 
-* package 
+## Explore contents of testthat package
 
 ```
-ls(as.environment("package:testthat")) # 133 items
-classx <-lapply(as.list(ls(as.environment("package:testthat"))), 
-                FUN = function(x) class(get(x)))
-
-is_null                 # in package
-context
+env_pkg <- as.environment("package:testthat")
+nms <- ls(env_pkg)                 # 133 items
+idx <- 1:length(nms)
+(classx <- lapply(lsenv, 
+                FUN = function(x) class(env[[x]]))) 
+env_pkg$is_null             # in package
+class(env_pkg$CheckReporter)    # R6ClassGenerator
 ```
+Assign selected objects in global env for testing
+```
+assign ("f21", testthat:::all_passed, envir = .GlobalEnv)
+assign ("f22", env_pkg$is_null, envir = .GlobalEnv)
+assign ("f99", env_pkg$CheckReporter, envir = .GlobalEnv)   # R6ClassGenerator
 
+```
 
 ## Create call/functions for testing
-
-
-
-
-
-```
 
 
 ### Functions
@@ -56,10 +61,10 @@ f1a <- function(){pi}
 f2  <- mean
 f3 <- function(x) x*2
 f4 <- stringr:::word
-f5 <- is.function
+f5 <- is.function 
 ```
 ```
-f <- f4 
+f <- f99
 bf <- body(f)                              # bf
 bcl <- coerce_bf_to_bcall(bf)                # Creates (left) bracketed call
 exprvL <- coerce_bcall_to_exprvList(bcl)       # list with expressions
