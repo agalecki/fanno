@@ -99,7 +99,7 @@ fannotator_revert <- function(expr, aux = list(flbl = "flbl:fannotator_revert"))
   # reverts to original object 
   fannotated <-!is.null(attr(expr, "fannotator"))
   exprx <- if (fannotated) attr(expr,"original") else expr
-  atttr(exprx, "fannotator") <- NULL
+  attr(exprx, "fannotator") <- NULL
 return(exprx)
 }
  
