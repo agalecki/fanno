@@ -9,8 +9,8 @@ fanno_extractx <- function(x, where = ".GlobalEnv"){
    return(fun)
  }
 
-fanno_assign <- function (nms = NULL,  where = ".GlobalEnv", fannotator = character(), all.names = FALSE, verbose = TRUE,
-                          aux = list(flbl = "?fanno_assign?",  idx = 0)){
+fanno_assign <- function (nms = NULL,  where = ".GlobalEnv", fannotator = character(), all.names = FALSE, verbose = FALSE,
+                          aux = list(flbl = character(),  idx = 0)){
  if (!length(fannotator)) fannotator <-  options()$fannotator
 # assigns annotated function in namespace:*, package:* specified in where argument ( by default in .GlobalEnv) 
  
@@ -50,7 +50,7 @@ fanno_assign <- function (nms = NULL,  where = ".GlobalEnv", fannotator = charac
      ### argsl <- list(fnm = fnm, where = where, idx = i, ebfanno= ebfanno)
      if (verbose) print("fanno_assign: 51")
      fun <- fanno_extractx(fnm, where = where)
-     process_fun <- if (class (fun) %in%  c("function", "call"))) TRUE else FALSE 
+     process_fun <- if (class(fun)[1] %in%  c("function", "call"))) TRUE else FALSE 
      if (verbose) print("fanno_assign: 55")
      ff <- if (process_fun)  do.call(fanno, list(x = fun, aux= aux0)) else  NULL
      if (!process_fun) {
