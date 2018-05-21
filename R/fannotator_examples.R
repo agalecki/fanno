@@ -1,22 +1,32 @@
+faux_pad <- function(faux){
+ # pads faux list with ...
+ faux_pad <- list(fnm = character(0), whr = character(0), idx = 0)  # ... remaining default components:
+ if (is.list(options()$faux_pad)) faux_pad <- options()$faux_pad    # Extract from 
+ nms_pad <- names(faux_pad)
+ nms <- names(faux)
+ nmsi <- intersect(nms, nms_pad)
+ if (length(nmsi)) faux_pad[nmsi] <- faux[nmsi]
+return(faux_pad)
+}
 
 
-expr_transform <- function(expr, aux = list(flbl = "flbl:expr_transform", idx = 98), verbose =0){
-   # function is called by 
+expr_transform <- function(expr, faux = list(), verbose =0){ 
+   aux <- faux_pad(faux)    # mandatory
    # expr is  vector of _one_ line expressions 
-   # Creates a list with different  of expr vector
-   idx   <- aux$idx
-   flblx <- if (is.null(idx)) NULL else paste(idx, aux$flbl, sep=":")  # Auxiliary
+   # Creates a list with different  vectors of expressions
+   fnm   <- aux$fnm 
+   whr   <- aux$whr
+   idx   <- aux$idx 
    
    msg1 <- trcR1 <- expression()  
    ec <- as.character(expr)  # Character containing expression
    
-  
    for (i in seq_along(expr)){
      bi <- expr[i]
      bic <- as.character(bi)
      
      ### msg1
-     ei <- substitute(message("   -  <", flbl, "> ln.", i, ":", bic), list(flbl = aux$flbl, i = i, bic = bic)) 
+     ei <- substitute(message("   -  <", fnm, "> ln.", i, ":", bic), list(fnm = aux$fnm, whr = aux$whr, i = i, bic = bic)) 
      msg1 <- c(msg1, ei)
      if (verbose > 1) message("msg1_i= ", i,  ":", as.character(ei))
 
@@ -27,15 +37,16 @@ expr_transform <- function(expr, aux = list(flbl = "flbl:expr_transform", idx = 
      if (verbose > 1) message("trcR1_i= ", i, ":", as.character(ti))
      
   }
-  
-  return (list(msg1 = msg1, trcR1 =trcR1)) 
+    return (list(msg1 = msg1, trcR1 =trcR1)) 
 }
 
-fannotator_simple2 <- function(expr, aux = list(flbl = "flbl:fannotator_simple2")){
+
+fannotator_simple2 <- function(expr, faux = list()){
+   aux <- faux_pad(faux)    # mandatory
    
    ## Annotate  expression
    e <- expression()
-   msg <- substitute(message("##", flbl,"\n"), aux) 
+   msg <- substitute(message("##", fnm, " in [", whr, "] \n"), aux) 
    
    ex  <- expression()
    
@@ -43,9 +54,8 @@ fannotator_simple2 <- function(expr, aux = list(flbl = "flbl:fannotator_simple2"
    for (i in seq_along(expr)){
     ei  <- expr[i]
     eic <- as.character(ei)
-  
-    msgi1 <- substitute(message("* ln:", i, ":", flbl, "\n"), list(i=i, flbl= aux$flbl))
-             
+    msgi1 <- substitute(message("* ln:", i, ".", idx, ":", fnm, "in [", whr, "]\n"), 
+                        list (i=i, idx = aux$idx, fnm= aux$fnm, whr = aux$whr))
     msgi2 <- substitute(message(" ``` \n", eic, "\n ```"), list(eic = eic))
     ex <-c(ex, msgi1, msgi2,   ei) 
   }
@@ -53,11 +63,11 @@ fannotator_simple2 <- function(expr, aux = list(flbl = "flbl:fannotator_simple2"
 }
 
 
-fannotator_simple <- function(expr, aux = list(flbl = "flbl:fannotator_simple")){
+fannotator_simple <- function(expr, faux = list()){
+ aux <- faux_pad(faux)    # mandatory
  ## Annotate  expression 
- e <- expression()
- msg1 <- substitute(message("#", flbl,"\n"), aux) 
- 
+ e    <- expression()
+ msg1 <- substitute(message("##", fnm, " in [", whr, "] \n"), aux) 
  msg2 <- expression(message("--> Executed on:", Sys.time()))
  
  ex <- c(e, msg1, msg2, expr)
@@ -65,11 +75,10 @@ return(ex)
 }
                     
 fannotator_traceR <- function(expr, aux = list(flbl = "flbl:fannotator_traceR", idx = 99)) {
+   aux <- faux_pad(faux)    # mandatory
   ## Prepare preamble expression 
    e    <- expression()
-   msg1 <- substitute(message(
-         "--> Function <", idx, ":", flbl, ">"
-        ), aux)
+   msg1 <- substitute(message("##", fnm, " in [", whr, "] \n"), aux) 
    tr1  <- expression( .functionLabel <- flbl)
    tr2  <- expression (.traceR <- attr(options()$traceR, "fun"))
    tr3  <- expression (.traceR <- if (is.null(.traceR)) function(...) {} else .traceR)
@@ -86,7 +95,7 @@ fannotator_traceR <- function(expr, aux = list(flbl = "flbl:fannotator_traceR", 
    #--- Body                    
    e <- expression()
    for (i in seq_along(expr)){
-      e <- c(e, msg1[i])  # msg with expression line number and expression 
+      e <- c(e, msg1[i])  # msg with expression and line number 
       e <- c(e, expr[i])  # Original
       trcR1x <- if (i == length(expr)) expression() else trcR1[i]
       e <- c(e, trcR1x) 
@@ -95,7 +104,7 @@ fannotator_traceR <- function(expr, aux = list(flbl = "flbl:fannotator_traceR", 
  return (ex)                
 }
 
-fannotator_revert <- function(expr, aux = list(flbl = "flbl:fannotator_revert")){
+fannotator_revert <- function(expr, aux = list()){
   # reverts to original object 
   fannotated <-!is.null(attr(expr, "fannotator"))
   exprx <- if (fannotated) attr(expr,"original") else expr
