@@ -10,8 +10,7 @@ return(faux_pad)
 }
 
 
-expr_transform <- function(expr, faux = list(), verbose =0){ 
-   aux <- faux_pad(faux)    # mandatory
+expr_transform <- function(expr, aux = list(), verbose =0){ 
    # expr is  vector of _one_ line expressions 
    # Creates a list with different  vectors of expressions
    fnm   <- aux$fnm 
