@@ -1,7 +1,7 @@
 faux_pad <- function(faux){
  # pads faux list with ...
  faux_pad <- list(fnm = character(0), whr = character(0), idx = 0)  # ... remaining default components:
- if (is.list(options()$faux_pad)) faux_pad <- options()$faux_pad    # Extract from 
+ if (is.list(options()$faux_pad)) faux_pad <- options()$faux_pad    # Extract from options()
  nms_pad <- names(faux_pad)
  nms <- names(faux)
  nmsi <- intersect(nms, nms_pad)
@@ -46,8 +46,7 @@ fannotator_simple2 <- function(expr, faux = list()){
    
    ## Annotate  expression
    e <- expression()
-   msg <- substitute(message("##", fnm, " in [", whr, "] \n"), aux) 
-   
+   msg <- substitute(message("## ", idx, ":", fnm, " in [", whr, "] \n"), aux) 
    ex  <- expression()
    
    # Going through expressions one by one
