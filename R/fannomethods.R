@@ -36,7 +36,8 @@ return(callx)
  #attributes(bclx) <- attributes(bcl)          
 
 
-fanno.function <- function(x, fannotator =  character(0), aux = list(flbl="?-fannno.function-?")){
+fanno.function <- function(x, fannotator =  character(0), faux = list()){
+
 # annotates object x of class function 
 if (!length(fannotator)) fannotator =  options()$fannotator
 fannotated <-!is.null(attr(x, "fannotator"))
@@ -49,10 +50,12 @@ obf <- body(ofun)
 obcl <- coerce_bf_to_bcall(obf)
 oexprvL <- coerce_bcall_to_exprvList(obcl)
 
-# prepare args for fannotator    
-aux0 <- formals(get(fannotator))$aux
+# prepare args for fannotator
+aux   <- faux_pad(faux)        # faux padded
+faux0 <- formals(get(fannotator))$faux    
+aux0  <- faux_pad(faux0)        # faux for fannotator padded
 if (length(names(aux))) aux0[names(aux)] <- aux
-args <- list(expr = oexprvL, aux = aux0)
+args <- list(expr = oexprvL, faux = aux0)
 
 oexprvL.new  <- do.call(fannotator, args) 
 bclx   <- coerce_expressionvList_to_bcall(oexprvL.new)
