@@ -52,7 +52,7 @@ fannotator_simple2 <- function(expr, faux = list()){
    for (i in seq_along(expr)){
     ei  <- expr[i]
     eic <- as.character(ei)
-    msgi1 <- substitute(message("* ln:", i, ".", idx, ":", fnm, "in [", whr, "]\n"), 
+    msgi1 <- substitute(message("* ln:", i, ".", idx, ":", fnm, " in [", whr, "]\n"), 
                         list (i=i, idx = aux$idx, fnm= aux$fnm, whr = aux$whr))
     msgi2 <- substitute(message(" ``` \n", eic, "\n ```"), list(eic = eic))
     ex <-c(ex, msgi1, msgi2,   ei) 
