@@ -9,11 +9,9 @@ fanno_extractx <- function(x, where = ".GlobalEnv"){
    return(fun)
  }
 
-fanno_assign <- function (nms = NULL,  where = ".GlobalEnv", fannotator = character(), all.names = FALSE, verbose = FALSE,
-                          aux = list(flbl = character(),  idx = 0)){
+fanno_assign <- function (nms = NULL,  where = ".GlobalEnv", fannotator = character(), all.names = FALSE, verbose = FALSE){
  if (!length(fannotator)) fannotator <-  options()$fannotator
 # assigns annotated function in namespace:*, package:* specified in where argument ( by default in .GlobalEnv) 
- 
   if (length(where) != 1)   stop ("<where> argument  needs to be specified.")
   whr1 <- suppressMessages(stringr::word(where,1, sep =":"))
   whr2 <- suppressMessages(stringr::word(where,2, sep = ":"))
@@ -28,22 +26,25 @@ fanno_assign <- function (nms = NULL,  where = ".GlobalEnv", fannotator = charac
    
     ###  ff <- fannotatex(fnm, where = where, idx = i, bfanno = bfanno) 
      if (verbose) print("1")
-     fannotator_fun <- get(fannotator) 
-     if (verbose) print("2")
-      frmls_fannotator <- formals(fannotator_fun)
-     frmls0 <- frmls_fannotator$aux  
-     aux0 <- eval(frmls0)  # default arguments of fannotator function
+     
+    # fannotator_fun <- get(fannotator) 
+    # if (verbose) print("2")
+    # frmls_fannotator <- formals(fannotator_fun)
+    # frmls0 <- frmls_fannotator$aux  
+    # aux0 <- eval(frmls0)  # default arguments of fannotator function
   
   # over-write aux0 elements with values of aux argument 
-     if (length(names(aux))) aux0[names(aux)] <- aux # $idx in aux is optional
-     aux0[["where"]] <- where
+   #  if (length(names(aux))) aux0[names(aux)] <- aux # $idx in aux is optional
+   #  aux0[["where"]] <- where
 
   if (verbose) print("fanno_assign: 3")    
   for (i in seq_along(nms)) {
      if(verbose) print("fanno_assign: 41")
      fnm <- nms[i] 
-     aux0$flbl <- paste(" ", fnm, ":", where)   # !!!?? 
-     if ("idx" %in% names(aux0))  aux0[["idx"]] <-i
+ 
+     #aux0$flbl <- paste(" ", fnm, ":", where)   # !!!?? 
+     #if ("idx" %in% names(aux0))  aux0[["idx"]] <-i
+     aux0 <- list(fnm = fnm, whr = where, idx = i) 
      ### if (length(names(aux))) aux0[names(aux)] <- aux
         
      ## args <- list(expr = fnm, aux = aux0)
@@ -52,7 +53,7 @@ fanno_assign <- function (nms = NULL,  where = ".GlobalEnv", fannotator = charac
      fun <- fanno_extractx(fnm, where = where)
      process_fun <- if (class(fun)[1] %in%  c("function", "call")) TRUE else FALSE 
      if (verbose) print("fanno_assign: 55")
-     ff <- if (process_fun)  do.call(fanno, list(x = fun, aux= aux0)) else  NULL
+     ff <- if (process_fun)  do.call(fanno, list(x = fun, faux= aux0)) else  NULL
      if (!process_fun) {
      message ("?<", i, ":", fnm, " in ", where, " of mode ", mode(fun), " skipped!!!")
      } 
