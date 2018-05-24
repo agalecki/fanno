@@ -18,7 +18,7 @@ options(fannotator = "fannotator_traceR")
 
 ## Assign selected objects in global env to test fannotators
 
-[See Functions](./inst/toys/02Functions_for testing.R
+[See Functions](./inst/toys/02Functions_for testing.R)
 
 
 
