@@ -13,90 +13,26 @@ install_github("agalecki/fanno")
 options("fannotator")   # NULL at the beginning of R session
 library (fanno)
 options()$fannotator    # Check 
-options(fannotator = "fannotator_traceR")
+options(fannotator = "fannotator_traceR") # # fannotator_simple, fannotator_simple2, fannotator_traceR, fannotator_revert
 ```
 
-## Assign selected objects in global env to test fannotators
+# Examples of fanno package  applications
 
-[See Functions](./inst/toys)
-
-
-
-### Functions
-
-```
-```
-```
-f <- f21
-bf <- body(f)                                # bf
-bcl <- coerce_bf_to_bcall(bf)                # Creates (left) bracketed call
-exprvL <- coerce_bcall_to_exprvList(bcl)     # vlist with expressions
-
-ex1 <- fannotator_simple(exprvL, faux = list(fnm = "Fannotated by fannotator_simple", whr ="???", idx = 98))
-ex2 <- fannotator_simple2(exprvL, faux = list(fnm = "Fannotated by fannotator_simple2", whr ="???", idx = 99))
-ex3 <- fannotator_traceR(exprvL, faux = list(fnm = "Fannotated by fannotator_traceR", whr ="???", idx = 97))
-
-ex <- ex3 ## select
-as.call(c(as.name("{"), ex))
-
-res1 <- coerse_check1(f)
-exList <- res1[["exprL"]]
-res2 <- coerse_check2(f)
-ex  <- res2[["exprvL"]]
-ex.simple <- fannotator_simple(ex)
-as.call(c(as.name("{"), ex.simple))
-
-ex.traceR <- fannotator_traceR(ex)
-as.call(c(as.name("{"), ex.traceR))
-
-
-```
-### Calls
-
-```
-cl <- bf2                  # Select object of mode call
-length(cl)
-mode(cl)
-```
-### Expressions
-
-
-### Annotate expression/body/function
-
-```
-options(fannotator ="fannotator_simple")
-o <- f1                   # --- select e0, e1, e2, bf1, bf2, bf3, f0,f1,f2
-oa1 <- fanno(o)                     
-oa2  <- fanno(oa1)
-identical(oa1, oa2)      # TRUE
-orv <- fanno(oa1, fannotator ="fannotator_revert")
-identical(orv, o)        # TRUE
-
-options(fannotator ="fannotator_traceR")
-o3  <- fanno(oa1)
-o4 <- fanno(o3)
-identical(o3, o4)      # TRUE
-
-```
-
-
-# Examples with package annotations
 
 ## Package stringr 
 
 Initiate session
 
 ```
+
 library(stringr)
 sentences <- c("Jane saw a cat", "Jane sat down")
 ls(asNamespace("stringr"))
-options(fannotator = "fannotator_simple2")
-options()$fannotator
 ```
 
 ### Light annotation 
 
-Function word in `stringr` package/namespace annotated only  
+Function word in `stringr` package/namespace is annotated only  
 
 ```
 fanno_assign("word", where = "namespace:stringr")
