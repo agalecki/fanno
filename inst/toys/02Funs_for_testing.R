@@ -44,3 +44,22 @@ as.call(c(as.name("{"), ex.simple))
 ex.traceR <- fannotator_traceR(ex)
 as.call(c(as.name("{"), ex.traceR))
 
+### Annotate expression/body/function
+
+
+options(fannotator ="fannotator_simple")
+o <- f1                   # --- select e0, e1, e2, bf1, bf2, bf3, f0,f1,f2
+oa1 <- fanno(o)                     
+oa2  <- fanno(oa1)
+identical(oa1, oa2)      # TRUE
+orv <- fanno(oa1, fannotator ="fannotator_revert")
+identical(orv, o)        # TRUE
+
+options(fannotator ="fannotator_traceR")
+o3  <- fanno(oa1)
+o4 <- fanno(o3)
+identical(o3, o4)      # TRUE
+
+
+
+
