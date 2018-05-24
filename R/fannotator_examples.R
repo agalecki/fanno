@@ -50,7 +50,6 @@ fannotator_simple <- function(expr, faux = list()){
 return(ex)
 }
 
-
 fannotator_simple2 <- function(expr, faux = list()){
    aux <- faux_pad(faux)    # mandatory
    
@@ -73,18 +72,22 @@ fannotator_simple2 <- function(expr, faux = list()){
 
 fannotator_simple3 <- function(expr, faux = list()){
   tracef <- function(idx, fnm, whr, i, ei){
+    .traceRfunctionEnv <- new.env()
+    .traceRfunctionEnv <- parent.frame()
     eic <- as.character(ei)
-    msgi1 <- substitute(message("* ln:", i, " in ", idx, ":", fnm, " in [", whr, "]\n"), 
+    msgi1 <- substitute(message("* line ", i, " in ", idx, ":", fnm, " in [", whr, "]\n"), 
                         list (i=i, idx = aux$idx, fnm= aux$fnm, whr = aux$whr))
     msgi2 <- substitute(message(" ``` \n", eic, "\n ```"), list(eic = eic))
-    return(c(msg1, msg2))   
+    lsx   <- ls(envir= .traceRfunctionEnv)
+    lsxm  <- substitute(message("    *", lsx), list(lsx= lsx)) 
+   return(c(msgi1, msgi2, lsxm))   
    }
  
   aux <- faux_pad(faux)    # mandatory
    
    ## Annotate  expression
    e <- expression()
-   msg <- substitute(message("## Function ", idx, ":", fnm, " in [", whr, "] \n"), aux) 
+   msg <- substitute(message("## Fun ", idx, ":", fnm, " in [", whr, "] \n"), aux) 
    ex  <- expression()
    
    # Going through expressions one by one
