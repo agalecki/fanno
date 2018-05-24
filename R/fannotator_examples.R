@@ -66,7 +66,7 @@ fannotator_simple <- function(expr, faux = list()){
  ## Annotate  expression 
  e    <- expression()
  msg1 <- substitute(message("## Function ", idx, ":", fnm, " in [", whr, "] \n"), aux) 
- msg2 <- expression(message("--> Executed on:", Sys.time()))
+ msg2 <- expression(message(" Executed on:", Sys.time()))
  
  ex <- c(e, msg1, msg2, expr)
 return(ex)
@@ -76,7 +76,7 @@ fannotator_traceR <- function(expr, faux = list()) {
    aux <- faux_pad(faux)    # mandatory
   ## Prepare preamble expression 
    e    <- expression()
-   msg1 <- substitute(message("## ", idx , ":", fnm, " in [", whr, "] \n"), aux) 
+   msg1 <- substitute(message("## Function ", idx , ":", fnm, " in [", whr, "] \n"), aux) 
    tr1  <- expression( .functionLabel <- flbl)
    tr2  <- expression (.traceR <- attr(options()$traceR, "fun"))
    tr3  <- expression (.traceR <- if (is.null(.traceR)) function(...) {} else .traceR)
