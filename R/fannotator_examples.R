@@ -45,14 +45,14 @@ fannotator_simple2 <- function(expr, faux = list()){
    
    ## Annotate  expression
    e <- expression()
-   msg <- substitute(message("## ", idx, ":", fnm, " in [", whr, "] \n"), aux) 
+   msg <- substitute(message("## Function ", idx, ":", fnm, " in [", whr, "] \n"), aux) 
    ex  <- expression()
    
    # Going through expressions one by one
    for (i in seq_along(expr)){
     ei  <- expr[i]
     eic <- as.character(ei)
-    msgi1 <- substitute(message("* ln:", i, ".", idx, ":", fnm, " in [", whr, "]\n"), 
+    msgi1 <- substitute(message("* ln:", i, " in ", idx, ":", fnm, " in [", whr, "]\n"), 
                         list (i=i, idx = aux$idx, fnm= aux$fnm, whr = aux$whr))
     msgi2 <- substitute(message(" ``` \n", eic, "\n ```"), list(eic = eic))
     ex <-c(ex, msgi1, msgi2,   ei) 
@@ -65,7 +65,7 @@ fannotator_simple <- function(expr, faux = list()){
  aux <- faux_pad(faux)    # mandatory
  ## Annotate  expression 
  e    <- expression()
- msg1 <- substitute(message("## ", idx, ":", fnm, " in [", whr, "] \n"), aux) 
+ msg1 <- substitute(message("## Function ", idx, ":", fnm, " in [", whr, "] \n"), aux) 
  msg2 <- expression(message("--> Executed on:", Sys.time()))
  
  ex <- c(e, msg1, msg2, expr)
