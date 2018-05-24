@@ -7,62 +7,24 @@ rm(list = ls())
 library("devtools")
 install_github("agalecki/fanno")
 ```
-## Attach/detach library 
+## Setup
+
 ```
 options("fannotator")   # NULL at the beginning of R session
 library (fanno)
 options()$fannotator    # Check 
 options(fannotator = "fannotator_traceR")
-detach(package:fanno)
-```
-## Explore contents of testthat namespace
-
-
-```
-library(testthat)
-ns <- asNamespace("testthat")   # 269 items
-env <- as.environment(ns)
-nms <- ls(env)
-(classx <-sapply(nms, 
-                FUN = function(x) class(env[[x]]))) 
-
-class(testthat:::all_passed)         # ::: is used for not exported objects in ns 
-class(env[["all_passed"]])           #  all_passed is function
 ```
 
-## Explore contents of testthat package
+## Assign selected objects in global env to test fannotators
 
-```
-env_pkg <- as.environment("package:testthat")
-nms <- ls(env_pkg)                 # 133 items
-idx <- 1:length(nms)
-classx <- lapply(lsenv, 
-                FUN = function(x) class(env[[x]]))
-names(classx) <- nms
-env_pkg$is_null             # in package
-class(env_pkg$CheckReporter)    # R6ClassGenerator
-```
-Assign selected objects in global env for testing
-```
-assign ("f21", testthat:::all_passed, envir = .GlobalEnv)
-assign ("f22", env_pkg$is_null, envir = .GlobalEnv)
-assign ("f99", env_pkg$CheckReporter, envir = .GlobalEnv)   # R6ClassGenerator
+[See Functions](./inst/toys/02Functions_for testing.R
 
-```
-
-## Create functions/calls/expressions for testing
 
 
 ### Functions
 
 ```
-f0 <- function(x){}  # length
-f1 <- function() pi  # Mode() == "name" 
-f1a <- function(){pi}
-f2  <- mean
-f3 <- function(x) x*2
-f4 <- stringr:::word
-f5 <- is.function 
 ```
 ```
 f <- f21
@@ -175,7 +137,6 @@ options()$fannotator
 ```
 ```
 fanno_assign(where = "namespace:nlme")  # all functions in ns annotated
-stringr:::word
 fanno_assign(where = "package:nlme")    
 capture.output (
      fm1 <- nlme(height ~ SSasymp(age, Asym, R0, lrc),
@@ -184,6 +145,11 @@ capture.output (
             random = Asym ~ 1,
             start = c(Asym = 103, R0 = -8.5, lrc = -3.3)), 
             type = "message", file ="nlme.md")
+# revert back 
+fanno_assign(where = "namespace:nlme", fannotator = "fannotator_revert")  # all functions in ns annotated
+fanno_assign(where = "package:nlme", fannotator = "fannotator_revert")    
+
+
            
 ```
 
