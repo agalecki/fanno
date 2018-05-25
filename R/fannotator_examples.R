@@ -70,37 +70,36 @@ fannotator_simple2 <- function(expr, faux = list()){
  return(c(e, msg, ex))
 }
 
- .tracefun <- function(idx, fnm, whr, i, ei){
-    
-    eic <- as.character(ei)
-    msgi1 <- substitute(message("* line ", i, " in ", idx, ":", fnm, " in [", whr, "]\n"), 
-                        list (i=i, idx = idx, fnm= fnm, whr = whr))
-    msgi2 <- substitute(message(" ``` \n", eic, "\n ```"), list(eic = eic))
-     e1 <- expression(.traceRfunctionEnv <- new.env())
-     e2 <- expression(.traceRfunctionEnv <- parent.frame())
-     e3 <- expression(print(ls(.traceRfunctionEnv)))
-     m3 <- quote(print(sys.status())) 
-  return(c(msgi1, msgi2))   
-   }
+ .traceFun <- function(){
+   .traceRfunctionEnv <- new.env()
+   .traceRfunctionEnv <- parent.frame()
+   print(ls(.traceRfunctionEnv))
+   return(NULL)   
+}
 
-fannotator_simple3 <- function(expr, faux = list()){
-  aux <- faux_pad(faux)    # mandatory
-   
+fannotator_env <- function(expr, faux = list()){
+   aux <- faux_pad(faux)    # pads fuax list with default values (mandatory statement)
    ## Annotate  expression
    e <- expression()
    msg <- substitute(message("## Fun ", idx, ":", fnm, " in [", whr, "] \n"), aux) 
-   ex  <- expression()
-   
+
    # Going through expressions one by one
+    ex  <- expression()
    for (i in seq_along(expr)){
-   
+    # auxi <- c(i=i, aux)
+    print(auxi)
     ei <- expr[i]
-    resi <- .tracefun(aux$idx, aux$fnm, aux$whr, i, ei)
+    eic <- as.character(ei)
+   msgi1 <- substitute(message("* ln:", i, " in ", idx, ":", fnm, " in [", whr, "]\n"), 
+                        list (i=i, idx = aux$idx, fnm= aux$fnm, whr = aux$whr))
+    msgi2 <- substitute(message(" ``` \n", eic, "\n ```"), list(eic = eic))
+  
+    trF <- quote(.traceFun())
    
     # lsxm  <- substitute(message("    *", lsx, sep = " "), list(lsx= lsx)) 
-    ex <-c(ex, resi, ei) 
+    ex <-c(ex, msgi1, msgi2, trF,ei) 
   }
- return(c(e, msg, ex))
+ return(c(e, msg,ex))
 }
 
                     
