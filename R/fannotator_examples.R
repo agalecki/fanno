@@ -70,14 +70,15 @@ fannotator_simple2 <- function(expr, faux = list()){
  return(c(e, msg, ex))
 }
 
- .traceFun <- function(){
+.traceFun <- function(){
    .traceRfunctionEnv <- new.env()
    .traceRfunctionEnv <- parent.frame()
-   print(ls(.traceRfunctionEnv))
-   return(NULL)   
+   nms <- ls(.traceRfunctionEnv)  # object names
+   nms_msg <- paste(nms, sep = " ,")
+   return(list(nms = nms_msg))   
 }
 
-fannotator_env <- function(expr, faux = list()){
+fannotator_env3 <- function(expr, faux = list()){
    aux <- faux_pad(faux)    # pads fuax list with default values (mandatory statement)
    ## Annotate  expression
    e <- expression()
@@ -86,18 +87,18 @@ fannotator_env <- function(expr, faux = list()){
    # Going through expressions one by one
     ex  <- expression()
    for (i in seq_along(expr)){
-    # auxi <- c(i=i, aux)
+    auxi <- c(i=i, aux)
     print(auxi)
     ei <- expr[i]
     eic <- as.character(ei)
-   msgi1 <- substitute(message("* ln:", i, " in ", idx, ":", fnm, " in [", whr, "]\n"), 
+    msgi1 <- substitute(message("* ln:", i, " in ", idx, ":", fnm, " in [", whr, "]\n"), 
                         list (i=i, idx = aux$idx, fnm= aux$fnm, whr = aux$whr))
     msgi2 <- substitute(message(" ``` \n", eic, "\n ```"), list(eic = eic))
   
-    trF <- quote(.traceFun())
-   
-    # lsxm  <- substitute(message("    *", lsx, sep = " "), list(lsx= lsx)) 
-    ex <-c(ex, msgi1, msgi2, trF,ei) 
+    trF <- quote(.traceFun_rslt <- .traceFun())
+    tx  <- quote(print(.traceFun_rslt))  # For testing
+    trF_nms <- quote(message(.traceFun_rslt[["nms"]])) 
+    ex <-c(ex,  msgi1, msgi2, trF, tx, trF_nms, ei) 
   }
  return(c(e, msg,ex))
 }
