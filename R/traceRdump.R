@@ -33,8 +33,8 @@ fNames <- function(fname){
   .traceRfunctionEnv <- new.env()
   .traceRfunctionEnv <- parent.frame()
   fn    <- exists(".functionLabel", envir = .traceRfunctionEnv)
-  fnm   <- suppressMessages(stringr::word(.functionLabel ,1, sep ="@"))      # May 2018 to extract function name (check, if needed)
-  fname <- if (fn) eval(expression(fnm), envir = .traceRfunctionEnv) else "."
+  ## fnm   <- suppressMessages(stringr::word(.functionLabel ,1, sep ="@"))      # May 2018 to extract function name (check, if needed)
+  fname <- if (fn) eval(expression(.functionLabel), envir = .traceRfunctionEnv) else "."
 
   traceR <- options()$traceR
   tracef <- traceR[[fname]]
