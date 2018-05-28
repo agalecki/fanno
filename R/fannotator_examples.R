@@ -70,12 +70,12 @@ fannotator_simple2 <- function(expr, faux = list()){
  return(c(e, msg, ex))
 }
 
-.traceFun <- function(){
+traceFun <- function(){
    .traceRfunctionEnv <- new.env()
    .traceRfunctionEnv <- parent.frame()
    nms <- ls(.traceRfunctionEnv)  # object names
-   nms_msg <- paste(nms, sep = " ,")
-   return(list(nms = nms_msg))   
+   message(paste(nms, sep = " ,"))
+   return()   
 }
 
 fannotator_env3 <- function(expr, faux = list()){
@@ -95,10 +95,8 @@ fannotator_env3 <- function(expr, faux = list()){
                         list (i=i, idx = aux$idx, fnm= aux$fnm, whr = aux$whr))
     msgi2 <- substitute(message(" ``` \n", eic, "\n ```"), list(eic = eic))
   
-    trF <- quote(.traceFun_rslt <- .traceFun())
-    tx  <- quote(print(.traceFun_rslt))  # For testing
-    trF_nms <- quote(message(.traceFun_rslt[["nms"]])) 
-    ex <-c(ex,  msgi1, msgi2, trF, tx, trF_nms, ei) 
+    trF <- quote(traceFun())
+    ex <-c(ex,  msgi1, msgi2, trF, ei) 
   }
  return(c(e, msg,ex))
 }
