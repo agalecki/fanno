@@ -69,45 +69,13 @@ fannotator_simple2 <- function(expr, faux = list()){
   }
  return(c(e, msg, ex))
 }
-
-traceFun <- function(){
-   .traceRfunctionEnv <- new.env()
-   .traceRfunctionEnv <- parent.frame()
-   nms <- ls(.traceRfunctionEnv)  # object names
-   message(paste(nms, sep = " ,"))
-   return()   
-}
-
-fannotator_env3 <- function(expr, faux = list()){
-   aux <- faux_pad(faux)    # pads fuax list with default values (mandatory statement)
-   ## Annotate  expression
-   e <- expression()
-   msg <- substitute(message("## Fun ", idx, ":", fnm, " in [", whr, "] \n"), aux) 
-
-   # Going through expressions one by one
-    ex  <- expression()
-   for (i in seq_along(expr)){
-    auxi <- c(i=i, aux)
-    print(auxi)
-    ei <- expr[i]
-    eic <- as.character(ei)
-    msgi1 <- substitute(message("* ln:", i, " in ", idx, ":", fnm, " in [", whr, "]\n"), 
-                        list (i=i, idx = aux$idx, fnm= aux$fnm, whr = aux$whr))
-    msgi2 <- substitute(message(" ``` \n", eic, "\n ```"), list(eic = eic))
-  
-    trF <- quote(traceFun())
-    ex <-c(ex,  msgi1, msgi2, trF, ei) 
-  }
- return(c(e, msg,ex))
-}
-
                     
 fannotator_traceR <- function(expr, faux = list()) {
    aux <- faux_pad(faux)    # mandatory
   ## Prepare preamble expression 
    e    <- expression()
    msg1 <- substitute(message("## Function ", idx , ":", fnm, " in [", whr, "] \n"), aux) 
-   tr1  <- substitute(.functionLabel <- fnm, aux)
+   tr1  <- substitute(.functionLabel <- paste(whr, fnm, sep =":"), aux)
    tr2  <- expression (.traceR <- attr(options()$traceR, "fun"))
    tr3  <- expression (.traceR <- if (is.null(.traceR)) function(...) {} else .traceR)
    tx   <- paste(aux$idx, "00", sep = '.')       # auxiliary 
