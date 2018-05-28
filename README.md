@@ -13,7 +13,7 @@ install_github("agalecki/fanno")
 options("fannotator")   # NULL at the beginning of R session
 library (fanno)
 options()$fannotator    # Check 
-options(fannotator = "fannotator_traceR") # # fannotator_simple, fannotator_simple2, fannotator_traceR, fannotator_revert
+options(fannotator = "fannotator_traceR") # _simple, _simple2, fannotator_traceR, fannotator_revert
 ```
 
 # Examples of fanno package  applications
@@ -35,9 +35,10 @@ ls(asNamespace("stringr"))
 Function word in `stringr` package/namespace is annotated only  
 
 ```
-fanno_assign("word", where = "namespace:stringr")
-stringr:::word
 fanno_assign("word", where = "package:stringr")
+stringr:::word
+fanno_assign("word", where = "namespace:stringr")
+
 capture.output (word(sentences, 1), type = "message", file ="tmp1.md")
 ```
 
