@@ -75,7 +75,7 @@ fannotator_traceR <- function(expr, faux = list()) {
   ## Prepare preamble expression 
    e    <- expression()
    msg1 <- substitute(message("## Function ", idx , ":", fnm, " in [", whr, "] \n"), aux) 
-   tr1  <- substitute(.functionLabel <- paste("[", whr, "]", fnm, sep =""), aux)
+   tr1  <- substitute(.functionLabel <- paste(fnm, "@", whr, sep = ""), aux)
    tr2  <- expression (.traceR <- attr(options()$traceR, "fun"))
    tr3  <- expression (.traceR <- if (is.null(.traceR)) function(...) {} else .traceR)
    tx   <- paste(aux$idx, "00", sep = '.')       # auxiliary 
