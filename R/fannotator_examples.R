@@ -22,16 +22,17 @@ expr_transform <- function(expr, aux = list(), verbose =0){
    
    for (i in seq_along(expr)){
      bi <- expr[i]
-     bic <- as.character(bi)
-     
+     eic <- as.character(bi)
+     auxi = c(i=i, eic = eic, aux)
+    
      ### msg1
-     ei <- substitute(message("   -  <", fnm, "> ln.", i, ":", bic), list(fnm = aux$fnm, whr = aux$whr, i = i, bic = bic)) 
+     ei <- substitute(message("   -  <", fnm, "> ln.", i, ":", eic), auxi) 
      msg1 <- c(msg1, ei)
      if (verbose > 1) message("msg1_i= ", i,  ":", as.character(ei))
 
      ### trcR1
-     ix <- aux$idx + i/100
-     ti <- substitute(.traceR(ix, bic, auto =TRUE), list(ix =ix, bic=bic))  
+     
+     ti <- substitute(.traceR(idx + i/100, bic, auto =TRUE), auxi)  
      trcR1 <- c(trcR1, ti) 
      if (verbose > 1) message("trcR1_i= ", i, ":", as.character(ti))
      
