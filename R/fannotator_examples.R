@@ -51,7 +51,7 @@ return(ex)
 }
 
 fannotator_simple2 <- function(expr, faux = list()){
-   aux <- faux_pad(faux)    # mandatory
+   aux <- faux_pad(faux)    # mandatory. Pads faux with fnm, whr, idx.
    
    ## Annotate  expression
    e <- expression()
@@ -60,12 +60,11 @@ fannotator_simple2 <- function(expr, faux = list()){
    
    # Going through expressions one by one
    for (i in seq_along(expr)){
-    auxi <- c(i=i, aux)
     ei  <- expr[i]
     eic <- as.character(ei)
+    auxi <- c(i=i, eic= eic, aux)
     msgi1 <- substitute(message("* ln:", i, " in ", idx, ":", fnm, " in [", whr, "]\n"), auxi) 
-    #                    list (i=i, idx = aux$idx, fnm= aux$fnm, whr = aux$whr))
-    msgi2 <- substitute(message(" ``` \n", eic, "\n ```"), list(eic = eic))
+    msgi2 <- substitute(message(" ``` \n", eic, "\n ```"), auxi)
     ex <-c(ex, msgi1, msgi2,   ei) 
   }
  return(c(e, msg, ex))
