@@ -32,7 +32,7 @@ expr_transform <- function(expr, aux = list(), verbose =0){
 
      ### trcR1
      
-     ti <- substitute(.traceR(idx + i/100, bic, auto =TRUE), auxi)  
+     ti <- substitute(.traceR(idx + i/100, eic, auto =TRUE), auxi)  
      trcR1 <- c(trcR1, ti) 
      if (verbose > 1) message("trcR1_i= ", i, ":", as.character(ti))
      
