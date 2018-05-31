@@ -1,6 +1,6 @@
 faux_pad <- function(faux){
  # pads faux list with ...
- faux_pad <- list(fnm = character(0), whr = character(0), idx = 0)  # ... remaining default components:
+ faux_pad <- list(fnm = character(0), whr = character(0), idx = 0)  # ... remaining default components.
  if (is.list(options()$faux_pad)) faux_pad <- options()$faux_pad    # Extract from options()
  nms_pad <- names(faux_pad)
  nms <- names(faux)
@@ -60,10 +60,11 @@ fannotator_simple2 <- function(expr, faux = list()){
    
    # Going through expressions one by one
    for (i in seq_along(expr)){
+    auxi <- c(i=i, aux)
     ei  <- expr[i]
     eic <- as.character(ei)
-    msgi1 <- substitute(message("* ln:", i, " in ", idx, ":", fnm, " in [", whr, "]\n"), 
-                        list (i=i, idx = aux$idx, fnm= aux$fnm, whr = aux$whr))
+    msgi1 <- substitute(message("* ln:", i, " in ", idx, ":", fnm, " in [", whr, "]\n"), auxi) 
+    #                    list (i=i, idx = aux$idx, fnm= aux$fnm, whr = aux$whr))
     msgi2 <- substitute(message(" ``` \n", eic, "\n ```"), list(eic = eic))
     ex <-c(ex, msgi1, msgi2,   ei) 
   }
@@ -83,7 +84,7 @@ fannotator_traceR <- function(expr, faux = list()) {
    trx  <- c(tr1,tr2, tr3, tr4)                  
    epre <- c(e, msg1, trx)
 
-   #--- Extract vectors of expressions 
+   #--- Extract predefined vectors of expressions 
    ex <- expr_transform(expr = expr, aux = aux)   # list 
    msg1 <- ex$msg1                     # vector of expressions
    trcR1 <- ex$trcR1
