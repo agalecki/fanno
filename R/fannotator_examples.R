@@ -41,18 +41,19 @@ fannotator_simple2 <- function(expr, faux = list()){
 }
                     
 fannotator_traceR <- function(expr, faux = list()) {
-   aux <- faux_pad(faux)    # mandatory. Pads faux with fnm, whr, idx.
-   elen <- length(expr)     # Number of lines in <expr> argument
-   x10 <- 10^ ceiling(log10(elen))
-
- ## Preamble expression 
+   aux   <- faux_pad(faux)    # mandatory. Pads faux with fnm, whr, idx.
+   elen  <- length(expr)      # Number of lines in <expr> argument
+ 
+ ## Preamble expression
+   lid0   <- paste(aux$idx , ".0", sep ="") # auxiliary
+   auxi0 <- c (i=0, lid = lid0, aux)   #  list used for substittion
+  
    e    <- expression()
-   msg1 <- substitute(message("## Function ", idx , ":", fnm, " in [", whr, "] \n"), aux) 
-   tr1  <- substitute(.functionLabel <- fnm, aux)
+   msg1 <- substitute(message("## Function ", idx , ":", fnm, " in [", whr, "] \n"), auxi0) 
+   tr1  <- substitute(.functionLabel <- fnm, auxi0)
    tr2  <- expression (.traceR <- attr(options()$traceR, "fun"))
    tr3  <- expression (.traceR <- if (is.null(.traceR)) function(...) {} else .traceR)
-   tx   <- paste(aux$idx, "00", sep = '.')       # auxiliary 
-   tr4  <- substitute(.traceR(tx , "`{`", first = TRUE, auto = TRUE), list(tx = tx))
+   tr4  <- substitute(.traceR(lid , "`{`", first = TRUE, auto = TRUE), auxi0)
    trx  <- c(tr1,tr2, tr3, tr4)                  
    epre <- c(e, msg1, trx)
                        
@@ -61,11 +62,12 @@ fannotator_traceR <- function(expr, faux = list()) {
    for (i in seq_along(expr)){
       ei <- expr[i]
       eic <- as.character(ei)
-      id <- aux$idx + i/x10  # xx.zzz
-      auxi <-  c(i=i, id = id, eic = eic, aux)
+      x10   <- 10^ ceiling(log10(elen))
+      lid <- aux$idx + i/x10  # xx.zzz
+      auxi <-  c(i=i, lid = lid, eic = eic, aux)  # <- 
 
       msg1i <-  substitute(message("   -  <", fnm, "> ln.", i, ":", eic), auxi) 
-      trcR_i <- substitute(.traceR(id, eic, auto =TRUE), auxi)
+      trcR_i <- substitute(.traceR(lid, eic, auto =TRUE), auxi)
       trcR1x <- if (i == length(expr)) expression() else trcR_i
       e <- c(e, msg1i, ei, trcR1x) 
    }
