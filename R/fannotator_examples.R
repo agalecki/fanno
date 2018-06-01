@@ -59,7 +59,7 @@ fannotator_traceR <- function(expr, faux = list()) {
    for (i in seq_along(expr)){
       ei <- expr[i]
       eic <- as.character(ei)
-      id <- paste(idx, i, sep = "")
+      id <- paste(aux$idx, i, sep = ".")  # xx.zzz
       auxi <-  c(i=i, id = id, eic = eic, aux)
 
       msg1i <-  substitute(message("   -  <", fnm, "> ln.", i, ":", eic), auxi) 
