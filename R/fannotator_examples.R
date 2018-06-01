@@ -59,12 +59,11 @@ fannotator_traceR <- function(expr, faux = list()) {
    for (i in seq_along(expr)){
       ei <- expr[i]
       eic <- as.character(ei)
-      auxi <-  c(i=i, eic = eic, aux)
+      id <- paste(idx, i, sep = "")
+      auxi <-  c(i=i, id = id, eic = eic, aux)
 
       msg1i <-  substitute(message("   -  <", fnm, "> ln.", i, ":", eic), auxi) 
-      # e <- c(e, msg1[i])  # msg with expression and line number 
-      # e <- c(e, expr[i])  # Original
-      trcR_i <- substitute(.traceR(eval(idx + i/100), eic, auto =TRUE), auxi)
+      trcR_i <- substitute(.traceR(id, eic, auto =TRUE), auxi)
       trcR1x <- if (i == length(expr)) expression() else trcR_i
       e <- c(e, msg1i, ei, trcR1x) 
    }
