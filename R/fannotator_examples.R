@@ -43,9 +43,11 @@ fannotator_simple2 <- function(expr, faux = list()){
 fannotator_traceR <- function(expr, faux = list()) {
    aux   <- faux_pad(faux)    # mandatory. Pads faux with fnm, whr, idx.
    elen  <- length(expr)      # Number of lines in <expr> argument
+   nx    <- ceiling(log10(elen))
  
  ## Preamble expression
-   lid0   <- paste(aux$idx , ".0", sep ="") # auxiliary
+   lid0  <- paste(replicate(nx, "0"), collapse ="")
+   lid0   <- paste(aux$idx , lid0, sep =".") # auxiliary
    auxi0 <- c (i=0, lid = lid0, aux)   #  list used for substittion
   
    e    <- expression()
@@ -62,7 +64,7 @@ fannotator_traceR <- function(expr, faux = list()) {
    for (i in seq_along(expr)){
       ei <- expr[i]
       eic <- as.character(ei)
-      x10   <- 10^ ceiling(log10(elen))
+      x10   <- 10^ nx
       lid <- aux$idx + i/x10  # xx.zzz
       auxi <-  c(i=i, lid = lid, eic = eic, aux)  # <- 
 
