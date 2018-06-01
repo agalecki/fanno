@@ -9,37 +9,6 @@ faux_pad <- function(faux){
 return(faux_pad)
 }
 
-
-expr_transform <- function(expr, aux = list(), verbose =0){ 
-   # expr is  vector of _one_ line expressions 
-   # Creates a list with different  vectors of expressions
-   fnm   <- aux$fnm 
-   whr   <- aux$whr
-   idx   <- aux$idx 
-   
-   msg1 <- trcR1 <- expression()  
-   ec <- as.character(expr)  # Character containing expression
-   
-   for (i in seq_along(expr)){
-     bi <- expr[i]
-     eic <- as.character(bi)
-     auxi = c(i=i, eic = eic, aux)
-    
-     ### msg1
-     ei <- substitute(message("   -  <", fnm, "> ln.", i, ":", eic), auxi) 
-     msg1 <- c(msg1, ei)
-     if (verbose > 1) message("msg1_i= ", i,  ":", as.character(ei))
-
-     ### trcR1
-     
-     ti <- substitute(.traceR(idx + i/100, eic, auto =TRUE), auxi)  
-     trcR1 <- c(trcR1, ti) 
-     if (verbose > 1) message("trcR1_i= ", i, ":", as.character(ti))
-     
-  }
-    return (list(msg1 = msg1, trcR1 =trcR1)) 
-}
-
 fannotator_simple <- function(expr, faux = list()){
  aux <- faux_pad(faux)    # mandatory
  ## Annotate  expression 
@@ -71,9 +40,41 @@ fannotator_simple2 <- function(expr, faux = list()){
  return(c(e, msg, ex))
 }
                     
+expr_transform_deprecated <- function(expr, aux = list(), verbose =0){ 
+   # expr is  vector of _one_ line expressions 
+   # Creates a list with different  vectors of expressions
+   fnm   <- aux$fnm 
+   whr   <- aux$whr
+   idx   <- aux$idx 
+   
+   msg1 <- trcR1 <- expression()  
+   ec <- as.character(expr)  # Character containing expression
+   
+   for (i in seq_along(expr)){
+     ei <- expr[i]
+     eic <- as.character(ei)
+     auxi = c(i=i, eic = eic, aux)
+    
+     ### msg1
+     ei <- substitute(message("   -  <", fnm, "> ln.", i, ":", eic), auxi) 
+     msg1 <- c(msg1, ei)
+     if (verbose > 1) message("msg1_i= ", i,  ":", as.character(ei))
+
+     ### trcR1
+     
+     ti <- substitute(.traceR(idx + i/100, eic, auto =TRUE), auxi)  
+     trcR1 <- c(trcR1, ti) 
+     if (verbose > 1) message("trcR1_i= ", i, ":", as.character(ti))
+     
+  }
+    return (list(msg1 = msg1, trcR1 =trcR1)) 
+}
+
+
 fannotator_traceR <- function(expr, faux = list()) {
    aux <- faux_pad(faux)    # mandatory
-  ## Prepare preamble expression 
+
+ ## Preamble expression 
    e    <- expression()
    msg1 <- substitute(message("## Function ", idx , ":", fnm, " in [", whr, "] \n"), aux) 
    tr1  <- substitute(.functionLabel <- fnm, aux)
@@ -85,17 +86,24 @@ fannotator_traceR <- function(expr, faux = list()) {
    epre <- c(e, msg1, trx)
 
    #--- Extract predefined vectors of expressions 
-   ex <- expr_transform(expr = expr, aux = aux)   # list 
-   msg1 <- ex$msg1                     # vector of expressions
-   trcR1 <- ex$trcR1
+   #ex <- expr_transform(expr = expr, aux = aux)   # list 
+   #msg1 <- ex$msg1                     # vector of expressions
+   #trcR1 <- ex$trcR1
    
    #--- Body                    
    e <- expression()
    for (i in seq_along(expr)){
-      e <- c(e, msg1[i])  # msg with expression and line number 
-      e <- c(e, expr[i])  # Original
-      trcR1x <- if (i == length(expr)) expression() else trcR1[i]
-      e <- c(e, trcR1x) 
+      ei <- expr[i]
+      eic <- as.character(ei)
+      auxi <-  c(i=i, eic = eic, aux)
+
+      msg1i <-  substitute(message("   -  <", fnm, "> ln.", i, ":", eic), auxi) 
+      # e <- c(e, msg1[i])  # msg with expression and line number 
+      # e <- c(e, expr[i])  # Original
+      trcR_i <- substitute(.traceR(idx + i/100, eic, auto =TRUE), auxi)
+      trcR1x <- if (i == length(expr)) expression() else trcR_i
+     
+      e <- c(e, msg1i, ei, trcR1x) 
    }
    ex <- c(epre, e)                     
  return (ex)                
