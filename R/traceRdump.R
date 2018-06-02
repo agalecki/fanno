@@ -29,7 +29,7 @@ fNames <- function(fname){
   paste(cNms, collapse = "->")
 }
 
-.traceRdump <- function(i, eic = character(0), fnm. whr, idx){
+.traceRdump <- function(i, eic = character(0), fnm, whr, idx){
   first <- if (i) FALSE else TRUE
   store <- TRUE
   auto  <- FALSE
