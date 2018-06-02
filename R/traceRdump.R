@@ -50,7 +50,7 @@ fNames <- function(fname){
   ## fnm   <- suppressMessages(stringr::word(.functionLabel ,1, sep ="@"))      # May 2018 to extract function name (check, if needed)
   # Returns character with function name
   # fname <- if (fn) eval(expression(.functionLabel), envir = .traceRfunctionEnv) else "."
-  fname <- paste(whr, ">", fnm, sep ="");
+  fname <- paste("[", whr, "]", fnm, sep ="");
  
   traceR <- options()$traceR  # By default is an empty list with different attraibutes
   tracef <- traceR[[fname]]   # NULL by default
