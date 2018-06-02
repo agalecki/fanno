@@ -36,11 +36,11 @@ fNames <- function(fname){
  
   # Create id from idx and i
   nx    <- ceiling(log10(elen))
-  x10 <= 10 ^ nx
+  x10 <- 10 ^ nx
   if (first) {
        id <-  paste(replicate(nx, "0"), collapse ="")
-       id <-  paste(idx , lid0, sep =".") # auxiliary
-       } else  id <- idx + i/x10
+       id <-  paste(idx , id, sep =".") # auxiliary
+       } else  id <- as.character(idx + i/x10)
  
   .traceRfunctionEnv <- new.env()
   .traceRfunctionEnv <- parent.frame()
