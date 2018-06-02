@@ -68,7 +68,7 @@ fNames <- function(fname){
   fNms <- fNames(fname)
 
   recno <- nrow(.traceRmap) + 1  # row number in .traceRmap dataset
-  lbl <- if (length(lbl)) lbl else ""
+  lbl <- if (length(eic)) eic else ""     # length?  lbl to eic?
   
 
   Nms <- ls(.traceRfunctionEnv)
