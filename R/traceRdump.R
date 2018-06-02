@@ -72,8 +72,8 @@ fNames <- function(fname){
   
 
   Nmsall <- names(.traceRfunctionEnv)
-  NmsAllb <- ifelse(Nms %in% c(".traceR", ".envInfo") , FALSE, TRUE)
-  Nms <- NmsAll[NmsAllb]
+  NmsAllb <- ifelse(Nmsall %in% c(".traceR", ".envInfo") , FALSE, TRUE)
+  Nms <- Nmsall[NmsAllb]
   olength <- sapply(Nms, length)
   omode   <- sapply(Nms, mode)
   oclass  <- sapply(as.list(Nms), function(el) class(el)[1])
