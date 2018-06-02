@@ -80,7 +80,14 @@ fNames <- function(fname){
   }
   nms <- ls(.traceRfunctionEnv)
 
-  .envInfo <- list(recno = recno, msg = paste("Env created by .traceRdump"))
+  .envInfo <- list(recno = recno, 
+                   line_no = i,
+                   eic = lbl,
+                   fnm = fnm,
+                   whr = whr,
+                   idx = idx,
+                   onms = Nms,
+                   msg = paste("Env created by .traceRdump"))
   assign(".envInfo", .envInfo, .traceRfunctionEnv)
   
   elist <- if (fopts$asList) {
