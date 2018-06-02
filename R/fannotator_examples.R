@@ -45,31 +45,32 @@ fannotator_traceR <- function(expr, faux = list()) {
    elen  <- length(expr)      # Number of lines in <expr> argument
    nx    <- ceiling(log10(elen))
  
- ## Preamble expression
+ ## Preamble expression: epre
    lid0  <- paste(replicate(nx, "0"), collapse ="")
    lid0   <- paste(aux$idx , lid0, sep =".") # auxiliary
-   auxi0 <- c (i=0, lid = lid0, aux)   #  list used for substittion
+   # auxi0  <- c (i = 0, lid = lid0, aux)   #  list used for substitution
+   #auxi0  <- c (i = 0, eic = ", aux)   #  list used for substitution
   
    e    <- expression()
-   msg1 <- substitute(message("## Function ", idx , ":", fnm, " in [", whr, "] \n"), auxi0) 
-   tr1  <- substitute(.functionLabel <- fnm, auxi0)
+   msg1 <- substitute(message("## Function ", idx , ":", fnm, " in [", whr, "] \n"), aux) 
+   ## tr1  <- substitute(.functionLabel <- fnm, auxi0)
    tr2  <- expression (.traceR <- attr(options()$traceR, "fun"))
    tr3  <- expression (.traceR <- if (is.null(.traceR)) function(...) {} else .traceR)
-   tr4  <- substitute(.traceR(lid , "`{`", first = TRUE, auto = TRUE), auxi0)
-   trx  <- c(tr1,tr2, tr3, tr4)                  
-   epre <- c(e, msg1, trx)
+   # tr4  <- substitute(.traceR(lid , "`{`", first = TRUE, auto = TRUE), auxi0)
+   tr4 <-  substitute(.traceR(0, "`{`", fnm, whr, idx), aux)
+   epre  <- c(e, msg1, tr2, tr3, tr4)                  
                        
-   #--- Body                    
+   #--- Body expression: e                 
    e <- expression()
    for (i in seq_along(expr)){
       ei <- expr[i]
       eic <- as.character(ei)
       x10   <- 10^ nx
       lid <- aux$idx + i/x10  # xx.zzz
-      auxi <-  c(i=i, lid = lid, eic = eic, aux)  # <- 
+      auxi <-  c(i=i, eic = eic, aux)  # <- 
 
       msg1i <-  substitute(message("   -  <", fnm, "> ln.", i, ":", eic), auxi) 
-      trcR_i <- substitute(.traceR(lid, eic, auto =TRUE), auxi)
+      trcR_i <- substitute(.traceR(i, eic, fnm, whr, idx), auxi)
       trcR1x <- if (i == length(expr)) expression() else trcR_i
       e <- c(e, msg1i, ei, trcR1x) 
    }
