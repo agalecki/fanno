@@ -72,6 +72,11 @@ fNames <- function(fname){
   
 
   Nms <- ls(.traceRfunctionEnv)
+ 
+  olength <- sapply(Nms, length)
+  omode   <- sapply(Nms, mode)
+  oclass  <- sapply(as.list(Nms), function(el) class(el)[1])
+
   if (!is.null(fopts$modifyEnv)){
     modifyEnv <- fopts$modifyEnv
     res <- new.env()
@@ -87,6 +92,9 @@ fNames <- function(fname){
                    whr = whr,
                    idx = idx,
                    onms = Nms,
+                   olen = olength,
+                   omode = omode,
+                   oclass1 = oclass,
                    msg = paste("Env created by .traceRdump"))
   assign(".envInfo", .envInfo, .traceRfunctionEnv)
   
