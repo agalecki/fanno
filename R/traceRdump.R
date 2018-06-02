@@ -29,16 +29,21 @@ fNames <- function(fname){
   paste(cNms, collapse = "->")
 }
 
-.traceRdump <- function(id, lbl = character(0), store = TRUE, first = FALSE, auto = FALSE){
+.traceRdump <- function(i, eic = character(0), fnm. whr, idx){
+  first <- if (i) FALSE else TRUE
+  store <- TRUE
+  auto  <- FALSE
+  # Create id from idx and i
+ 
   .traceRfunctionEnv <- new.env()
   .traceRfunctionEnv <- parent.frame()
   
   # .functionLabel -> fname
-  fn    <- exists(".functionLabel", envir = .traceRfunctionEnv)
+  #fn    <- exists(".functionLabel", envir = .traceRfunctionEnv)
   ## fnm   <- suppressMessages(stringr::word(.functionLabel ,1, sep ="@"))      # May 2018 to extract function name (check, if needed)
   # Returns character with function name
-  fname <- if (fn) eval(expression(.functionLabel), envir = .traceRfunctionEnv) else "."
-  
+  # fname <- if (fn) eval(expression(.functionLabel), envir = .traceRfunctionEnv) else "."
+  fname <- paste(whr, ">", fnm, sep ="");
  
   traceR <- options()$traceR  # By default is an empty list with different attraibutes
   tracef <- traceR[[fname]]   # NULL by default
@@ -46,9 +51,8 @@ fNames <- function(fname){
   
   # fopts is a list (ids = NULL, fun, modifyEnv = NULL, asList = FALSE)
   fopts <- fOpts(fname, tracef, attrs)  # Returns options specific for function fname
-  
- 
-  prefix <- attr(traceR, "prefix")      # env_
+
+  prefix <- attr(traceR, "prefix")      # e_
   select <- id %in% fopts$ids || is.null(fopts$ids)
   
   if (!select || (is.list(tracef) && !length(tracef))) return()
