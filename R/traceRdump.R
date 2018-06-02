@@ -71,8 +71,9 @@ fNames <- function(fname){
   lbl <- if (length(eic)) eic else ""     # length?  lbl to eic?
   
 
-  Nms <- ls(.traceRfunctionEnv)
- 
+  Nmsall <- names(.traceRfunctionEnv)
+  NmsAllb <- ifelse(Nms %in% c(".traceR", ".envInfo") , FALSE, TRUE)
+  Nms <- NmsAll[NmsAllb]
   olength <- sapply(Nms, length)
   omode   <- sapply(Nms, mode)
   oclass  <- sapply(as.list(Nms), function(el) class(el)[1])
