@@ -79,17 +79,17 @@ fNames <- function(fname){
   # Cumulate names (-> used to collapse names)
   fNms <- fNames(fname)
 
-  recno <- nrow(.traceRmap) + 1  # row number in .traceRmap dataset
+  recno <- nrow(.traceRmap) + 1  # increase recno  in .traceRmap dataset
   lbl <- if (length(eic)) eic else ""     # length?  lbl to eic?
   
-
   Nmsall <- names(.traceRfunctionEnv)
-  NmsAllb <- ifelse(Nmsall %in% c(".traceR", ".envInfo") , FALSE, TRUE)
+  NmsAllb <- ifelse(Nmsall %in% c(".traceR", ".envInfo") , FALSE, TRUE) # Remove 
   Nms <- Nmsall[NmsAllb]
   olength <- sapply(Nms, length)
   omode   <- sapply(Nms, mode)
   oclass  <- sapply(as.list(Nms), function(el) class(el)[1])
 
+  mesasage("    - onames ", Nms) 
   if (!is.null(fopts$modifyEnv)){
     modifyEnv <- fopts$modifyEnv
     res <- new.env()
@@ -105,10 +105,10 @@ fNames <- function(fname){
                    whr = whr,
                    idx = idx,
                    onms = Nms,
-                   olen = olength,
-                   omode = omode,
-                   oclass1 = oclass,
-                   msg = paste("Env created by .traceRdump"))
+                   #olen = olength,
+                   #omode = omode,
+                   #oclass1 = oclass,
+                   msg = paste("Environment created by .traceRdump"))
   assign(".envInfo", .envInfo, .traceRfunctionEnv)
   
   elist <- if (fopts$asList) {
