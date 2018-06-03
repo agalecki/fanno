@@ -29,19 +29,24 @@ fNames <- function(fname){
   paste(cNms, collapse = "->")
 }
 
-.traceRdump <- function(i, eic = character(0), elen, fnm, whr, idx){
+.traceRdump <- function(i, exprc, fnm, whr, idx){
   first <- if (i) FALSE else TRUE
   store <- TRUE
   auto  <- FALSE
  
   # Create id from idx and i
+  elen <- length(exprc)
   nx    <- ceiling(log10(elen))
   x10 <- 10 ^ nx
   if (first) {
        id <-  paste(replicate(nx, "0"), collapse ="")
        id <-  paste(idx , id, sep =".") # auxiliary
-       } else  id <- as.character(idx + i/x10)
- 
+       eic <- "{"
+       } else  {
+       id <- as.character(idx + i/x10)
+       eic <- if (i == elen) exprc[i] else character()
+       }
+   
   .traceRfunctionEnv <- new.env()
   .traceRfunctionEnv <- parent.frame()
   
