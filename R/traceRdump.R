@@ -44,8 +44,9 @@ fNames <- function(fname){
        eic <- "{"
        } else  {
        id <- as.character(idx + i/x10)
-       eic <- if (i == elen) exprc[i] else character()
-       }
+       # eic <- if (i == elen) exprc[i] else character()
+       eic <- exprc[i]
+      }
    
   .traceRfunctionEnv <- new.env()
   .traceRfunctionEnv <- parent.frame()
