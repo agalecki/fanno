@@ -69,7 +69,7 @@ fannotator_traceR <- function(expr, faux = list()) {
       # eic <- exprc[i]
       #x10   <- 10^ nx
       # lid <- aux$idx + i/x10  # xx.zzz
-      auxi <-  c(i=i, eicc = eic, aux)  # <- 
+      auxi <-  c(i=i, eic = eic, aux)  # <- 
       msg1i <-  substitute(message("   -  <", fnm, "> ln.", i, ":", eic), auxi) 
       trcR_i <- substitute(.traceR(i, fnm, whr, idx), auxi)
       trcR1x <- if (i == length(expr)) expression() else trcR_i
