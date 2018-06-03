@@ -89,7 +89,7 @@ fNames <- function(fname){
   omode   <- sapply(Nms, mode)
   oclass  <- sapply(as.list(Nms), function(el) class(el)[1])
 
-  mesasage("    - onames ", Nms) 
+  message("    - onames ", Nms) 
   if (!is.null(fopts$modifyEnv)){
     modifyEnv <- fopts$modifyEnv
     res <- new.env()
