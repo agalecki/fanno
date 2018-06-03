@@ -42,8 +42,9 @@ fannotator_simple2 <- function(expr, faux = list()){
                     
 fannotator_traceR <- function(expr, faux = list()) {
    aux   <- faux_pad(faux)    # mandatory. Pads faux with fnm, whr, idx.
-   elen  <- length(expr)      # Number of lines in <expr> argument
-   aux   <- c(elen = elen, aux)
+   exprc <- as.character(expr)
+   #elen  <- length(expr)      # Number of lines in <expr> argument
+   aux   <- c(exprc = exprc, aux)
  
    # nx    <- ceiling(log10(elen))
  
@@ -57,20 +58,21 @@ fannotator_traceR <- function(expr, faux = list()) {
    tr2  <- expression (.traceR <- attr(options()$traceR, "fun"))
    tr3  <- expression (.traceR <- if (is.null(.traceR)) function(...) {} else .traceR)
    # tr4  <- substitute(.traceR(lid , "`{`", first = TRUE, auto = TRUE), auxi0)
-   tr4 <-  substitute(.traceR(0, "`{`", elen, fnm, whr, idx), aux)
+   tr4 <-  substitute(.traceR(0, exprc, fnm, whr, idx), aux)
    epre  <- c(e, msg1, tr2, tr3, tr4)                  
                        
    #--- Body expression: e                 
    e <- expression()
    for (i in seq_along(expr)){
       ei <- expr[i]
-      eic <- as.character(ei)
+      # eic <- as.character(ei)
+      eic <- exprc[i]
       #x10   <- 10^ nx
       # lid <- aux$idx + i/x10  # xx.zzz
-      auxi <-  c(i=i, eic = eic, aux)  # <- 
+      auxi <-  c(i=i, exprc = exprc, aux)  # <- 
 
       msg1i <-  substitute(message("   -  <", fnm, "> ln.", i, ":", eic), auxi) 
-      trcR_i <- substitute(.traceR(i, eic, elen, fnm, whr, idx), auxi)
+      trcR_i <- substitute(.traceR(i, exprc, fnm, whr, idx), auxi)
       trcR1x <- if (i == length(expr)) expression() else trcR_i
       e <- c(e, msg1i, ei, trcR1x) 
    }
