@@ -29,10 +29,16 @@ fNames <- function(fname){
   paste(cNms, collapse = "->")
 }
 
-.traceRdump <- function(i, exprc, fnm, whr, idx){
+.traceRdump <- function(i, fnm, whr, idx){
   first <- if (i) FALSE else TRUE
   store <- TRUE
   auto  <- FALSE
+ 
+  # Based on fnm, whr create exprc
+  funx <- fanno_extractx (fnm, where = whr)
+  bfunx <- body(funx)
+  bfx_call <- coerce_bf_to_bcall(bfunx) # bracketed call
+  exprc <- as.character(coerce_bcall_to_exprvList(bfx_call))
  
   # Create id from idx and i
   elen <- length(exprc)
