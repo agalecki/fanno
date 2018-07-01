@@ -9,7 +9,14 @@ fanno_extractx <- function(x, where = ".GlobalEnv"){
    return(fun)
  }
 
-fanno_assign <- function (nms = NULL,  where = ".GlobalEnv", fannotator = character(), all.names = FALSE, verbose = FALSE){
+fanno_assign <- function(nms = NULL,  where = ".GlobalEnv", fannotator = character(), all.names = FALSE, verbose = FALSE){
+ resL <- vector("list", length(where))
+ resi <- mapply(fanno_assign1, nms = nms, where = where[i], fannotator = fannotatotaor, all.names= all.names, verbose = verbose)
+ resL[i] <- resi
+ return(resL)
+}
+ 
+fanno_assign1 <- function (nms = NULL,  where = ".GlobalEnv", fannotator = character(), all.names = FALSE, verbose = FALSE){
  if (!length(fannotator)) fannotator <-  options()$fannotator
 # assigns annotated function in namespace:*, package:* specified in where argument ( by default in .GlobalEnv) 
   if (length(where) != 1)   stop ("<where> argument  is mandatory.")
