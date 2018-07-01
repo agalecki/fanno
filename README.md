@@ -27,7 +27,7 @@ Initiate session
 
 library(stringr)
 sentences <- c("Jane saw a cat", "Jane sat down")
-ls(asNamespace("stringr"))
+# ls(asNamespace("stringr"))
 ```
 
 ### Light annotation 
@@ -35,7 +35,7 @@ ls(asNamespace("stringr"))
 Function word in `stringr` package/namespace is annotated only  
 
 ```
-fpkg <- fanno_assign("word", where = "package:stringr")
+fas <- fanno_assign("word", where = c("package:stringr", "namespace:stringr"))
 stringr:::word
 fnms <- fanno_assign("word", where = "namespace:stringr")
 
