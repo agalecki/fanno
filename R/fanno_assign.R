@@ -12,14 +12,15 @@ fanno_extractx <- function(x, where = ".GlobalEnv"){
 fanno_assign <- function (nms = NULL,  where = ".GlobalEnv", fannotator = character(), all.names = FALSE, verbose = FALSE){
  if (!length(fannotator)) fannotator <-  options()$fannotator
 # assigns annotated function in namespace:*, package:* specified in where argument ( by default in .GlobalEnv) 
-  if (length(where) != 1)   stop ("<where> argument  needs to be specified.")
-  whr1 <- suppressMessages(stringr::word(where,1, sep =":"))
+  if (length(where) != 1)   stop ("<where> argument  is mandatory.")
+  whr1 <- suppressMessages(stringr::word(where,1, sep =":"))  # Extracts word1: package, namespace, .GlobalEnv
   whr2 <- suppressMessages(stringr::word(where,2, sep = ":"))
-  ##?? ebfanno_finfo <- funinfoCreate(ebfanno, where = "namespace:fanno")
 
   if (is.null(nms)){ 
         nms <- if (whr1 == "namespace")  ls(asNamespace(whr2), all.names = all.names) else ls(as.environment(where), all.names = all.names)
-   } 
+        res <- replicate(length(nms), "?")
+        names(res) <- nms
+  } 
     
    len <- length(nms)
    if (len == 0) stop ("select at least one object!")  
@@ -27,16 +28,7 @@ fanno_assign <- function (nms = NULL,  where = ".GlobalEnv", fannotator = charac
     ###  ff <- fannotatex(fnm, where = where, idx = i, bfanno = bfanno) 
      if (verbose) print("1")
      
-    # fannotator_fun <- get(fannotator) 
-    # if (verbose) print("2")
-    # frmls_fannotator <- formals(fannotator_fun)
-    # frmls0 <- frmls_fannotator$aux  
-    # aux0 <- eval(frmls0)  # default arguments of fannotator function
-  
-  # over-write aux0 elements with values of aux argument 
-   #  if (length(names(aux))) aux0[names(aux)] <- aux # $idx in aux is optional
-   #  aux0[["where"]] <- where
-
+   
   if (verbose) print("fanno_assign: 3")    
   for (i in seq_along(nms)) {
      if(verbose) print("fanno_assign: 41")
@@ -54,6 +46,7 @@ fanno_assign <- function (nms = NULL,  where = ".GlobalEnv", fannotator = charac
      process_fun <- if (class(fun)[1] %in%  c("function", "call")) TRUE else FALSE 
      if (verbose) print("fanno_assign: 55")
      ff <- if (process_fun)  do.call(fanno, list(x = fun, faux= aux0)) else  NULL
+     res[i] <- mode(fun)
      if (!process_fun) {
      message ("?<", i, ":", fnm, " in ", where, " of mode ", mode(fun), " skipped!!!")
      } 
@@ -64,6 +57,7 @@ fanno_assign <- function (nms = NULL,  where = ".GlobalEnv", fannotator = charac
      unlockBinding(fnm, getNamespace(ns))  
      assign(fnm, ff, getNamespace(ns))
      message("<", i, ":", fnm, "> object of mode _",  mode(fun), "_ assigned in namespace <", ns, "> [", fannotator, "]   ...")
+
      }
      if (verbose) print("fanno_assign: 15")
    if (whr1 == "package" && process_fun) {
@@ -78,6 +72,8 @@ fanno_assign <- function (nms = NULL,  where = ".GlobalEnv", fannotator = charac
      } 
    
    }  # for i
-   return(message("--- ", len, " object(s) in <", where, "> processed."))
+   # return(message("--- ", len, " object(s) in <", where, "> processed."))
+   attr(res, "where") <- where
+   return(res)
 }
 # fanno_assign("fx")
