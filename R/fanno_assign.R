@@ -9,12 +9,20 @@ fanno_extractx <- function(x, where = ".GlobalEnv"){
    return(fun)
  }
 
-fanno_assign <- function(where = ".GlobalEnv", fannotator = character(), all.names = FALSE, verbose = FALSE){
+fanno_assign <- function(nms, where = ".GlobalEnv", fannotator = character(), all.names = FALSE, verbose = FALSE){
  if (!length(fannotator)) fannotator <-  options()$fannotator
  if (length(where) != 1)   stop ("<where> argument  is mandatory.")
  lenw <-  length(where)
+ resL <- vector("list", lenw)
+ 
  for (i in 1:lenw){
- resi <- mapply(fanno_assign1, where = where[i], fannotator = fannotator, all.names= all.names, verbose = verbose)
+ whri <- where[i]
+ whr1 <- suppressMessages(stringr::word(whri,1, sep =":"))  # Extracts word1: package, namespace, .GlobalEnv
+ whr2 <- suppressMessages(stringr::word(whri,2, sep = ":"))
+ if (is.null(nms)){ 
+        nms <- if (whr1 == "namespace")  ls(asNamespace(whr2), all.names = all.names) else ls(as.environment(where), all.names = all.names)
+  }
+ resi <- mapply(fanno_assign1, nms = nms, where = whri, fannotator = fannotator, all.names= all.names, verbose = verbose)
  resL[i] <- resi
  }
  return(resL)
