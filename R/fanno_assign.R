@@ -9,11 +9,12 @@ fanno_extractx <- function(x, where = ".GlobalEnv"){
    return(fun)
  }
 
-fanno_assign <- function(nms = NULL,  where = ".GlobalEnv", fannotator = character(), all.names = FALSE, verbose = FALSE){
+fanno_assign <- function(where = ".GlobalEnv", fannotator = character(), all.names = FALSE, verbose = FALSE){
+ if (!length(fannotator)) fannotator <-  options()$fannotator
  if (length(where) != 1)   stop ("<where> argument  is mandatory.")
  lenw <-  length(where)
  for (i in 1:lenw){
- resi <- mapply(fanno_assign1, nms = nms, where = where[i], fannotator = fannotator, all.names= all.names, verbose = verbose)
+ resi <- mapply(fanno_assign1, where = where[i], fannotator = fannotator, all.names= all.names, verbose = verbose)
  resL[i] <- resi
  }
  return(resL)
