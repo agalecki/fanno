@@ -35,9 +35,9 @@ ls(asNamespace("stringr"))
 Function word in `stringr` package/namespace is annotated only  
 
 ```
-fanno_assign("word", where = "package:stringr")
+fpkg <- fanno_assign("word", where = "package:stringr")
 stringr:::word
-fanno_assign("word", where = "namespace:stringr")
+fnms <- fanno_assign("word", where = "namespace:stringr")
 
 capture.output (word(sentences, 1), type = "message", file ="tmp1.md")
 ```
@@ -46,9 +46,9 @@ capture.output (word(sentences, 1), type = "message", file ="tmp1.md")
 ###  Full annotation
 
 ```
-fanno_assign(where = "namespace:stringr")  # all functions in ns annotated
+fns <-fanno_assign(where = "namespace:stringr")  # all functions in ns annotated
 stringr:::word
-fanno_assign(where = "package:stringr")    
+fpkg <- fanno_assign(where = "package:stringr")    
 capture.output (word(sentences, 1), type = "message", file ="tmp2.md")
 ```
 
@@ -73,7 +73,7 @@ options(fannotator = "fannotator_simple2")
 options()$fannotator
 ```
 ```
-fanno_assign(where = "namespace:nlme")  # all functions in ns annotated
+fns <- fanno_assign(where = "namespace:nlme")  # all functions in ns annotated
 fanno_assign(where = "package:nlme")    
 capture.output (
      fm1 <- nlme(height ~ SSasymp(age, Asym, R0, lrc),
