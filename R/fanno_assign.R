@@ -9,7 +9,7 @@ fanno_extractx <- function(x, where = ".GlobalEnv"){
    return(fun)
  }
 
-fanno_assign <- function(nms, where = ".GlobalEnv", fannotator = character(), all.names = FALSE, verbose = FALSE){
+fanno_assign <- function(nms = NULL, where = ".GlobalEnv", fannotator = character(), all.names = FALSE, verbose = FALSE){
  if (!length(fannotator)) fannotator <-  options()$fannotator
  if (length(where) == 0)   stop ("<where> argument  is mandatory.")
  lenw <-  length(where)
