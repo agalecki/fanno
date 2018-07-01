@@ -11,8 +11,8 @@ fanno_extractx <- function(x, where = ".GlobalEnv"){
 
 fanno_assign <- function(nms = NULL,  where = ".GlobalEnv", fannotator = character(), all.names = FALSE, verbose = FALSE){
  if (length(where) != 1)   stop ("<where> argument  is mandatory.")
- lenw <-  length(where){
- for (i in 1:lenw)
+ lenw <-  length(where)
+ for (i in 1:lenw){
  resi <- mapply(fanno_assign1, nms = nms, where = where[i], fannotator = fannotatotaor, all.names= all.names, verbose = verbose)
  resL[i] <- resi
  }
