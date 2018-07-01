@@ -13,7 +13,7 @@ fanno_assign <- function(nms = NULL,  where = ".GlobalEnv", fannotator = charact
  if (length(where) != 1)   stop ("<where> argument  is mandatory.")
  lenw <-  length(where)
  for (i in 1:lenw){
- resi <- mapply(fanno_assign1, nms = nms, where = where[i], fannotator = fannotatotaor, all.names= all.names, verbose = verbose)
+ resi <- mapply(fanno_assign1, nms = nms, where = where[i], fannotator = fannotator, all.names= all.names, verbose = verbose)
  resL[i] <- resi
  }
  return(resL)
