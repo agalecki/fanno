@@ -16,11 +16,13 @@ fanno_assign <- function (nms = NULL,  where = ".GlobalEnv", fannotator = charac
   whr1 <- suppressMessages(stringr::word(where,1, sep =":"))  # Extracts word1: package, namespace, .GlobalEnv
   whr2 <- suppressMessages(stringr::word(where,2, sep = ":"))
 
+  
   if (is.null(nms)){ 
         nms <- if (whr1 == "namespace")  ls(asNamespace(whr2), all.names = all.names) else ls(as.environment(where), all.names = all.names)
+  }
         res <- replicate(length(nms), "?")
         names(res) <- nms
-  } 
+   
     
    len <- length(nms)
    if (len == 0) stop ("select at least one object!")  
@@ -33,14 +35,8 @@ fanno_assign <- function (nms = NULL,  where = ".GlobalEnv", fannotator = charac
   for (i in seq_along(nms)) {
      if(verbose) print("fanno_assign: 41")
      fnm <- nms[i] 
- 
-     #aux0$flbl <- paste(" ", fnm, ":", where)   # !!!?? 
-     #if ("idx" %in% names(aux0))  aux0[["idx"]] <-i
      aux0 <- list(fnm = fnm, whr = where, idx = i) 
-     ### if (length(names(aux))) aux0[names(aux)] <- aux
-        
-     ## args <- list(expr = fnm, aux = aux0)
-     ### argsl <- list(fnm = fnm, where = where, idx = i, ebfanno= ebfanno)
+  
      if (verbose) print("fanno_assign: 51")
      fun <- fanno_extractx(fnm, where = where)
      process_fun <- if (class(fun)[1] %in%  c("function", "call")) TRUE else FALSE 
